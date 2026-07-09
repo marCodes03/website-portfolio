@@ -1,3 +1,551 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
 
-@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Semantic Design System */
+  --color-background: #fcf8fa;
+  --color-surface: #e8e9f3;
+  --color-text: #272635;
+  --color-text-muted: #575665;
+  --color-border: #cecece;
+  --color-accent: #1b6375;
+
+  /* Legacy & Helper Aliases (preventing template breakage) */
+  --color-shadow-grey: var(--color-text);
+  --color-pale-slate: var(--color-text-muted);
+  --color-silver: var(--color-border);
+  --color-frosted-blue: var(--color-accent);
+  --color-ghost-white: var(--color-surface);
+
+  --color-primary: #121220;
+  --color-primary-container: var(--color-text);
+  --color-secondary: #326571;
+  --color-tertiary: #101319;
+  --color-on-tertiary: #ffffff;
+  --color-on-background: var(--color-text);
+  --color-on-surface: var(--color-text);
+  --color-on-surface-variant: #47464c;
+  --color-error: #ba1a1a;
+
+  /* Fonts */
+  --font-headline-lg: "Roboto Mono", monospace;
+  --font-display-lg: "Roboto Mono", monospace;
+  --font-headline-md: "Roboto Mono", monospace;
+  --font-display-lg-mobile: "Roboto Mono", monospace;
+  --font-label-caps: "Roboto Mono", monospace;
+  --font-body-md: "Roboto Mono", monospace;
+  --font-body-lg: "Roboto Mono", monospace;
+  --font-roboto-mono: "Roboto Mono", monospace;
+
+  /* FontSize and Typography Settings */
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 1.3;
+  --text-headline-lg--font-weight: 600;
+
+  --text-display-lg: 64px;
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 700;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 1.4;
+  --text-headline-md--font-weight: 600;
+
+  --text-display-lg-mobile: 40px;
+  --text-display-lg-mobile--line-height: 1.2;
+  --text-display-lg-mobile--letter-spacing: -0.02em;
+  --text-display-lg-mobile--font-weight: 700;
+
+  --text-label-caps: 12px;
+  --text-label-caps--line-height: 1.0;
+  --text-label-caps--letter-spacing: 0.1em;
+  --text-label-caps--font-weight: 600;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 1.6;
+  --text-body-md--font-weight: 400;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--font-weight: 400;
+
+  /* Spacing */
+  --spacing-section-padding-desktop: 120px;
+  --spacing-container-max-width: 1200px;
+  --spacing-unit: 8px;
+  --spacing-section-padding-mobile: 64px;
+  --spacing-gutter: 24px;
+
+  /* Border Radius */
+  --radius-DEFAULT: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
+
+  /* Keyframes for Certificates Marquees */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+}
+
+/* Custom Base / Utility Styles */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.section-ghost {
+  /*background-color: #e8e9f3;*/
+  background: linear-gradient(90deg, #e8e9f3 40%, #b1e5f2 100%);
+}
+
+.section-frosted {
+  background: linear-gradient(90deg, #b1e5f2 30%, #ffffff 100%);
+}
+
+.section-white {
+  background: linear-gradient(90deg, #ffffff 30%, #e8e9f3 100%);
+}
+
+.section-dark {
+  background: linear-gradient(90deg, #272635 30%, #121220 100%);
+}
+
+/* Hide scrollbar for carousel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Accordion Transitions */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+.accordion-item.active .accordion-content {
+  max-height: 1000px;
+  transition: max-height 1s ease-in-out;
+}
+
+.accordion-chevron {
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .accordion-chevron {
+  transform: rotate(180deg);
+}
+
+/* Custom Dark Mode Theme Overrides */
+.dark {
+  /* Semantic Design System Overrides */
+  --color-background: #1C1A27;
+  /* Deep near-black indigo global background canvas */
+  --color-surface: #2A1B3D;
+  /* Rich plum-shadow card and element container background */
+  --color-text: #fcf8fa;
+  /* Primary high-contrast off-white typography */
+  --color-text-muted: #cecece;
+  /* Muted labels, secondary paragraph text, and metadata */
+  --color-border: #42414D;
+  /* Gunmetal slate borders and dividers */
+  --color-accent: #b1e5f2;
+  /* Glowing frosted blue accent for active links and active details */
+
+  /* Legacy & Helper Aliases overrides for Dark Mode */
+  --color-primary: var(--color-accent);
+  --color-on-surface-variant: #1F2A40;
+}
+
+/* Force specific component/section overrides */
+.dark .section-ghost {
+  background: linear-gradient(90deg, #1C1A27 40%, #1F2A40 100%) !important;
+}
+
+.dark .section-frosted {
+  background: linear-gradient(90deg, #1F2A40 30%, #1C1A27 100%) !important;
+}
+
+.dark .section-white {
+  background: linear-gradient(90deg, #2A1B3D 30%, #1C1A27 100%) !important;
+}
+
+.dark .section-dark {
+  background: linear-gradient(90deg, #1C1A27 30%, #121220 100%) !important;
+}
+
+/* Ensure borders are styled correctly in dark mode */
+.dark .border-silver,
+.dark .border-white\/20,
+.dark .border-b,
+.dark .border {
+  border-color: #42414D !important;
+}
+
+/* Contact and general inputs */
+.dark input,
+.dark textarea {
+  background-color: #1C1A27 !important;
+  color: #fcf8fa !important;
+  border-color: #42414D !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #5D5C61 !important;
+}
+
+/* Glassmorphism overrides for details/accent areas */
+.dark .bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .bg-white\/40 {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark .bg-white\/60 {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Premium Button Styling for Dark Mode */
+.dark .bg-shadow-grey {
+  background-color: #2A1B3D !important;
+  color: #fcf8fa !important;
+  border: 1px solid #42414D !important;
+}
+
+.dark .bg-shadow-grey:hover {
+  background-color: #1F2A40 !important;
+  color: #b1e5f2 !important;
+}
+
+.dark .bg-shadow-grey .material-symbols-outlined {
+  color: inherit !important;
+}
+
+/* Premium Card hover border accent in Dark Mode */
+.dark #experience .group:hover,
+.dark #career-path .group:hover {
+  border-color: rgba(177, 229, 242, 0.4) !important;
+}
+
+
+
+.dark .box-glow {
+  box-shadow: 0 0 12px rgba(177, 229, 242, 0.6), 0 0 24px rgba(177, 229, 242, 0.3);
+}
+
+.dark .box-glow-border {
+  box-shadow: 0 0 10px rgba(177, 229, 242, 0.3), inset 0 0 4px rgba(177, 229, 242, 0.1);
+  border-color: #b1e5f2 !important;
+}
+
+.dark .active-glow {
+  box-shadow: 0 0 15px rgba(177, 229, 242, 0.5);
+}
+
+/* ============================================================
+   Logo Hover Animation — marCodes
+   Default: mr[]   Hover: mar[Codes]
+   ============================================================ */
+
+/* --- "a" letter: smooth width + opacity slide-in --- */
+.logo-letter-a {
+  display: inline-block;
+  width: 0ch;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  transition:
+    width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease;
+}
+
+.logo-link:hover .logo-letter-a {
+  width: 1ch;
+  opacity: 1;
+}
+
+/* --- "Codes" word: rigid typewriter expansion via steps() --- */
+.logo-word-codes {
+  display: inline-block;
+  width: 0ch;
+  overflow: hidden;
+  white-space: nowrap;
+  /* 5 characters → 5 discrete steps, total 0.35s */
+  transition: width 0.35s steps(5, end);
+  /* Delay until "a" has mostly appeared */
+  transition-delay: 0.2s;
+}
+
+.logo-link:hover .logo-word-codes {
+  width: 5ch;
+  transition-delay: 0.15s;
+}
+
+/* ============================================================
+   Journey Component — Git Commit Timeline
+   ============================================================ */
+
+/* Commit dot absolute placement */
+.commit-dot {
+  position: absolute;
+  z-index: 20;
+}
+
+.commit-dot div {
+  border-color: var(--color-border);
+}
+
+/* Mobile settings: Align dots along parallel tracks left side */
+@media (max-width: 767px) {
+  .commit-dot {
+    top: 28px;
+    transform: translateX(-50%);
+  }
+  .commit-main {
+    left: 32px;
+  }
+  .commit-org {
+    left: 56px;
+  }
+  .commit-achievements {
+    left: 80px;
+  }
+}
+
+/* Desktop settings: Centered track alignment options */
+@media (min-width: 768px) {
+  .commit-dot {
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+  }
+  .commit-main {
+    left: 50%;
+  }
+  .commit-org {
+    left: calc(50% - 24px);
+  }
+  .commit-achievements {
+    left: calc(50% + 24px);
+  }
+}
+
+/* Branch classifications & Hover glows */
+.commit-main div {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent);
+}
+
+.timeline-row:hover .commit-main div {
+  background-color: var(--color-background);
+  box-shadow: 0 0 10px var(--color-accent), 0 0 20px var(--color-accent);
+  transform: scale(1.25);
+}
+
+.commit-org div {
+  border-color: #f24e1e;
+  background-color: transparent;
+  border-style: dashed;
+}
+
+.timeline-row:hover .commit-org div {
+  border-style: solid;
+  border-color: #f24e1e;
+  background-color: #f24e1e;
+  box-shadow: 0 0 10px #f24e1e, 0 0 20px #f24e1e;
+  transform: scale(1.25);
+}
+
+.commit-achievements div {
+  border-color: #eab308;
+  background-color: transparent;
+  border-style: dotted;
+  border-width: 3px;
+}
+
+.timeline-row:hover .commit-achievements div {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #eab308;
+  background-color: #eab308;
+  box-shadow: 0 0 10px #eab308, 0 0 20px #eab308;
+  transform: scale(1.25);
+}
+
+.timeline-card {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+  will-change: opacity, transform;
+}
+
+.timeline-card.reveal {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.timeline-row:hover .timeline-card.reveal {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-accent);
+}
+
+/* ============================================================
+   Skills Component — 3D Flip Cards
+   ============================================================ */
+
+/* 3D Card Animation Wrapper with Entrance Animation */
+.skill-card-container {
+  perspective: 1000px;
+  animation: cardEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Staggered Entrance Delays (up to 15 cards) */
+.skill-card-container:nth-child(1)  { animation-delay: 0ms; }
+.skill-card-container:nth-child(2)  { animation-delay: 30ms; }
+.skill-card-container:nth-child(3)  { animation-delay: 60ms; }
+.skill-card-container:nth-child(4)  { animation-delay: 90ms; }
+.skill-card-container:nth-child(5)  { animation-delay: 120ms; }
+.skill-card-container:nth-child(6)  { animation-delay: 150ms; }
+.skill-card-container:nth-child(7)  { animation-delay: 180ms; }
+.skill-card-container:nth-child(8)  { animation-delay: 210ms; }
+.skill-card-container:nth-child(9)  { animation-delay: 240ms; }
+.skill-card-container:nth-child(10) { animation-delay: 270ms; }
+.skill-card-container:nth-child(11) { animation-delay: 300ms; }
+.skill-card-container:nth-child(12) { animation-delay: 330ms; }
+.skill-card-container:nth-child(13) { animation-delay: 360ms; }
+.skill-card-container:nth-child(14) { animation-delay: 390ms; }
+.skill-card-container:nth-child(15) { animation-delay: 420ms; }
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.skill-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+}
+
+/* Flip and lift card slightly towards user on hover */
+.skill-card-container:hover .skill-card-inner {
+  transform: rotateY(180deg) scale(1.05);
+}
+
+/* Card Face Placement */
+.skill-card-front,
+.skill-card-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Front Face Layout */
+.skill-card-front {
+  background-color: var(--color-surface);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.skill-card-container:hover .skill-card-front {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Back Face Layout */
+.skill-card-back {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  transform: rotateY(180deg);
+  box-shadow: 0 0 12px rgba(177, 229, 242, 0.1);
+}
+
+.skill-card-container:hover .skill-card-back {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 0 20px rgba(177, 229, 242, 0.35);
+  border-color: var(--color-accent);
+}
+
+/* Dark Mode Style Customization */
+.dark .skill-card-front {
+  background-color: rgba(42, 27, 61, 0.4);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .skill-card-front:hover {
+  background-color: rgba(42, 27, 61, 0.5);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark .skill-card-back {
+  background-color: rgba(42, 27, 61, 0.6);
+  border-color: rgba(177, 229, 242, 0.4);
+  box-shadow: 0 0 15px rgba(177, 229, 242, 0.2);
+}
+
+.dark .skill-card-container:hover .skill-card-back {
+  background-color: rgba(42, 27, 61, 0.75);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 25px rgba(177, 229, 242, 0.5), inset 0 0 8px rgba(177, 229, 242, 0.2);
+}
+
+/* SVG Donut Chart styling */
+.donut-circle-bg {
+  stroke: rgba(120, 120, 120, 0.12);
+  transition: stroke 0.3s ease;
+}
+
+.donut-circle-val {
+  stroke: var(--color-accent);
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke-dashoffset: 188.5;
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+  transition-delay: 0.15s;
+}
+
+/* Animate stroke drawing only on hover of the container */
+.skill-card-container:hover .donut-circle-val {
+  stroke-dashoffset: var(--dashoffset) !important;
+}
+
+/* ============================================================
+   Reviews Component — Testimonial Cards
+   ============================================================ */
+
+/* Ensure seamless support for dark mode surface opacity transitions */
+#reviews .border {
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}

@@ -1,0 +1,90 @@
+# SMTP Email Delivery Integration for Contact Form
+
+This plan outlines the implementation of secure, server-side SMTP email delivery for the contact form in the portfolio website. By using Node.js (via the Angular SSR Express backend) and `nodemailer`, we keep credentials secure and avoid exposing them in client-side code.
+
+## User Review Required
+
+> [!IMPORTANT]
+> To enable SMTP email delivery, you will need to create a `.env` file in the root of the project with your mail server details. We will provide a template `.env.example`.
+> If you are using Gmail, you must generate a **Google Account App Password** rather than using your regular password. We include detailed instructions below on how to set this up.
+
+## Proposed Changes
+
+---
+
+### [Component: Backend Server]
+
+#### [MODIFY] [server.ts](file:///c:/Users/ETI/website-portfolio-test/src/server.ts)
+- Add simple `.env` file loader logic at the top of the file so environment variables are parsed correctly in both development and production.
+- Add `express.json()` middleware.
+- Add POST `/api/send-email` endpoint:
+  - Validate input payload: `name`, `email`, `subject`, `message`.
+  - Create a `nodemailer` transport using environment variables:
+    - `SMTP_HOST` (e.g., `smtp.gmail.com`)
+    - `SMTP_PORT` (e.g., `587` or `465`)
+    - `SMTP_SECURE` (`true` for port 465, `false` for port 587)
+    - `SMTP_USER` (SMTP account username)
+    - `SMTP_PASS` (SMTP account password / App Password)
+    - `SMTP_TO` (Recipient address, defaults to `amira.coder03@gmail.com`)
+  - Render a clean, premium HTML email template containing the message details.
+  - Send the email with `replyTo` set to the visitor's email so replying is direct and easy.
+  - Return JSON status responses (`200 OK` or `400/500 Errors`).
+
+#### [NEW] [.env.example](file:///c:/Users/ETI/website-portfolio-test/.env.example)
+- Create a template file detailing all the required SMTP settings:
+  ```env
+  SMTP_HOST=smtp.gmail.com
+  SMTP_PORT=587
+  SMTP_SECURE=false
+  SMTP_USER=your-email@gmail.com
+  SMTP_PASS=your-google-app-password
+  SMTP_TO=amira.coder03@gmail.com
+  ```
+
+---
+
+### [Component: Contact Form Component]
+
+#### [MODIFY] [contact.component.ts](file:///c:/Users/ETI/website-portfolio-test/src/app/components/contact/contact.component.ts)
+- Replace `window.location.href` redirect with an asynchronous API request to `/api/send-email`.
+- Add states:
+  - `isSubmitting` (signal) to disable input fields and the submit button, preventing duplicate submissions.
+  - `showSuccess` (signal) to show a success message.
+  - `errorMessage` (signal) to display errors when submission fails.
+- Enhance the submit button with a loading indicator/spinner state when sending.
+
+---
+
+## SMTP Setup Guide
+
+To configure Gmail SMTP:
+1. Enable **2-Step Verification** on your Google Account (`amira.coder03@gmail.com`).
+2. Go to **Security** -> **App passwords** (or search "App passwords" in the settings search bar).
+3. Create a new App Password (e.g. named "Portfolio Website").
+4. Copy the generated 16-character password.
+5. Create a `.env` file in the root directory and set:
+   ```env
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_SECURE=false
+   SMTP_USER=amira.coder03@gmail.com
+   SMTP_PASS=xxxx xxxx xxxx xxxx (your 16-character app password)
+   SMTP_TO=amira.coder03@gmail.com
+   ```
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- Build code using `npm run build` or start using `npm run start` and verify there are no compilation/TypeScript errors.
+
+### Manual Verification
+1. Create `.env` file with mock/test SMTP details or credentials.
+2. Fill out the Contact Form.
+3. Verify that:
+   - Form controls and the Send button disable when submission starts.
+   - A loading indicator/spinner appears on the button.
+   - On success, the inputs clear and a success alert displays.
+   - On failure, a nice error alert displays and the typed message is preserved.
+4. Verify that the destination email receives a premium HTML message with correct reply headers.
