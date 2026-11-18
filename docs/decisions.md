@@ -74,6 +74,10 @@ This file records non-trivial decisions made while working on this project with 
 
 **Open:** certificate marquee contrast (pill text/bullet reads 1.0:1 at one tenth, probably over a neighbouring translucent pill), one marquee hidden-content item, and 2 `focus-ring` flags on generated Tailwind utilities. Not waived: marquee findings change per run, so a per-finding waiver would be fragile. CHG-0008 stays `approved`.
 
+## 2026-11-19 - Chat thinking indicator and typed replies (CHG-0022)
+
+**What:** The user asked for a skeleton loader or thinking screen, then for the reply to be typed out. Offered styles; they chose animated dots in the bubble over a skeleton bubble, plus a still version for reduced motion and a slow-reply note after 8s. Typing: 80 characters per second, visible Skip control, instant under reduced motion, folded into one spec. **Judgement calls:** the chat already had small pulsing dots, so this enlarges them and adds the note and typing rather than a new component; the full reply sits once in a visually hidden element so screen readers do not hear it letter by letter; dot opacity floor raised from 40% to 75% because 40% measured about 1.8:1; the a11y script now answers `/api/chat` itself so it never calls the real model.
+
 ## 2026-11-19 - Certificates "Contact me" button removed
 
 **What:** The user pointed out the "Contact me" button at the end of Certificates repeats the closing "Get in touch" band directly below it. Removed (a removal of an existing element, so no new spec; logged in the Certificates baseline spec). The page now has one set of contact actions, in the band.

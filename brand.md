@@ -41,9 +41,9 @@ The application features a fully reactive light-to-dark theme. Below are the des
 | `--color-background` | `#fcf8fa` | Global page background canvas |
 | `--color-surface` | `#e8e9f3` | Card and element container background (lifts off canvas) |
 | `--color-text` | `#272635` | Primary typography, high-contrast text, primary buttons |
-| `--color-text-muted` | `#a6a6a8` | Subtitles, captions, and secondary text |
+| `--color-text-muted` | `#575665` | Subtitles, captions, and secondary text |
 | `--color-border` | `#cecece` | Default subtle borders and dividers |
-| `--color-accent` | `#b1e5f2` | Key brand accent color (links, tags, active indicators) |
+| `--color-accent` | `#1b6375` | Key brand accent color (links, tags, active indicators) |
 
 ---
 

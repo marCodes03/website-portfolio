@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "material symbols outlined",
+        "createdAt": "2026-11-18T15:34:46.721Z",
+        "reason": "Icon font used for glyphs across components (src/styles.css .material-symbols-outlined); not a text typeface. Decided by assistant from code evidence, not user confirmed."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "14px",
+        "createdAt": "2026-11-18T15:50:00.349Z",
+        "reason": "Icon glyph size on a Material Symbols icon (chat-bot.component.ts:169), not text; decided by assistant from code, not user confirmed."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgba(0, 0, 0, 0.12)",
+        "createdAt": "2026-11-18T15:52:59.345Z",
+        "reason": "Neutral shadow/track tint in styles.css, documented as Card Lift; assistant's call, not user confirmed."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgba(0, 0, 0, 0.15)",
+        "createdAt": "2026-11-18T15:52:59.521Z",
+        "reason": "Neutral shadow/track tint in styles.css, documented as Card Lift; assistant's call, not user confirmed."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgba(120, 120, 120, 0.12)",
+        "createdAt": "2026-11-18T15:52:59.669Z",
+        "reason": "Neutral shadow/track tint in styles.css, documented as Card Lift; assistant's call, not user confirmed."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgb(0, 0, 0)",
+        "createdAt": "2026-11-18T15:52:59.806Z",
+        "reason": "Skip-link text sampled before stylesheet applied; .skip-link sets #fcf8fa. Assistant's call, not user confirmed."
+      }
+    ]
+  }
+}

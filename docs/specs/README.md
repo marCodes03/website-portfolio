@@ -85,4 +85,6 @@ Behavioural specifications for the portfolio site. A spec says **what the site m
 
 | [0021](changes/0021-consistent-section-headings.md) | Every section heading has the blue eyebrow label and the same weight | implemented |
 
-The next number is **0022**. New drafts need your approval before any code is written.
+| [0022](changes/0022-chat-thinking-indicator.md) | Chat thinking indicator, slow-reply note and typed-out replies | implemented |
+
+The next number is **0023**. New drafts need your approval before any code is written.
