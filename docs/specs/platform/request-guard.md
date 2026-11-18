@@ -39,3 +39,4 @@ Locally there is effectively no rate limiting unless Upstash is configured, so l
 - 2026-11-18: baseline written from code.
 - 2026-11-18: amended by [CHG-0004](../changes/0004-local-rate-limiting.md) (Rate limiting also works locally without Upstash). Any "known gap" above that this resolves is now closed.
 - 2026-11-18: refactor, no behaviour change: jsonResponse(body, status, corsHeaders) is exported from the guard and used by both endpoints.
+- 2026-11-19: amended by [CHG-0023](../changes/0023-api-hardening-and-clock.md): fail closed (503) on Vercel without Upstash or when Upstash errors; trusted client IP header order. The "fails open" gap above is closed.

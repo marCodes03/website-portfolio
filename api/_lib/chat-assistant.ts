@@ -33,6 +33,9 @@ HOW TO TALK:
 /** Maximum accepted length of a visitor message, to bound Gemini token cost. */
 export const MAX_MESSAGE_LENGTH = 500;
 
+/** Maximum Gemini reply length in tokens (replies are meant to be 2-4 sentences). */
+const MAX_OUTPUT_TOKENS = 400;
+
 /** Generic reply shown when the upstream call fails; never include error details. */
 export const FALLBACK_REPLY =
   'I apologize, but I am experiencing temporary difficulties connecting to my brain. Please try again in a moment!';
@@ -51,6 +54,8 @@ export async function getChatReply(apiKey: string, message: string): Promise<str
     contents: message,
     config: {
       temperature: 0.7,
+      // Caps reply length so a single request can't run up Gemini output cost.
+      maxOutputTokens: MAX_OUTPUT_TOKENS,
       systemInstruction: MARCO_SYSTEM_INSTRUCTION,
     },
   });

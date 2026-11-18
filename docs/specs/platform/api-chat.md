@@ -44,3 +44,4 @@ Returning 200 on model failure hides outages from monitoring; it is an accepted 
 - 2026-11-18: baseline written from code.
 - 2026-11-18: amended by [CHG-0005](../changes/0005-chat-failure-status.md) (Chat API returns an error status on model failure). Any "known gap" above that this resolves is now closed.
 - 2026-11-18: refactor, no behaviour change: responses now go through the shared jsonResponse helper.
+- 2026-11-19: amended by [CHG-0023](../changes/0023-api-hardening-and-clock.md) (maxOutputTokens 400) and [CHG-0024](../changes/0024-chat-knowledge-base-pipeline.md) (generated knowledge-base module is untracked).

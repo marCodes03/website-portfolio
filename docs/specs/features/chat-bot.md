@@ -48,3 +48,5 @@ Chat history is in memory only and is lost on reload. Rate limit: 10 requests pe
 - 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): The chat can be opened from the hero, workflow and closing band; focus returns to the opener on close.
 - 2026-11-19: amended by [CHG-0019](../changes/0019-dialog-tap-targets.md) (chat controls at 44px).
 - 2026-11-19: amended by [CHG-0022](../changes/0022-chat-thinking-indicator.md): a thinking bubble with three wave dots while waiting, "Still working on it..." after 8 seconds, and replies typed out at about 80 characters per second with a Skip control (instant under reduced motion).
+- 2026-11-19: amended by [CHG-0013](../changes/0013-layout-rhythm.md) (layout rhythm).
+- 2026-11-19: amended by [CHG-0023](../changes/0023-api-hardening-and-clock.md) (replies capped at 400 tokens; timestamps from ClockService) and [CHG-0024](../changes/0024-chat-knowledge-base-pipeline.md) (knowledge base pipeline).

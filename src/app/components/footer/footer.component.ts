@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ClockService } from '../../shared/clock.service';
 
 @Component({
   selector: 'app-footer',
@@ -26,7 +27,7 @@ import { Component } from '@angular/core';
   `
 })
 export class FooterComponent {
-  readonly currentYear = new Date().getFullYear();
+  readonly currentYear = inject(ClockService).now().getFullYear();
 
   scrollToTop() {
     if (typeof window !== 'undefined') {

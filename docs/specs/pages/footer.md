@@ -36,3 +36,4 @@ Server-rendered pages are prerendered at build time, so the year is the build ye
 ## Change log
 - 2026-11-18: baseline written from code.
 - 2026-11-19: amended by [CHG-0021](../changes/0021-consistent-section-headings.md) (section heading eyebrow and weight).
+- 2026-11-19: amended by [CHG-0023](../changes/0023-api-hardening-and-clock.md) (year comes from ClockService).

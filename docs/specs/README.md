@@ -70,21 +70,17 @@ Behavioural specifications for the portfolio site. A spec says **what the site m
 | [0011](changes/0011-safe-scroll-reveal.md) | Scroll reveal can never leave content hidden | implemented |
 | [0012](changes/0012-automated-axe-check.md) | Repeatable AXE check across themes, widths and interactive states | implemented |
 | [0013](changes/0013-layout-rhythm.md) | Layout rhythm: hero fit, section length, overlaps and fixed buttons | implemented |
-
 | [0014](changes/0014-critique-round-chat-entry-and-page-flow.md) | Critique round 1: chat entry, AI workflow, page ending, awards, skills by depth, polish | implemented |
-
 | [0015](changes/0015-career-path-length.md) | Workflow Process section fits two screens | implemented |
 | [0016](changes/0016-hero-headline-and-copy.md) | Hero headline names the role and one hard fact; consistent main action | implemented |
 | [0017](changes/0017-button-system-and-motion.md) | One primary and one secondary button style; no bounce easing | implemented |
-
 | [0018](changes/0018-contact-form-dialog-in-closing-band.md) | Contact section replaced by a "Send a message" dialog in the closing band | implemented |
-
 | [0019](changes/0019-dialog-tap-targets.md) | Dialog controls meet the 44px target size | implemented |
-
 | [0020](changes/0020-typography-jetbrains-mono-plex-sans.md) | Typography: JetBrains Mono for headings and labels, IBM Plex Sans for body | implemented |
-
 | [0021](changes/0021-consistent-section-headings.md) | Every section heading has the blue eyebrow label and the same weight | implemented |
-
 | [0022](changes/0022-chat-thinking-indicator.md) | Chat thinking indicator, slow-reply note and typed-out replies | implemented |
+| [0023](changes/0023-api-hardening-and-clock.md) | Fail-closed rate limiting, chat output cap, injectable clock | implemented |
+| [0024](changes/0024-chat-knowledge-base-pipeline.md) | Chat knowledge base pipeline; generated module untracked (catch-up) | implemented |
+| [0025](changes/0025-public-assets-and-seo-files.md) | Public assets, icons, robots.txt, sitemap.xml, meta tags (catch-up) | implemented |
 
-The next number is **0023**. New drafts need your approval before any code is written.
+The next number is **0026**. New drafts need your approval before any code is written.

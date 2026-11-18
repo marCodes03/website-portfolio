@@ -37,3 +37,4 @@ Server-rendered HTML is light; dark is applied after hydration, so a dark-theme 
 
 ## Change log
 - 2026-11-18: baseline written from code.
+- 2026-11-19: amended by [CHG-0013](../changes/0013-layout-rhythm.md) (layout rhythm).

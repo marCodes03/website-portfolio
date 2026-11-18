@@ -41,9 +41,8 @@ export function jsonResponse(body: unknown, status: number, corsHeaders: Record<
  * guidance (never use a per-process in-memory counter for a serverless
  * API - it resets on every cold start and doesn't share state across
  * instances). Requires UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN
- * to be set; without them, rate limiting is skipped (fails open) rather
- * than breaking the endpoint entirely, but this should not go unnoticed in
- * production - check the warning log.
+ * to be set; without them on Vercel the endpoints answer 503 (fail closed),
+ * and locally an in-memory limiter is used instead.
  */
 let ratelimit: Ratelimit | null | undefined;
 
@@ -111,11 +110,18 @@ function tooManyRequests(corsHeaders: Record<string, string>): Response {
 }
 
 function getClientIdentifier(req: Request): string {
-  const forwardedFor = req.headers.get('x-forwarded-for');
-  if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim();
+  // Vercel sets x-vercel-forwarded-for / x-real-ip itself and a client cannot override
+  // them, so prefer those; plain x-forwarded-for is only a local-development fallback.
+  const trusted = req.headers.get('x-vercel-forwarded-for') ?? req.headers.get('x-real-ip');
+  if (trusted) {
+    return trusted.split(',')[0].trim();
   }
-  return req.headers.get('x-real-ip') ?? 'unknown';
+  const forwardedFor = req.headers.get('x-forwarded-for');
+  return forwardedFor ? forwardedFor.split(',')[0].trim() : 'unknown';
+}
+
+function serviceUnavailable(corsHeaders: Record<string, string>): Response {
+  return jsonResponse({ error: 'Service temporarily unavailable. Please try again later.' }, 503, corsHeaders);
 }
 
 /**
@@ -127,11 +133,20 @@ export async function checkRateLimit(req: Request, corsHeaders: Record<string, s
   const identifier = getClientIdentifier(req);
 
   if (!limiter) {
-    // Local development: limit in memory. On Vercel without Upstash, fail open
-    // rather than block the endpoint - see the warning logged above.
-    return !isRunningOnVercel() && localLimitExceeded(identifier) ? tooManyRequests(corsHeaders) : null;
+    // On Vercel without Upstash, fail closed (503): an unlimited contact/chat endpoint
+    // means inbox spam and Gemini cost. Locally, limit in memory instead.
+    if (isRunningOnVercel()) {
+      return serviceUnavailable(corsHeaders);
+    }
+    return localLimitExceeded(identifier) ? tooManyRequests(corsHeaders) : null;
   }
 
-  const { success } = await limiter.limit(identifier);
-  return success ? null : tooManyRequests(corsHeaders);
+  try {
+    const { success } = await limiter.limit(identifier);
+    return success ? null : tooManyRequests(corsHeaders);
+  } catch (error) {
+    // Upstash unreachable: fail closed rather than serve unlimited requests.
+    console.error('Rate limiter unavailable:', error instanceof Error ? error.message : 'unknown error');
+    return serviceUnavailable(corsHeaders);
+  }
 }

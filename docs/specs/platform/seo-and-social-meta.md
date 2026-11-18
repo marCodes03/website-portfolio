@@ -38,3 +38,4 @@ If the canonical domain changes, update `index.html`, `robots.txt` and `sitemap.
 
 ## Change log
 - 2026-11-18: baseline written from code.
+- 2026-11-19: amended by [CHG-0025](../changes/0025-public-assets-and-seo-files.md) (robots.txt, sitemap.xml, richer meta and JSON-LD).

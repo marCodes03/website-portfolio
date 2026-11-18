@@ -39,3 +39,4 @@ Narrow screens: pills stay on one line and are clipped by the strip. Certificate
 - 2026-11-18: baseline written from code.
 - 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): Certificates is now the only place with full award cards; IT Olympics card shows its photo without the overlay label.
 - 2026-11-19: the "Contact me" button below the certificate marquee was removed at the user's request (redundant with the closing "Get in touch" band); this is a removal only, no new requirement.
+- 2026-11-19: amended by [CHG-0016](../changes/0016-hero-headline-and-copy.md) (copy and label changes).

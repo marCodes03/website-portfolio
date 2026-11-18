@@ -36,3 +36,4 @@ Browsers cache favicons aggressively; a change can take a reload or a new tab to
 
 ## Change log
 - 2026-11-18: baseline written from code.
+- 2026-11-19: amended by [CHG-0025](../changes/0025-public-assets-and-seo-files.md) (PNG app icon, apple-touch-icon, favicon.ico).

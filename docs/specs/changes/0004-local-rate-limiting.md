@@ -46,3 +46,4 @@ Changing limits (10/min) or the client identifier.
 ## Change log
 - 2026-11-18: created (draft).
 - 2026-11-18: approved by the user and implemented; verified in a browser / by request.
+- 2026-11-19: R2 (fail open on Vercel) replaced by [CHG-0023](0023-api-hardening-and-clock.md) R1 (fail closed, 503).

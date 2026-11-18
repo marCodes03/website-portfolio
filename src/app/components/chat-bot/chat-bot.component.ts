@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ChatBotService } from './chat-bot.service';
+import { ClockService } from '../../shared/clock.service';
 
 interface Message {
   id: number;
@@ -229,6 +230,7 @@ export class ChatBotComponent {
   readonly chatService = inject(ChatBotService);
   private readonly http = inject(HttpClient);
 
+  private readonly clock = inject(ClockService);
   readonly maxLength = MAX_MESSAGE_LENGTH;
   readonly input = new FormControl('', { nonNullable: true });
   readonly messages = signal<Message[]>([
@@ -236,7 +238,7 @@ export class ChatBotComponent {
       id: 0,
       sender: 'bot',
       text: "Hi! I am marCodes Bot, Marco's AI assistant. 🤖\n\nAsk me anything about Marco's software engineering experience, background, stack, or certifications!",
-      timestamp: new Date()
+      timestamp: this.clock.now()
     }
   ]);
   readonly isTyping = signal(false);
@@ -359,7 +361,7 @@ export class ChatBotComponent {
   }
 
   private addMessage(sender: Message['sender'], text: string): Message {
-    const message: Message = { id: this.nextId++, sender, text, timestamp: new Date() };
+    const message: Message = { id: this.nextId++, sender, text, timestamp: this.clock.now() };
     this.messages.update(msgs => [...msgs, message]);
     return message;
   }
