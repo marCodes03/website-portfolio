@@ -2,6 +2,18 @@
 
 This file records non-trivial decisions made while working on this project with Claude, so future sessions (human or AI) know *why* something was built a certain way, not just *what* was built. Newest entries at the top.
 
+## 2026-11-19 - CHG-0013 implemented (hero fit and Journey length); R3, R4, R6 left as accepted deviations
+
+**What:** Hero `min-height` is now `calc(100svh - var(--header-h, 73px))`, so it ends at the fold at 1440 and 390 (hero-screen passes). Journey shows the newest 7 of 13 milestones; the older 6 sit behind a "Show earlier milestones (6)" toggle (`aria-expanded`, `aria-controls`). The toggle hides rows with `display: none`, not by removing them, so the existing scroll-reveal observer still reveals them when shown.
+
+**Choices:** Chose hiding older entries over only shrinking spacing (user left this to me; spacing alone could not remove about 1000px). Did not change: the rotating role cube (the `overlap-text` finding is its stacked faces), the floating chat and theme buttons (a floating control must overlap text), the `section-air` 0% readings (hidden-by-reveal measuring artifact), the Certificates `hole` and the hero photo `flush`. No new waivers, so the gate's cap of 5 (4 used by CHG-0008) is untouched. Career-path (2.7 screens) is the next section-height finding and needs its own spec. Hard-coded `73px` header fallback is a guess; a real `--header-h` is not set anywhere yet.
+
+## 2026-11-19 - Layout rhythm spec drafted (CHG-0013); CHG-0008 verified and committed
+
+**What:** Gate run confirmed the 4 CHG-0008 waivers are accepted (`GATE: OPEN 72`, the rest being layout, copy and visual findings). CHG-0008 committed on branch `chg-0008-a11y-taste-skill` (9ec6c68), no push. User chose layout rhythm next, so [CHG-0013](specs/changes/0013-layout-rhythm.md) is drafted, awaiting approval.
+
+**Choices:** CHG-0013 fixes only the findings a visitor would notice (hero fit, Journey at 3.1 screens, text covered by a layer, fixed buttons over text on phones) and explicitly does not adopt kit rules that conflict with this site (every section 1-2 screens, a `.wrap` class on each section, whole-screen section starts). Note: the commit includes whole files touched by CHG-0008, so unrelated earlier edits in those files went in with it. A missing image (`project-eyeko-app.jpg`) surfaced; left for its own spec.
+
 ## 2026-11-19 - CHG-0008 implemented, four findings waived
 
 **What:** Marked the duplicate (looping) pills of both certificate marquees `aria-hidden` (they were read twice by screen readers). Waived four remaining checker findings in `.taste-skill/waivers.json`: 2 `focus-ring` on generated Tailwind `outline-none` utilities, 1 decorative marquee bullet contrast, 1 off-screen duplicate marquee pill. Spec [CHG-0008](specs/changes/0008-taste-skill-accessibility-fixes.md) set to `implemented`; the index and quality/accessibility change log updated.

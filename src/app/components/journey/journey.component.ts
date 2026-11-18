@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, afterNextRender } from '@angular/core';
+import { Component, ElementRef, inject, afterNextRender, DestroyRef, signal } from '@angular/core';
 
 interface Milestone {
   year: string;
@@ -13,17 +13,21 @@ interface Milestone {
     <section class="section-ghost py-section-padding-mobile md:py-section-padding-desktop px-gutter border-t border-border" id="journey">
       <div class="max-w-[1200px] mx-auto">
         <!-- Section Header -->
-        <div class="mb-16 space-y-4 text-left">
-          <span class="font-label-caps text-label-caps text-accent tracking-widest">PROGRAMMING JOURNEY</span>
+        <div class="mb-10 space-y-4 text-left">
           <h2 class="font-headline-lg text-headline-lg text-text font-bold">Programming Journey</h2>
+          <button type="button" (click)="toggleEarlier()"
+                  [attr.aria-expanded]="showEarlier()" aria-controls="journey-timeline"
+                  class="tap-44 border border-border text-text hover:border-accent hover:text-accent px-5 py-2 rounded-lg font-label-caps text-label-caps transition-colors cursor-pointer">
+            {{ showEarlier() ? 'Hide earlier milestones' : 'Show earlier milestones (' + hiddenCount + ')' }}
+          </button>
         </div>
 
         <!-- Git Commit Timeline Container -->
-        <div class="relative w-full py-8">
+        <div id="journey-timeline" class="relative w-full py-4">
           
           <!-- Parallel Git Tracks (Org, Main, Achievements) -->
           <!-- Org Feature Branch (dashed orange left track) -->
-          <div class="absolute top-0 bottom-0 w-[2px] border-l-2 border-dashed border-[#f24e1e]/60 dark:border-[#f24e1e]/30
+          <div class="absolute top-0 bottom-0 w-[2px] border-l-2 border-dashed border-track-org/60 dark:border-track-org/30
                       left-[56px] md:left-1/2 md:-translate-x-[25.5px] pointer-events-none z-0"></div>
           
           <!-- Solid Main Trunk (solid accent center track) -->
@@ -31,25 +35,25 @@ interface Milestone {
                       left-[32px] md:left-1/2 md:-translate-x-[1.5px] pointer-events-none z-0"></div>
           
           <!-- Achievements Branch (dotted gold right track) -->
-          <div class="absolute top-0 bottom-0 w-[2px] border-l-2 border-dotted border-[#eab308]/75 dark:border-[#eab308]/40
+          <div class="absolute top-0 bottom-0 w-[2px] border-l-2 border-dotted border-track-award/75 dark:border-track-award/40
                       left-[80px] md:left-1/2 md:translate-x-[22.5px] pointer-events-none z-0"></div>
 
           <!-- Timeline Rows -->
           <div class="space-y-2 relative z-10">
             @for (milestone of milestones; track milestone.title; let idx = $index) {
-              <div class="relative w-full text-left pl-[104px] md:pl-0 timeline-row">
+              <div class="relative w-full text-left pl-[104px] md:pl-0 timeline-row" [class.hidden]="isEarlier(idx) && !showEarlier()">
                 
                 <!-- SVG Branch Split/Merge Curves -->
                 @if (milestone.branch === 'org') {
                   <!-- Desktop SVG: spans 24px from org (calc(50%-24px)) to main (50%) -->
                   <svg class="hidden md:block absolute w-[24px] h-[36px] pointer-events-none z-10 left-[calc(50%-24px)]"
                        style="top: 20px;" viewBox="0 0 24 36" fill="none">
-                    <path d="M 24 0 C 24 18, 0 18, 0 36" stroke="#f24e1e" stroke-width="2" stroke-dasharray="2 2" class="opacity-80 dark:opacity-40"/>
+                    <path d="M 24 0 C 24 18, 0 18, 0 36" stroke-width="2" stroke-dasharray="2 2" class="stroke-track-org opacity-80 dark:opacity-40"/>
                   </svg>
                   <!-- Mobile SVG: spans 24px from main (32px) to org (56px) -->
                   <svg class="block md:hidden absolute w-[24px] h-[36px] pointer-events-none z-10 left-[32px]"
                        style="top: 20px;" viewBox="0 0 24 36" fill="none">
-                    <path d="M 0 0 C 0 18, 24 18, 24 36" stroke="#f24e1e" stroke-width="2" stroke-dasharray="2 2" class="opacity-80 dark:opacity-40"/>
+                    <path d="M 0 0 C 0 18, 24 18, 24 36" stroke-width="2" stroke-dasharray="2 2" class="stroke-track-org opacity-80 dark:opacity-40"/>
                   </svg>
                 }
 
@@ -57,12 +61,12 @@ interface Milestone {
                   <!-- Desktop SVG: spans 24px from main (50%) to achievements (calc(50%+24px)) -->
                   <svg class="hidden md:block absolute w-[24px] h-[36px] pointer-events-none z-10 left-[50%]"
                        style="top: 20px;" viewBox="0 0 24 36" fill="none">
-                    <path d="M 0 0 C 0 18, 24 18, 24 36" stroke="#eab308" stroke-width="2" stroke-dasharray="2 2" class="opacity-80 dark:opacity-40"/>
+                    <path d="M 0 0 C 0 18, 24 18, 24 36" stroke-width="2" stroke-dasharray="2 2" class="stroke-track-award opacity-80 dark:opacity-40"/>
                   </svg>
                   <!-- Mobile SVG: spans 48px from main (32px) to achievements (80px) -->
                   <svg class="block md:hidden absolute w-[48px] h-[36px] pointer-events-none z-10 left-[32px]"
                        style="top: 20px;" viewBox="0 0 48 36" fill="none">
-                    <path d="M 0 0 C 0 18, 48 18, 48 36" stroke="#eab308" stroke-width="2" stroke-dasharray="2 2" class="opacity-80 dark:opacity-40"/>
+                    <path d="M 0 0 C 0 18, 48 18, 48 36" stroke-width="2" stroke-dasharray="2 2" class="stroke-track-award opacity-80 dark:opacity-40"/>
                   </svg>
                 }
 
@@ -71,7 +75,7 @@ interface Milestone {
                      [class.commit-main]="milestone.branch === 'main'"
                      [class.commit-org]="milestone.branch === 'org'"
                      [class.commit-achievements]="milestone.branch === 'achievements'">
-                  <div class="w-3.5 h-3.5 rounded-full border-2 bg-background transition-all duration-300"></div>
+                  <div class="w-3.5 h-3.5 rounded-full border-2 bg-background transition-[border-color,background-color,box-shadow,transform] duration-300"></div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-9 items-center gap-0 relative">
@@ -81,13 +85,13 @@ interface Milestone {
                        [class.md:invisible]="getSide(milestone.branch, idx) !== 'left'">
                     @if (getSide(milestone.branch, idx) === 'left') {
                       <div class="timeline-card bg-surface/60 border border-border/20 backdrop-blur-sm p-4 rounded-xl shadow-sm">
-                        <span class="font-roboto-mono text-[9px] font-extrabold text-accent px-2 py-0.5 rounded bg-accent/10 mb-2 inline-block tracking-wider uppercase">
+                        <span class="font-roboto-mono text-xs font-extrabold text-accent px-2 py-0.5 rounded bg-accent/10 mb-2 inline-block tracking-wider uppercase">
                           {{ milestone.branch === 'main' ? 'main' : milestone.branch === 'org' ? 'org' : 'award' }}
                         </span>
                         <div class="flex justify-between items-baseline mb-2">
                           <h3 class="font-roboto-mono text-xs font-bold text-text/80 leading-none">{{ milestone.year }}</h3>
                         </div>
-                        <h4 class="font-bold text-accent text-[13px] mb-2 leading-snug">{{ milestone.title }}</h4>
+                        <h4 class="font-bold text-accent text-body-sm mb-2 leading-snug">{{ milestone.title }}</h4>
                         <ul class="space-y-1.5 text-text-muted text-xs list-disc pl-4 leading-normal">
                           @for (bullet of milestone.bullets; track bullet) {
                             <li>{{ bullet }}</li>
@@ -105,13 +109,13 @@ interface Milestone {
                     <!-- On mobile, shows all cards. On desktop, only shows if side is right. -->
                     <div class="w-full max-w-lg" [class.md:hidden]="getSide(milestone.branch, idx) === 'left'">
                       <div class="timeline-card bg-surface/60 border border-border/20 backdrop-blur-sm p-4 rounded-xl shadow-sm">
-                        <span class="font-roboto-mono text-[9px] font-extrabold text-accent px-2 py-0.5 rounded bg-accent/10 mb-2 inline-block tracking-wider uppercase">
+                        <span class="font-roboto-mono text-xs font-extrabold text-accent px-2 py-0.5 rounded bg-accent/10 mb-2 inline-block tracking-wider uppercase">
                           {{ milestone.branch === 'main' ? 'main' : milestone.branch === 'org' ? 'org' : 'award' }}
                         </span>
                         <div class="flex justify-between items-baseline mb-2">
                           <h3 class="font-roboto-mono text-xs font-bold text-text/80 leading-none">{{ milestone.year }}</h3>
                         </div>
-                        <h4 class="font-bold text-accent text-[13px] mb-2 leading-snug">{{ milestone.title }}</h4>
+                        <h4 class="font-bold text-accent text-body-sm mb-2 leading-snug">{{ milestone.title }}</h4>
                         <ul class="space-y-1.5 text-text-muted text-xs list-disc pl-4 leading-normal">
                           @for (bullet of milestone.bullets; track bullet) {
                             <li>{{ bullet }}</li>
@@ -132,6 +136,7 @@ interface Milestone {
 })
 export class JourneyComponent {
   private readonly el = inject(ElementRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor() {
     afterNextRender(() => {
@@ -178,6 +183,11 @@ export class JourneyComponent {
       if (section) {
         sectionObserver.observe(section);
       }
+
+      this.destroyRef.onDestroy(() => {
+        observer.disconnect();
+        sectionObserver.disconnect();
+      });
     });
   }
 
@@ -185,7 +195,7 @@ export class JourneyComponent {
     // 2017 - 2019
     {
       year: '2017 - 2019',
-      title: 'SHS Tech-Voc ComputerProgramming Track',
+      title: 'SHS Tech-Voc Computer Programming Track',
       branch: 'main',
       bullets: [
         'Studied ICT Tech-Voc track at Lyceum of Alabang, specializing in Computer Programming.',
@@ -258,10 +268,10 @@ export class JourneyComponent {
     // 2023
     {
       year: '2023',
-      title: 'IT Olympics 1st runner-up & Systems Fair',
+      title: 'IT Olympics Runner-up & Systems Fair',
       branch: 'achievements',
       bullets: [
-        'Won 1st runner up in Android Development at the 11th IT Skills Olympics.',
+        'Won Runner-up (2nd Place) in Android Development at the 11th IT Skills Olympics.',
         'Participated in CICT Systems Fair with Student Cafeteria Management System.'
       ]
     },
@@ -308,6 +318,21 @@ export class JourneyComponent {
       ]
     }
   ];
+
+  /** Newest milestones shown first; older ones sit behind the toggle so the section stays within two screens. */
+  private static readonly VISIBLE_COUNT = 7;
+  readonly showEarlier = signal(false);
+  get hiddenCount(): number {
+    return Math.max(0, this.milestones.length - JourneyComponent.VISIBLE_COUNT);
+  }
+
+  isEarlier(index: number): boolean {
+    return index < this.hiddenCount;
+  }
+
+  toggleEarlier(): void {
+    this.showEarlier.update(v => !v);
+  }
 
   getSide(branch: 'main' | 'org' | 'achievements', index: number): 'left' | 'right' {
     return index % 2 === 0 ? 'left' : 'right';

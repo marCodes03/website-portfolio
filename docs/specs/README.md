@@ -69,5 +69,6 @@ Behavioural specifications for the portfolio site. A spec says **what the site m
 | [0010](changes/0010-chat-announcements-and-escape.md) | Chat announces replies cleanly; Escape closes it from anywhere | implemented |
 | [0011](changes/0011-safe-scroll-reveal.md) | Scroll reveal can never leave content hidden | implemented |
 | [0012](changes/0012-automated-axe-check.md) | Repeatable AXE check across themes, widths and interactive states | implemented |
+| [0013](changes/0013-layout-rhythm.md) | Layout rhythm: hero fit, section length, overlaps and fixed buttons | implemented |
 
-The next number is **0013**. New drafts need your approval before any code is written.
+The next number is **0014**. New drafts need your approval before any code is written.
