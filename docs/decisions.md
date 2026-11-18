@@ -2,6 +2,12 @@
 
 This file records non-trivial decisions made while working on this project with Claude, so future sessions (human or AI) know *why* something was built a certain way, not just *what* was built. Newest entries at the top.
 
+## 2026-11-19 - Inconsistent section headings: CHG-0021 drafted
+
+**What:** User noticed some section headings have the blue eyebrow label and some do not. Audit: eyebrow present on About, Skills, Featured Projects, Off-Screen Activities, Certificates; missing on Work Experience, Workflow Process, Programming Journey and the Get in touch band (Contact is now a dialog, not a section). About `h2` is also the only one not bold. User chose "add an eyebrow to all", "all bold", and asked me to suggest wording. [CHG-0021](specs/changes/0021-consistent-section-headings.md) is `draft` with proposed labels CAREER, HOW I WORK, SINCE 2017 (the first Journey entry in the content file), WORK WITH ME.
+
+**Choices:** Proposed one to three words in the style of the existing labels (ABOUT ME, LIFE OUTSIDE WORK). Chose SINCE 2017 over a generic label because it is a fact from `docs/portfolio-content.md`. No code changed; waits for approval of the wording. The branch stays local (user's call).
+
 ## 2026-11-19 - CHG-0019 approved and implemented (dialog tap targets)
 
 **What:** User approved CHG-0019. Modal close buttons `w-10 h-10` to `w-11 h-11`; chat close, send, Rotate, chips and input raised to 44px. Rescan: no control under 44px at 1440 and 390, light and dark; `npm run test:a11y` 0 violations (24 checks); chat focus return verified (Escape and close button return focus to the toggle, Escape from elsewhere leaves focus alone).
@@ -61,6 +67,14 @@ This file records non-trivial decisions made while working on this project with 
 **What:** Root cause of the "focus lands on something you cannot see" failures: `scroll-smooth` meant a tabbed-to control was still off-screen when checked, and the scroll-reveal observer re-hid a section while focus was inside it. Fixes: `app.ts` adds `html.kbd` on Tab (removed on pointerdown) and `styles.css` sets `scroll-behavior: auto` for `html.kbd` and `.scroll-smooth` descendants; the observer no longer hides a section containing `document.activeElement`; the project carousel arrows get `focus-visible:opacity-100 focus-visible:duration-0`. Result: all `focus-visible` and `tap-size` failures pass; `ng build` passes.
 
 **Open:** certificate marquee contrast (pill text/bullet reads 1.0:1 at one tenth, probably over a neighbouring translucent pill), one marquee hidden-content item, and 2 `focus-ring` flags on generated Tailwind utilities. Not waived: marquee findings change per run, so a per-finding waiver would be fragile. CHG-0008 stays `approved`.
+
+## 2026-11-19 - Certificates "Contact me" button removed
+
+**What:** The user pointed out the "Contact me" button at the end of Certificates repeats the closing "Get in touch" band directly below it. Removed (a removal of an existing element, so no new spec; logged in the Certificates baseline spec). The page now has one set of contact actions, in the band.
+
+## 2026-11-19 - Typography: JetBrains Mono + IBM Plex Sans (CHG-0020)
+
+**What:** The design hook flagged Roboto Mono as overused. The user was offered four directions (IBM Plex Mono for everything, JetBrains Mono + IBM Plex Sans, Martian Mono + Source Serif 4, keep Roboto Mono) and chose JetBrains Mono for headings/labels with IBM Plex Sans for body. Done through the existing font tokens, so no component classes changed; the `--font-roboto-mono` token kept its name. One paragraph (About) was forcing the mono token and was released so it reads in the sans. **Approval note:** the spec was marked approved on the strength of that choice; its text was not separately reviewed. **Also:** the design sidecar was refreshed (it was stale since the DESIGN.md edits), as the user had asked to do once the Contact change settled. Verified: fonts load, hero still fits, Journey 1.71 screens, a11y 0 violations.
 
 ## 2026-11-19 - Contact section replaced by a dialog in the closing band (CHG-0018)
 

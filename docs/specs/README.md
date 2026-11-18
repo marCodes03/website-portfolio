@@ -81,4 +81,8 @@ Behavioural specifications for the portfolio site. A spec says **what the site m
 
 | [0019](changes/0019-dialog-tap-targets.md) | Dialog controls meet the 44px target size | implemented |
 
-The next number is **0020**. New drafts need your approval before any code is written.
+| [0020](changes/0020-typography-jetbrains-mono-plex-sans.md) | Typography: JetBrains Mono for headings and labels, IBM Plex Sans for body | implemented |
+
+| [0021](changes/0021-consistent-section-headings.md) | Every section heading has the blue eyebrow label and the same weight | draft |
+
+The next number is **0022**. New drafts need your approval before any code is written.
