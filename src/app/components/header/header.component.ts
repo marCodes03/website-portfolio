@@ -167,6 +167,20 @@ export class HeaderComponent {
     const destroyRef = inject(DestroyRef);
 
     afterNextRender(() => {
+      // Expose the real header height so the hero can fill exactly the rest of the first screen.
+      // Skipped while the mobile menu is open, which makes the header taller.
+      const header = document.querySelector('app-header header');
+      if (header && 'ResizeObserver' in window) {
+        const root = document.documentElement;
+        const sizeObserver = new ResizeObserver(() => {
+          if (!this.isMobileMenuOpen()) {
+            root.style.setProperty('--header-h', header.getBoundingClientRect().height + 'px');
+          }
+        });
+        sizeObserver.observe(header);
+        destroyRef.onDestroy(() => sizeObserver.disconnect());
+      }
+
       const observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
