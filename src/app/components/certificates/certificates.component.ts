@@ -18,7 +18,7 @@ export interface Certificate {
   selector: 'app-certificates',
   imports: [NgOptimizedImage, CertificateModalComponent],
   template: `
-    <section class="py-section-padding-mobile md:py-section-padding-desktop transition-all duration-1000 ease-out opacity-100 translate-y-0 section-frosted" id="certificates">
+    <section class="py-section-padding-mobile md:py-section-padding-desktop transition-[opacity,transform] duration-1000 ease-out opacity-100 translate-y-0 section-frosted" id="certificates">
       <div class="max-w-[1200px] mx-auto px-6 md:px-gutter">
         <!-- Section Header -->
         <div class="mb-16 space-y-4 text-left">
@@ -30,26 +30,26 @@ export interface Certificate {
         <div class="relative w-full overflow-hidden mb-12 flex gap-6 select-none group pointer-events-auto">
           <div class="flex gap-6 shrink-0 animate-[marquee_30s_linear_infinite] group-hover:[animation-play-state:paused] pointer-events-auto">
             @for (item of upperMarquee; track item.title) {
-              <div class="bg-surface border border-border/70 dark:bg-white/10 dark:border-white/20 shadow-sm px-5 py-2.5 rounded-full flex items-center gap-3 text-xs md:text-sm font-roboto-mono whitespace-nowrap hover:scale-105 hover:border-accent transition-all duration-300">
-                <span class="px-2.5 py-0.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider"
-                      [class]="item.type === 'Award' ? 'bg-text text-background dark:bg-white dark:text-[#272635]' : 'bg-accent text-background dark:bg-accent dark:text-[#272635]'">
+              <div class="bg-surface border border-border/70 dark:bg-white/10 dark:border-white/20 shadow-sm px-5 py-2.5 rounded-full flex items-center gap-3 text-xs md:text-sm font-roboto-mono whitespace-nowrap hover:scale-105 hover:border-accent transition-[border-color,transform] duration-300">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider"
+                      [class]="item.type === 'Award' ? 'bg-text text-background dark:bg-white dark:text-on-accent' : 'bg-accent text-background dark:bg-accent dark:text-on-accent'">
                   {{ item.type }}
                 </span>
-                <span class="text-accent font-bold opacity-40">•</span>
+                <span class="text-accent font-bold" aria-hidden="true">•</span>
                 <span class="text-text dark:text-white font-bold">{{ item.title }}</span>
-                <span class="text-accent font-bold opacity-40">•</span>
+                <span class="text-accent font-bold" aria-hidden="true">•</span>
                 <span class="text-text-muted dark:text-white/60 font-semibold">{{ item.year }}</span>
               </div>
             }
             @for (item of upperMarquee; track item.title + '-dup') {
-              <div class="bg-surface border border-border/70 dark:bg-white/10 dark:border-white/20 shadow-sm px-5 py-2.5 rounded-full flex items-center gap-3 text-xs md:text-sm font-roboto-mono whitespace-nowrap hover:scale-105 hover:border-accent transition-all duration-300">
-                <span class="px-2.5 py-0.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider"
-                      [class]="item.type === 'Award' ? 'bg-text text-background dark:bg-white dark:text-[#272635]' : 'bg-accent text-background dark:bg-accent dark:text-[#272635]'">
+              <div aria-hidden="true" class="bg-surface border border-border/70 dark:bg-white/10 dark:border-white/20 shadow-sm px-5 py-2.5 rounded-full flex items-center gap-3 text-xs md:text-sm font-roboto-mono whitespace-nowrap hover:scale-105 hover:border-accent transition-[border-color,transform] duration-300">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider"
+                      [class]="item.type === 'Award' ? 'bg-text text-background dark:bg-white dark:text-on-accent' : 'bg-accent text-background dark:bg-accent dark:text-on-accent'">
                   {{ item.type }}
                 </span>
-                <span class="text-accent font-bold opacity-40">•</span>
+                <span class="text-accent font-bold" aria-hidden="true">•</span>
                 <span class="text-text dark:text-white font-bold">{{ item.title }}</span>
-                <span class="text-accent font-bold opacity-40">•</span>
+                <span class="text-accent font-bold" aria-hidden="true">•</span>
                 <span class="text-text-muted dark:text-white/60 font-semibold">{{ item.year }}</span>
               </div>
             }
@@ -58,7 +58,7 @@ export interface Certificate {
 
         <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter text-left">
           <!-- Card 1: Cum Laude & Valedictorian -->
-          <div class="md:col-span-8 group relative overflow-hidden bg-surface border border-border p-8 transition-all hover:shadow-lg dark:hover:box-glow-border cursor-pointer"
+          <div class="md:col-span-8 group relative overflow-hidden bg-surface border border-border p-8 transition-shadow hover:shadow-lg dark:hover:box-glow-border cursor-pointer"
                (click)="openModal(certificates[0], $event)"
                (keydown.enter)="openModal(certificates[0], $event)"
                tabindex="0"
@@ -67,20 +67,20 @@ export interface Certificate {
                [attr.aria-label]="'View certificate details for ' + certificates[0].title">
             <div class="flex flex-col h-full justify-between gap-8">
               <div class="flex justify-between items-start">
-                <span class="material-symbols-outlined text-accent text-3xl">{{ certificates[0].icon }}</span>
+                <span class="material-symbols-outlined text-accent text-3xl" aria-hidden="true">{{ certificates[0].icon }}</span>
                 <span class="font-label-caps text-label-caps text-text-muted">{{ certificates[0].year }}</span>
               </div>
               <div>
                 <h3 class="font-headline-md text-headline-md text-text mb-2">{{ certificates[0].title }}</h3>
                 <p class="font-label-caps text-label-caps text-text mb-4">{{ certificates[0].subtitle }}</p>
                 <p class="font-body-md text-text-muted max-w-md mb-4">{{ certificates[0].description }}</p>
-                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-[10px] px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[0].category }}</span>
+                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-xs px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[0].category }}</span>
               </div>
             </div>
           </div>
 
           <!-- Card 2: Student Director -->
-          <div class="md:col-span-4 bg-surface text-text p-8 transition-all hover:translate-y-[-4px] border border-border dark:hover:box-glow-border cursor-pointer"
+          <div class="md:col-span-4 bg-surface text-text p-8 transition-[transform,box-shadow] hover:translate-y-[-4px] border border-border dark:hover:box-glow-border cursor-pointer"
                (click)="openModal(certificates[1], $event)"
                (keydown.enter)="openModal(certificates[1], $event)"
                tabindex="0"
@@ -89,13 +89,13 @@ export interface Certificate {
                [attr.aria-label]="'View certificate details for ' + certificates[1].title">
             <div class="flex flex-col h-full justify-between gap-8">
               <div class="flex justify-between items-start">
-                <span class="material-symbols-outlined text-accent text-3xl">{{ certificates[1].icon }}</span>
+                <span class="material-symbols-outlined text-accent text-3xl" aria-hidden="true">{{ certificates[1].icon }}</span>
                 <span class="font-label-caps text-label-caps text-text-muted">{{ certificates[1].year }}</span>
               </div>
               <div>
                 <h3 class="font-headline-md text-headline-md mb-2">{{ certificates[1].title }}</h3>
                 <p class="font-label-caps text-label-caps text-text-muted mb-4">{{ certificates[1].subtitle }}</p>
-                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-[10px] px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[1].category }}</span>
+                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-xs px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[1].category }}</span>
               </div>
             </div>
           </div>
@@ -110,14 +110,14 @@ export interface Certificate {
                [attr.aria-label]="'View certificate details for ' + certificates[4].title">
             <div class="flex flex-col h-full justify-between gap-6">
               <div class="flex justify-between items-start">
-                <span class="material-symbols-outlined text-accent text-3xl">{{ certificates[4].icon }}</span>
+                <span class="material-symbols-outlined text-accent text-3xl" aria-hidden="true">{{ certificates[4].icon }}</span>
                 <span class="font-label-caps text-label-caps text-text-muted">{{ certificates[4].year }}</span>
               </div>
               <div>
                 <h3 class="font-headline-md text-headline-md text-text mb-4">{{ certificates[4].title }}</h3>
                 <p class="font-label-caps text-label-caps text-text mb-4">{{ certificates[4].subtitle }}</p>
                 <p class="font-body-md text-text-muted mb-4">{{ certificates[4].description }}</p>
-                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-[10px] px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[4].category }}</span>
+                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-xs px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[4].category }}</span>
               </div>
             </div>
           </div>
@@ -132,14 +132,14 @@ export interface Certificate {
                [attr.aria-label]="'View certificate details for ' + certificates[2].title">
             <div class="flex flex-col h-full justify-between gap-6">
               <div class="flex justify-between items-start">
-                <span class="material-symbols-outlined text-accent text-3xl">{{ certificates[2].icon }}</span>
+                <span class="material-symbols-outlined text-accent text-3xl" aria-hidden="true">{{ certificates[2].icon }}</span>
                 <span class="font-label-caps text-label-caps text-text-muted">{{ certificates[2].year }}</span>
               </div>
               <div>
                 <h3 class="font-headline-md text-headline-md text-text mb-4">{{ certificates[2].title }}</h3>
                 <p class="font-label-caps text-label-caps text-text mb-4">{{ certificates[2].subtitle }}</p>
                 <p class="font-body-md text-text-muted mb-4">{{ certificates[2].description }}</p>
-                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-[10px] px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[2].category }}</span>
+                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-xs px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[2].category }}</span>
               </div>
             </div>
           </div>
@@ -154,20 +154,20 @@ export interface Certificate {
                [attr.aria-label]="'View certificate details for ' + certificates[3].title">
             <div class="flex flex-col h-full justify-between gap-6">
               <div class="flex justify-between items-start">
-                <span class="material-symbols-outlined text-accent text-3xl">{{ certificates[3].icon }}</span>
+                <span class="material-symbols-outlined text-accent text-3xl" aria-hidden="true">{{ certificates[3].icon }}</span>
                 <span class="font-label-caps text-label-caps text-text-muted">{{ certificates[3].year }}</span>
               </div>
               <div>
                 <h3 class="font-headline-md text-headline-md text-text mb-4">{{ certificates[3].title }}</h3>
                 <p class="font-label-caps text-label-caps text-text mb-4">{{ certificates[3].subtitle }}</p>
                 <p class="font-body-md text-text-muted mb-4">{{ certificates[3].description }}</p>
-                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-[10px] px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[3].category }}</span>
+                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-xs px-3.5 py-1 rounded-full inline-block font-semibold">{{ certificates[3].category }}</span>
               </div>
             </div>
           </div>
 
-          <!-- Card 6: 1st Place Android Dev (Microfinance) -->
-          <div class="md:col-span-12 group flex flex-col md:flex-row items-center border border-border overflow-hidden hover:border-accent dark:hover:box-glow-border transition-all cursor-pointer"
+          <!-- Card 6: Runner-up (2nd Place) Android Dev (Microfinance) -->
+          <div class="md:col-span-12 group flex flex-col md:flex-row items-center border border-border overflow-hidden hover:border-accent dark:hover:box-glow-border transition-[border-color,box-shadow] cursor-pointer"
                (click)="openModal(certificates[5], $event)"
                (keydown.enter)="openModal(certificates[5], $event)"
                tabindex="0"
@@ -178,18 +178,15 @@ export interface Certificate {
               <img [ngSrc]="certificates[5].imageUrl"
                    fill
                    alt="IT Olympics"
-                   class="object-cover w-full h-full opacity-60 group-hover:scale-110 transition-transform duration-700">
-              <div class="absolute inset-0 flex items-center justify-center">
-                <span class="bg-text text-background font-label-caps text-label-caps px-4 py-2">IT OLYMPICS</span>
-              </div>
+                   class="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700">
             </div>
             <div class="flex-1 p-8 md:p-12 bg-surface">
               <h3 class="font-headline-lg text-headline-lg text-text mb-4">{{ certificates[5].title }}</h3>
               <p class="font-body-lg text-text-muted max-w-2xl">{{ certificates[5].description }}</p>
               <div class="mt-8 flex flex-wrap gap-3">
-                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-[10px] px-3.5 py-1 rounded-full font-semibold">Cybersec</span>
-                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-[10px] px-3.5 py-1 rounded-full font-semibold">Mobile UI</span>
-                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-[10px] px-3.5 py-1 rounded-full font-semibold">Systems Architecture</span>
+                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-xs px-3.5 py-1 rounded-full font-semibold">Cybersec</span>
+                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-xs px-3.5 py-1 rounded-full font-semibold">Mobile UI</span>
+                <span class="bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-label-caps text-xs px-3.5 py-1 rounded-full font-semibold">Systems Architecture</span>
               </div>
           </div>
         </div>
@@ -199,26 +196,26 @@ export interface Certificate {
       <div class="relative w-full overflow-hidden mt-12 flex gap-6 select-none group pointer-events-auto">
         <div class="flex gap-6 shrink-0 animate-[marquee-reverse_30s_linear_infinite] group-hover:[animation-play-state:paused] pointer-events-auto">
           @for (item of lowerMarquee; track item.title) {
-            <div class="bg-surface border border-border/70 dark:bg-white/10 dark:border-white/20 shadow-sm px-5 py-2.5 rounded-full flex items-center gap-3 text-xs md:text-sm font-roboto-mono whitespace-nowrap hover:scale-105 hover:border-accent transition-all duration-300 font-semibold">
-              <span class="px-2.5 py-0.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider"
-                    [class]="item.type === 'Award' ? 'bg-text text-background dark:bg-white dark:text-[#272635]' : 'bg-accent text-background dark:bg-accent dark:text-[#272635]'">
+            <div class="bg-surface border border-border/70 dark:bg-white/10 dark:border-white/20 shadow-sm px-5 py-2.5 rounded-full flex items-center gap-3 text-xs md:text-sm font-roboto-mono whitespace-nowrap hover:scale-105 hover:border-accent transition-[border-color,transform] duration-300 font-semibold">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider"
+                    [class]="item.type === 'Award' ? 'bg-text text-background dark:bg-white dark:text-on-accent' : 'bg-accent text-background dark:bg-accent dark:text-on-accent'">
                 {{ item.type }}
               </span>
-              <span class="text-accent font-bold opacity-40">•</span>
+              <span class="text-accent font-bold" aria-hidden="true">•</span>
               <span class="text-text dark:text-white font-bold">{{ item.title }}</span>
-              <span class="text-accent font-bold opacity-40">•</span>
+              <span class="text-accent font-bold" aria-hidden="true">•</span>
               <span class="text-text-muted dark:text-white/60 font-semibold">{{ item.year }}</span>
             </div>
           }
           @for (item of lowerMarquee; track item.title + '-dup') {
-            <div class="bg-surface border border-border/70 dark:bg-white/10 dark:border-white/20 shadow-sm px-5 py-2.5 rounded-full flex items-center gap-3 text-xs md:text-sm font-roboto-mono whitespace-nowrap hover:scale-105 hover:border-accent transition-all duration-300 font-semibold">
-              <span class="px-2.5 py-0.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider"
-                    [class]="item.type === 'Award' ? 'bg-text text-background dark:bg-white dark:text-[#272635]' : 'bg-accent text-background dark:bg-accent dark:text-[#272635]'">
+            <div aria-hidden="true" class="bg-surface border border-border/70 dark:bg-white/10 dark:border-white/20 shadow-sm px-5 py-2.5 rounded-full flex items-center gap-3 text-xs md:text-sm font-roboto-mono whitespace-nowrap hover:scale-105 hover:border-accent transition-[border-color,transform] duration-300 font-semibold">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider"
+                    [class]="item.type === 'Award' ? 'bg-text text-background dark:bg-white dark:text-on-accent' : 'bg-accent text-background dark:bg-accent dark:text-on-accent'">
                 {{ item.type }}
               </span>
-              <span class="text-accent font-bold opacity-40">•</span>
+              <span class="text-accent font-bold" aria-hidden="true">•</span>
               <span class="text-text dark:text-white font-bold">{{ item.title }}</span>
-              <span class="text-accent font-bold opacity-40">•</span>
+              <span class="text-accent font-bold" aria-hidden="true">•</span>
               <span class="text-text-muted dark:text-white/60 font-semibold">{{ item.year }}</span>
             </div>
           }
@@ -237,7 +234,7 @@ export class CertificatesComponent {
   readonly upperMarquee = [
     { type: 'Award', title: 'Cum Laude & Valedictorian', year: '2023' },
     { type: 'Award', title: 'Best Research Paper', year: '2023' },
-    { type: 'Award', title: '1st Place Runner-up Android Dev', year: '2022' },
+    { type: 'Award', title: 'Runner-up (2nd Place) Android Dev', year: '2022' },
     { type: 'Award', title: '3rd Place Best System', year: '2022' },
     { type: 'Award', title: 'Champion: Web Design', year: '2019' }
   ];
@@ -320,11 +317,11 @@ export class CertificatesComponent {
       colSpan: 4
     },
     {
-      title: '1st Place Android Dev (Microfinance)',
+      title: 'Runner-up (2nd Place) Android Dev (Microfinance)',
       category: 'Competition',
       year: '2022',
       subtitle: '11th IT Skills Olympics',
-      description: 'Won 1st Place in Android Development (Microfinance Category) for designing and programming VestiCare, an innovative mobile health insurance tracking system.',
+      description: 'Won Runner-up (2nd Place) in Android Development (Microfinance Category) for designing and programming VestiCare, an innovative mobile health insurance tracking system.',
       imageUrl: 'assets/image/awards/awards-it-olympics.jpg',
       images: [
         'assets/image/awards/awards-it-olympics.jpg'
@@ -337,11 +334,9 @@ export class CertificatesComponent {
   openModal(cert: Certificate, event: Event) {
     event.stopPropagation();
     this.selectedCertificate.set(cert);
-    document.body.style.overflow = 'hidden';
   }
 
   closeModal() {
     this.selectedCertificate.set(null);
-    document.body.style.overflow = '';
   }
 }

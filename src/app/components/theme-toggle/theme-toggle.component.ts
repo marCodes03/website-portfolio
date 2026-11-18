@@ -3,11 +3,11 @@ import { Component, signal, afterNextRender } from '@angular/core';
 @Component({
   selector: 'app-theme-toggle',
   template: `
-    <button (click)="toggleTheme()"
-            class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-text dark:text-white flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+    <button type="button" (click)="toggleTheme()"
+            class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-text dark:text-white flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-transform duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'">
       <span class="material-symbols-outlined transition-transform duration-500"
-            [class.rotate-[360deg]]="isDark()">
+            [class.rotate-[360deg]]="isDark()" aria-hidden="true">
         {{ isDark() ? 'light_mode' : 'dark_mode' }}
       </span>
     </button>

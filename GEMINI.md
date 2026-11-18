@@ -103,3 +103,7 @@ All additions and modifications MUST adhere to the following rules:
 - **Native Control Flow**: Use modern native control flows (`@if`, `@for`, `@switch`) instead of legacy directive-based bindings (`*ngIf`, `*ngFor`).
 - **Async Handling**: Use the async pipe (`| async`) when consuming observables in templates.
 - **Sandbox Environment**: Avoid accessing global browser objects (e.g. `new Date()`) directly in templates.
+
+## Setup: Required AI Skills
+
+This repo expects design/review skills that are gitignored (`.claude/`). After cloning, **tell the user to install them** following [docs/required-skills.md](docs/required-skills.md) (source GitHub links and install steps) before doing UI design, audit or review work. If a skill listed there is missing from `.claude/skills/`, say so and point to that file.

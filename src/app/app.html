@@ -1,18 +1,22 @@
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <app-header />
 
-<main class="bg-background text-text font-body-md">
+<main id="main-content" tabindex="-1" class="bg-background text-text font-body-md">
   <app-hero />
   <app-about />
   <app-experience />
   <app-skills />
   <app-career-path />
   <app-portfolio />
-  <app-contact />
   <app-journey />
   <app-off-screen-activities />
   <app-certificates />
+  <app-cta-band />
 </main>
 
 <app-footer />
 <app-theme-toggle />
-<app-chat-bot />
+<app-toast />
+@defer (on idle) {
+  <app-chat-bot />
+}

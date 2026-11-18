@@ -27,16 +27,23 @@
   --color-on-surface: var(--color-text);
   --color-on-surface-variant: #47464c;
   --color-error: #ba1a1a;
+  --color-success: #1a6b34;
+  /* Journey timeline track hues (data categories, not accents). Darkened in
+     light mode so the dots clear 3:1 against the section backgrounds. */
+  /* Ink on filled accent surfaces (buttons, active chips) in both themes. */
+  --color-on-accent: #272635;
+  --color-track-org: #c2410c;
+  --color-track-award: #a16207;
 
   /* Fonts */
-  --font-headline-lg: "Roboto Mono", monospace;
-  --font-display-lg: "Roboto Mono", monospace;
-  --font-headline-md: "Roboto Mono", monospace;
-  --font-display-lg-mobile: "Roboto Mono", monospace;
-  --font-label-caps: "Roboto Mono", monospace;
-  --font-body-md: "Roboto Mono", monospace;
-  --font-body-lg: "Roboto Mono", monospace;
-  --font-roboto-mono: "Roboto Mono", monospace;
+  --font-headline-lg: "JetBrains Mono", monospace;
+  --font-display-lg: "JetBrains Mono", monospace;
+  --font-headline-md: "JetBrains Mono", monospace;
+  --font-display-lg-mobile: "JetBrains Mono", monospace;
+  --font-label-caps: "JetBrains Mono", monospace;
+  --font-body-md: "IBM Plex Sans", sans-serif;
+  --font-body-lg: "IBM Plex Sans", sans-serif;
+  --font-roboto-mono: "JetBrains Mono", monospace;
 
   /* FontSize and Typography Settings */
   --text-headline-lg: 32px;
@@ -61,6 +68,9 @@
   --text-label-caps--line-height: 1.0;
   --text-label-caps--letter-spacing: 0.1em;
   --text-label-caps--font-weight: 600;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 1.5;
 
   --text-body-md: 16px;
   --text-body-md--line-height: 1.6;
@@ -96,6 +106,7 @@
 
 /* Custom Base / Utility Styles */
 .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
@@ -161,6 +172,10 @@
   /* Gunmetal slate borders and dividers */
   --color-accent: #b1e5f2;
   /* Glowing frosted blue accent for active links and active details */
+  --color-success: #7ddc9a;
+  --color-error: #ffb4ab;
+  --color-track-org: #f24e1e;
+  --color-track-award: #eab308;
 
   /* Legacy & Helper Aliases overrides for Dark Mode */
   --color-primary: var(--color-accent);
@@ -169,19 +184,19 @@
 
 /* Force specific component/section overrides */
 .dark .section-ghost {
-  background: linear-gradient(90deg, #1C1A27 40%, #1F2A40 100%) !important;
+  background: linear-gradient(90deg, #1C1A27 40%, #1F2A40 100%);
 }
 
 .dark .section-frosted {
-  background: linear-gradient(90deg, #1F2A40 30%, #1C1A27 100%) !important;
+  background: linear-gradient(90deg, #1F2A40 30%, #1C1A27 100%);
 }
 
 .dark .section-white {
-  background: linear-gradient(90deg, #2A1B3D 30%, #1C1A27 100%) !important;
+  background: linear-gradient(90deg, #2A1B3D 30%, #1C1A27 100%);
 }
 
 .dark .section-dark {
-  background: linear-gradient(90deg, #1C1A27 30%, #121220 100%) !important;
+  background: linear-gradient(90deg, #1C1A27 30%, #121220 100%);
 }
 
 /* Ensure borders are styled correctly in dark mode */
@@ -189,59 +204,59 @@
 .dark .border-white\/20,
 .dark .border-b,
 .dark .border {
-  border-color: #42414D !important;
+  border-color: #42414D;
 }
 
 /* Contact and general inputs */
 .dark input,
 .dark textarea {
-  background-color: #1C1A27 !important;
-  color: #fcf8fa !important;
-  border-color: #42414D !important;
+  background-color: #1C1A27;
+  color: #fcf8fa;
+  border-color: #42414D;
 }
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #5D5C61 !important;
+  color: #5D5C61;
 }
 
 /* Glassmorphism overrides for details/accent areas */
 .dark .bg-white\/10 {
-  background-color: rgba(255, 255, 255, 0.05) !important;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .dark .bg-white\/20 {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .dark .bg-white\/40 {
-  background-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .dark .bg-white\/60 {
-  background-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Premium Button Styling for Dark Mode */
 .dark .bg-shadow-grey {
-  background-color: #2A1B3D !important;
-  color: #fcf8fa !important;
-  border: 1px solid #42414D !important;
+  background-color: #2A1B3D;
+  color: #fcf8fa;
+  border: 1px solid #42414D;
 }
 
 .dark .bg-shadow-grey:hover {
-  background-color: #1F2A40 !important;
-  color: #b1e5f2 !important;
+  background-color: #1F2A40;
+  color: #b1e5f2;
 }
 
 .dark .bg-shadow-grey .material-symbols-outlined {
-  color: inherit !important;
+  color: inherit;
 }
 
 /* Premium Card hover border accent in Dark Mode */
 .dark #experience .group:hover,
 .dark #career-path .group:hover {
-  border-color: rgba(177, 229, 242, 0.4) !important;
+  border-color: rgba(177, 229, 242, 0.4);
 }
 
 
@@ -252,7 +267,7 @@
 
 .dark .box-glow-border {
   box-shadow: 0 0 10px rgba(177, 229, 242, 0.3), inset 0 0 4px rgba(177, 229, 242, 0.1);
-  border-color: #b1e5f2 !important;
+  border-color: #b1e5f2;
 }
 
 .dark .active-glow {
@@ -359,21 +374,21 @@
 }
 
 .commit-org div {
-  border-color: #f24e1e;
+  border-color: var(--color-track-org);
   background-color: transparent;
   border-style: dashed;
 }
 
 .timeline-row:hover .commit-org div {
   border-style: solid;
-  border-color: #f24e1e;
-  background-color: #f24e1e;
-  box-shadow: 0 0 10px #f24e1e, 0 0 20px #f24e1e;
+  border-color: var(--color-track-org);
+  background-color: var(--color-track-org);
+  box-shadow: 0 0 10px var(--color-track-org), 0 0 20px var(--color-track-org);
   transform: scale(1.25);
 }
 
 .commit-achievements div {
-  border-color: #eab308;
+  border-color: var(--color-track-award);
   background-color: transparent;
   border-style: dotted;
   border-width: 3px;
@@ -382,20 +397,27 @@
 .timeline-row:hover .commit-achievements div {
   border-style: solid;
   border-width: 2px;
-  border-color: #eab308;
-  background-color: #eab308;
-  box-shadow: 0 0 10px #eab308, 0 0 20px #eab308;
+  border-color: var(--color-track-award);
+  background-color: var(--color-track-award);
+  box-shadow: 0 0 10px var(--color-track-award), 0 0 20px var(--color-track-award);
   transform: scale(1.25);
 }
 
 .timeline-card {
-  opacity: 0;
-  transform: translateY(30px) scale(0.95);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.3s ease,
               border-color 0.3s ease;
   will-change: opacity, transform;
+}
+
+/* Hidden-until-revealed only when scripts run and motion is allowed, so the
+   content never stays invisible without JS or under reduced motion. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .timeline-card:not(.reveal) {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
 }
 
 .timeline-card.reveal {
@@ -451,7 +473,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   transform-style: preserve-3d;
 }
 
@@ -548,4 +570,220 @@
 /* Ensure seamless support for dark mode surface opacity transitions */
 #reviews .border {
   transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+/* Respect users who ask the OS for less motion: stop looping/auto animations
+   and smooth scrolling. Spatial transitions (transform, size) become instant;
+   colour, border, opacity and shadow keep a short 150ms fade so hover, focus
+   and state changes still give feedback. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-property: color, background-color, border-color, opacity, box-shadow !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Skip link: visible only when focused. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 200;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: #272635;
+  color: #fcf8fa;
+  outline: 2px solid #fcf8fa;
+  transition: top 0.2s;
+}
+.skip-link:focus-visible {
+  top: 1rem;
+  outline: 3px solid #fcf8fa;
+  box-shadow: 0 0 0 6px #272635;
+}
+
+/* Keyboard focus: a 2px accent outline on every focusable element, kept even
+   where a utility removes the default outline. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  /* A 2px light gap between element and outline keeps the ring visible on dark
+     grounds; keeps any Tailwind ring the element already has. */
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000),
+    0 0 0 2px #ffffff;
+}
+.dark :focus-visible {
+  outline-color: #b1e5f2;
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000),
+    0 0 0 2px #121220;
+}
+
+/* Touch targets: extend the hit area to 44px without changing visuals. */
+.tap-44 {
+  position: relative;
+}
+.tap-44::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+
+/* Parts of the page that sit on the always-dark section background keep the
+   light accent in every theme; the light-theme accent (#1b6375) is only ~2:1
+   against that background. */
+.accent-on-dark {
+  --color-accent: #b1e5f2;
+  --color-primary: #b1e5f2;
+}
+
+/* Keep keyboard-focused elements clear of the sticky header and the fixed
+   chat / theme buttons when the browser scrolls them into view. */
+html {
+  scroll-padding-top: 6rem;
+  scroll-padding-bottom: 7rem;
+}
+
+/* Tabbing scrolls instantly so the focused control is on screen straight away. */
+html.kbd,
+html.kbd .scroll-smooth {
+  scroll-behavior: auto;
+}
+
+/* Button system (CHG-0017): one primary and one secondary style, one height.
+   `.btn-on-dark` adapts the secondary style for sections with a dark ground in every theme. */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  font-family: var(--font-label-caps);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.btn-primary:active,
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--color-text);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--color-primary-container, var(--color-text));
+}
+.dark .btn-primary {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+.dark .btn-primary:hover {
+  background: #ffffff;
+}
+.btn-secondary {
+  border-color: var(--color-text);
+  color: var(--color-text);
+  background: transparent;
+}
+.btn-secondary:hover {
+  background: var(--color-text);
+  color: #ffffff;
+}
+.dark .btn-secondary {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.dark .btn-secondary:hover {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+.btn-secondary.btn-on-dark,
+.dark .btn-secondary.btn-on-dark {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+.btn-secondary.btn-on-dark:hover,
+.dark .btn-secondary.btn-on-dark:hover {
+  background: #ffffff;
+  color: #272635;
+}
+
+/* Buttons on the always-dark call-to-action band keep the light accent in every theme. */
+.accent-on-dark .btn-primary,
+.dark .accent-on-dark .btn-primary {
+  background: var(--color-accent);
+  color: #272635;
+}
+.accent-on-dark .btn-primary:hover,
+.dark .accent-on-dark .btn-primary:hover {
+  background: #ffffff;
+}
+.accent-on-dark .btn-secondary,
+.dark .accent-on-dark .btn-secondary {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.accent-on-dark .btn-secondary:hover,
+.dark .accent-on-dark .btn-secondary:hover {
+  background: var(--color-accent);
+  color: #272635;
+}
+
+/* Chat thinking dots and typing caret (CHG-0022). Calm wave, no bounce; still under reduced motion. */
+.thinking-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: var(--color-accent);
+  animation: thinkingWave 1.2s ease-in-out infinite;
+}
+@keyframes thinkingWave {
+  0%, 60%, 100% { opacity: 0.75; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+.typing-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background-color: currentColor;
+  animation: caretBlink 1s steps(1) infinite;
+}
+@keyframes caretBlink {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thinking-dot { animation: none !important; opacity: 1; transform: none; }
+  .typing-caret { animation: none !important; }
 }

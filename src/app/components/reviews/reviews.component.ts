@@ -27,7 +27,7 @@ interface Testimonial {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 justify-center items-stretch">
           @for (item of testimonials; track item.name) {
             @if (item.approved) {
-              <div class="flex flex-col sm:flex-row gap-6 p-6 md:p-8 rounded-2xl border bg-surface/50 border-border/30 dark:bg-surface/40 dark:border-border/10 backdrop-blur-sm shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+              <div class="flex flex-col sm:flex-row gap-6 p-6 md:p-8 rounded-3xl border bg-surface/50 border-border/30 dark:bg-surface/40 dark:border-border/10 backdrop-blur-sm shadow-md transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-lg">
                 
                 <!-- Client Avatar Photo -->
                 <div class="flex-shrink-0 flex justify-center sm:block">
@@ -35,7 +35,7 @@ interface Testimonial {
                        [alt]="item.name + ' - ' + item.role"
                        width="120"
                        height="120"
-                       class="w-32 h-32 object-cover rounded-2xl shadow-inner border border-border/20 select-none">
+                       class="w-32 h-32 object-cover rounded-xl shadow-inner border border-border/20 select-none">
                 </div>
 
                 <!-- Testimonial Content -->
@@ -56,7 +56,7 @@ interface Testimonial {
                     <!-- Client Info Details -->
                     <div class="space-y-0.5">
                       <p class="font-roboto-mono font-bold text-text text-sm">{{ item.name }}</p>
-                      <p class="font-label-caps text-label-caps text-accent tracking-wider text-[11px] font-semibold">{{ item.role }}</p>
+                      <p class="font-label-caps text-label-caps text-accent tracking-wider text-xs font-semibold">{{ item.role }}</p>
                     </div>
                   </div>
                 </div>

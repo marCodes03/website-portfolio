@@ -1,59 +1,106 @@
-# WebsitePortfolioTest
+# Marco O. Amira — Portfolio
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.0.
+Personal portfolio site for Marco O. Amira, built with Angular (standalone components, signals,
+SSR via `@angular/ssr`), Tailwind, and two small serverless API endpoints (an AI chat assistant and
+a contact form) deployed as Vercel functions.
 
-## Development server
+## Tech stack
 
-To start a local development server, run:
+- **Frontend:** Angular 22 (standalone components, signals, native `@if`/`@for` control flow), Tailwind CSS
+- **SSR:** `@angular/ssr` + Express (`src/server.ts`)
+- **Serverless API** (`api/`, deployed as Vercel Functions):
+  - `api/chat.ts` — AI chat widget, powered by Google Gemini (`@google/genai`), edge runtime
+  - `api/contact.ts` — contact form email delivery via `nodemailer` over Gmail SMTP, Node.js runtime
+    (not edge — nodemailer needs Node's `net`/`tls` modules)
 
+## Prerequisites
+
+- Node.js (LTS; matches whatever Angular 22 requires — check with `node -v`)
+- npm
+
+## Setup
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Create a `.env` file in the project root (or copy/edit the existing one) with:
+   ```bash
+   # Required for the AI chat widget (api/chat.ts)
+   GEMINI_API_KEY=your-gemini-api-key
+
+   # Required for the contact form (api/contact.ts)
+   # EMAIL_USER is the Gmail address that sends and receives the mail.
+   # EMAIL_APP_PASSWORD is a Gmail App Password, NOT your normal Gmail password.
+   # Generate one at https://myaccount.google.com/apppasswords (requires 2-Step Verification).
+   EMAIL_USER=your-gmail-address@gmail.com
+   EMAIL_APP_PASSWORD=your-16-char-app-password
+   ```
+   These env vars are read by the `api/` serverless functions. For local full-stack testing
+   (API routes included) use the [Vercel CLI](https://vercel.com/docs/cli) (`vercel dev`), which
+   loads `.env` automatically. If you only need the Angular app without live chat/contact-form
+   calls, plain `ng serve`/`npm start` is enough.
+
+## Running locally
+
+**Frontend only** (fastest, but the chat widget and contact form won't actually call an API):
 ```bash
-ng serve
+npm start
 ```
+Open http://localhost:4200/. The app reloads automatically on source changes.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+**Full stack, including the `api/` serverless functions** (recommended if you're working on the
+chat widget or contact form):
 ```bash
-ng generate component component-name
+npx vercel dev
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
+This serves the Angular app and proxies `/api/*` to the functions in `api/`, using your local
+`.env` for secrets.
 
 ## Building
 
-To build the project run:
-
 ```bash
-ng build
+npm run build
+```
+Compiles the app and SSR server; output goes to `dist/website-portfolio-test/`.
+
+To serve the SSR build locally after building:
+```bash
+npm run serve:ssr:website-portfolio-test
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Testing
 
 ```bash
-ng test
+npm test
 ```
+Runs unit tests with Vitest.
 
-## Running end-to-end tests
+Accessibility: after `npm run build`, run `npm run test:a11y` to check the build with axe-core in headless Chrome (1280px and 390px, light and dark, chat and modals open, form errors shown). Set `CHROME_PATH` if Chrome is not in a standard location.
 
-For end-to-end (e2e) testing, run:
+There is no end-to-end test setup configured.
 
-```bash
-ng e2e
+## Deployment
+
+The site is set up to deploy on [Vercel](https://vercel.com): the Angular build output and the
+`api/` directory are both picked up automatically by Vercel's framework detection. Set
+`GEMINI_API_KEY`, `EMAIL_USER`, and `EMAIL_APP_PASSWORD` as environment variables in the Vercel
+project settings — the local `.env` file is not deployed.
+
+## Project structure
+
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+src/app/components/   Angular standalone components, one per page section
+src/app/assets/files/  Resume PDF, referenced directly by the Hero component's download link
+src/app/assets/image/  NOTE: not wired into angular.json's assets config, so it is not actually
+                       served at runtime - it's a leftover duplicate of public/assets/image/.
+                       See docs/decisions.md for details.
+public/                Static assets actually served at the site root (robots.txt, sitemap.xml,
+                       favicon, and the images referenced via "assets/..." paths)
+api/                  Vercel serverless functions (chat, contact form)
+docs/decisions.md     Log of non-trivial decisions made while working on this project (see
+                       AGENTS.md's "Decision Logging" rule)
+brand.md              Design system reference (colors, type, spacing tokens)
+AGENTS.md             Coding standards and conventions for this repo
+```

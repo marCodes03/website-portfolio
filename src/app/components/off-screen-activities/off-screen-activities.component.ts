@@ -1,4 +1,4 @@
-import { Component, signal, ElementRef, ViewChild } from '@angular/core';
+import { Component, signal, ElementRef, viewChild } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 
 interface Activity {
@@ -19,17 +19,17 @@ interface Activity {
       <div class="max-w-[1200px] mx-auto">
         <div class="flex justify-between items-end mb-16">
           <div class="space-y-4 text-left">
-            <span class="font-label-caps text-label-caps text-accent tracking-widest">LIFE OUTSIDE WORK</span>
+            <span class="font-label-caps text-label-caps text-accent accent-on-dark tracking-widest">LIFE OUTSIDE WORK</span>
             <h2 class="font-headline-lg text-headline-lg text-white font-bold">Off-Screen Activities</h2>
           </div>
           <div class="hidden md:flex gap-4">
-            <button (click)="scrollActivities('left')"
-                    class="w-12 h-12 rounded-full border border-border  flex items-center justify-center hover:bg-surface transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-white hover:text-black dark:hover:text-white">chevron_left</span>
+            <button type="button" (click)="scrollActivities('left')" aria-label="Previous activities"
+                    class="w-12 h-12 rounded-full border border-border  flex items-center justify-center hover:bg-surface transition-colors cursor-pointer">
+              <span class="material-symbols-outlined text-white hover:text-black dark:hover:text-white" aria-hidden="true">chevron_left</span>
             </button>
-            <button (click)="scrollActivities('right')"
-                    class="w-12 h-12 rounded-full border border-border  flex items-center justify-center hover:bg-surface transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-white hover:text-black dark:hover:text-white">chevron_right</span>
+            <button type="button" (click)="scrollActivities('right')" aria-label="Next activities"
+                    class="w-12 h-12 rounded-full border border-border  flex items-center justify-center hover:bg-surface transition-colors cursor-pointer">
+              <span class="material-symbols-outlined text-white hover:text-black dark:hover:text-white" aria-hidden="true">chevron_right</span>
             </button>
           </div>
         </div>
@@ -37,11 +37,14 @@ interface Activity {
         <div class="relative">
           <!-- Carousel Container -->
           <div #activitiesContainer
+               role="region"
+               aria-label="Off-screen activities"
+               tabindex="0"
                (scroll)="onScroll(activitiesContainer)"
                class="flex gap-8 overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
             
             @for (activity of activities; track activity.title) {
-              <div class="min-w-full md:min-w-[calc(50%-16px)] snap-center bg-surface rounded-2xl border border-border/30 shadow-sm hover:shadow-md transition-all text-left overflow-hidden flex flex-col group cursor-default">
+              <div class="min-w-full md:min-w-[calc(50%-16px)] snap-center bg-surface rounded-xl border border-border/30 shadow-sm hover:shadow-md transition-shadow text-left overflow-hidden flex flex-col group cursor-default">
                 <!-- Visual Header -->
                 <div class="relative w-full aspect-video overflow-hidden bg-border/10 flex-shrink-0">
                   @if (activity.imageUrl) {
@@ -51,7 +54,7 @@ interface Activity {
                          style="mask-image: linear-gradient(to top, black, transparent); -webkit-mask-image: linear-gradient(to top, black, transparent);"></div>
                   } @else {
                     <div class="w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:scale-105" [style.background]="activity.gradient">
-                      <span class="material-symbols-outlined text-white text-5xl opacity-90 transition-transform duration-500 group-hover:scale-110">{{ activity.icon }}</span>
+                      <span class="material-symbols-outlined text-white text-5xl opacity-90 transition-transform duration-500 group-hover:scale-110" aria-hidden="true">{{ activity.icon }}</span>
                     </div>
                     <!-- Frost Glass Overlay (Bottom 25% with soft fade) -->
                     <div class="absolute bottom-0 left-0 right-0 h-1/4 bg-white/10 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
@@ -66,7 +69,7 @@ interface Activity {
                       <h3 class="font-headline-md text-headline-md text-text leading-tight">{{ activity.title }}</h3>
                       <span class="font-label-caps text-label-caps text-text-muted whitespace-nowrap mt-1">{{ activity.period }}</span>
                     </div>
-                    <p class="text-text-muted text-body-md leading-relaxed">{{ activity.description }}</p>
+                    <p class="text-text-muted text-body-md leading-relaxed max-w-[70ch]">{{ activity.description }}</p>
                   </div>
                   <div class="mt-8 pt-6 border-t border-border/30">
                     <p class="italic text-accent font-body-md">"{{ activity.quote }}"</p>
@@ -77,10 +80,12 @@ interface Activity {
           </div>
 
           <!-- Pagination Dots -->
-          <div class="flex justify-center gap-3 mt-12">
+          <div class="flex justify-center gap-8 mt-12">
             @for (activity of activities; track activity.title; let idx = $index) {
-              <button (click)="scrollToActivity(idx)"
-                      class="w-3 h-3 rounded-full transition-all cursor-pointer"
+              <button type="button" (click)="scrollToActivity(idx)"
+                      [attr.aria-label]="'Go to activity ' + (idx + 1)"
+                      [attr.aria-current]="activeActivity() === idx ? 'true' : null"
+                      class="tap-44 w-3 h-3 shrink-0 rounded-full transition-colors cursor-pointer"
                       [class.bg-accent]="activeActivity() === idx"
                       [class.bg-border]="activeActivity() !== idx"
                       [class.hover:bg-text-muted]="activeActivity() !== idx">
@@ -93,7 +98,7 @@ interface Activity {
   `
 })
 export class OffScreenActivitiesComponent {
-  @ViewChild('activitiesContainer') activitiesRef!: ElementRef<HTMLDivElement>;
+  private readonly activitiesRef = viewChild.required<ElementRef<HTMLDivElement>>('activitiesContainer');
   readonly activeActivity = signal<number>(0);
 
   readonly activities: Activity[] = [
@@ -133,13 +138,6 @@ export class OffScreenActivitiesComponent {
       imageUrl: 'assets/image/hardware_servicing.png'
     },
     {
-      title: 'Academic Awards',
-      period: '2023 - 2024',
-      description: 'Honored with academic achievements including graduating BS Computer Science Cum Laude, delivering the batch valedictory address, and winning systems design fairs and programming hackathons.',
-      quote: 'Recognition feels best when it reflects the work behind it',
-      imageUrl: 'assets/image/activities/activities-awards-cumlaude.jpg'
-    },
-    {
       title: 'Arts & Commission Work',
       period: '2016 - PRESENT',
       description: 'Active in fine arts, specializing in watercolor painting, charcoal and graphite sketching, and colored pencils. Successfully delivered commissioned artworks since 2016, blending creative visualization with tech designs.',
@@ -149,7 +147,7 @@ export class OffScreenActivitiesComponent {
   ];
 
   scrollActivities(direction: 'left' | 'right') {
-    const container = this.activitiesRef.nativeElement;
+    const container = this.activitiesRef().nativeElement;
     const scrollAmount = container.offsetWidth;
     if (direction === 'left') {
       container.scrollLeft -= scrollAmount;
@@ -159,7 +157,7 @@ export class OffScreenActivitiesComponent {
   }
 
   scrollToActivity(index: number) {
-    const container = this.activitiesRef.nativeElement;
+    const container = this.activitiesRef().nativeElement;
     const items = container.querySelectorAll('.snap-center');
     if (items[index]) {
       items[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });

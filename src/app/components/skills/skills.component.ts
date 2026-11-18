@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, computed } from '@angular/core';
 
 interface SkillItem {
   name: string;
@@ -13,7 +13,12 @@ interface SkillCategory {
   skills: SkillItem[];
 }
 
-type TabId = 'back-front' | 'db-cloud' | 'design-ai' | 'methodologies';
+interface SkillGroup {
+  id: string;
+  title: string;
+  note: string;
+  skills: SkillItem[];
+}
 
 @Component({
   selector: 'app-skills',
@@ -26,75 +31,87 @@ type TabId = 'back-front' | 'db-cloud' | 'design-ai' | 'methodologies';
           <h2 class="font-headline-lg text-headline-lg text-text font-bold">Tech Stack</h2>
         </div>
 
-        <!-- Pill-shaped Tab Navigation -->
-        <div class="flex flex-wrap justify-center gap-3 mb-12">
-          @for (tab of tabs; track tab.id) {
-            <button
-              (click)="setActiveTab(tab.id)"
-              [class.bg-accent]="activeTab() === tab.id"
-              [class.text-white]="activeTab() === tab.id"
-              [class.dark:text-[#272635]]="activeTab() === tab.id"
-              [class.bg-surface]="activeTab() !== tab.id"
-              [class.text-text-muted]="activeTab() !== tab.id"
-              class="px-6 py-3 rounded-full font-label-caps text-label-caps transition-all duration-300 border border-border/30 hover:border-accent cursor-pointer active:scale-95 shadow-md">
-              {{ tab.label }}
-            </button>
-          }
-        </div>
-
-        <!-- 3D Skill Cards Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center">
-          @for (skill of filteredSkills(); track skill.name) {
-            <div class="skill-card-container aspect-square w-full">
-              <div class="skill-card-inner">
-                <!-- Front Face -->
-                <div class="skill-card-front p-4 flex flex-col items-center justify-center gap-3 text-center select-none shadow-md">
-                  <div class="w-12 h-12 rounded-xl flex items-center justify-center text-text transition-transform duration-300">
-                    @if (skill.icon.startsWith('devicon-')) {
-                      <i [class]="skill.icon" class="text-4xl"></i>
-                    } @else {
-                      <span class="material-symbols-outlined !text-4xl">{{ skill.icon }}</span>
-                    }
-                  </div>
-                  <span class="font-roboto-mono text-xs font-bold tracking-tight text-text leading-tight">{{ skill.name }}</span>
-                </div>
-
-                <!-- Back Face (Proficiency SVG Donut with Centered Icon) -->
-                <div class="skill-card-back p-4 flex flex-col items-center justify-center gap-2 text-center select-none shadow-lg">
-                  <div class="relative w-20 h-20 flex items-center justify-center">
-                    <svg class="w-full h-full" viewBox="0 0 80 80">
-                      <!-- Background Ring -->
-                      <circle
-                        cx="40"
-                        cy="40"
-                        r="30"
-                        class="donut-circle-bg"
-                        stroke-width="5"
-                        fill="transparent"
-                      />
-                      <!-- Animated Foreground Ring -->
-                      <circle
-                        cx="40"
-                        cy="40"
-                        r="30"
-                        class="donut-circle-val"
-                        stroke-width="5"
-                        fill="transparent"
-                        stroke-dasharray="188.5"
-                        [style.--dashoffset]="getDashOffset(skill.proficiency)"
-                      />
-                    </svg>
-                    <div class="absolute flex items-center justify-center text-accent">
-                      @if (skill.icon.startsWith('devicon-')) {
-                        <i [class]="skill.icon" class="text-3xl"></i>
-                      } @else {
-                        <span class="material-symbols-outlined !text-3xl">{{ skill.icon }}</span>
-                      }
-                    </div>
-                  </div>
-                  <span class="font-roboto-mono text-xs font-bold tracking-tight text-text leading-tight">{{ skill.name }}</span>
-                </div>
+        <div class="space-y-12">
+          @for (group of groups(); track group.id) {
+            <div [attr.aria-labelledby]="'skills-group-' + group.id" role="group">
+              <div class="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h3 [id]="'skills-group-' + group.id" class="font-headline-md text-headline-md text-text font-bold">{{ group.title }}</h3>
+                <p class="font-body-md text-body-md text-text-muted">{{ group.note }}</p>
               </div>
+              @if (group.id === 'primary') {
+              <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center list-none p-0 m-0">
+                  @for (skill of group.skills; track skill.name) {
+                    <li>
+                      <div class="skill-card-container aspect-square w-full">
+                                    <div class="skill-card-inner">
+                                      <!-- Front Face -->
+                                      <div class="skill-card-front p-4 flex flex-col items-center justify-center gap-3 text-center select-none shadow-md">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-text transition-transform duration-300">
+                                          @if (skill.icon.startsWith('devicon-')) {
+                                            <i [class]="skill.icon" class="text-4xl"></i>
+                                          } @else {
+                                            <span class="material-symbols-outlined !text-4xl" aria-hidden="true">{{ skill.icon }}</span>
+                                          }
+                                        </div>
+                                        <span class="font-roboto-mono text-xs font-bold tracking-tight text-text leading-tight">{{ skill.name }}</span>
+                                      </div>
+                      
+                                      <!-- Back Face (Proficiency SVG Donut with Centered Icon) -->
+                                      <div class="skill-card-back p-4 flex flex-col items-center justify-center gap-2 text-center select-none shadow-lg">
+                                        <div class="relative w-20 h-20 flex items-center justify-center">
+                                          <svg class="w-full h-full" viewBox="0 0 80 80">
+                                            <!-- Background Ring -->
+                                            <circle
+                                              cx="40"
+                                              cy="40"
+                                              r="30"
+                                              class="donut-circle-bg"
+                                              stroke-width="5"
+                                              fill="transparent"
+                                            />
+                                            <!-- Animated Foreground Ring -->
+                                            <circle
+                                              cx="40"
+                                              cy="40"
+                                              r="30"
+                                              class="donut-circle-val"
+                                              stroke-width="5"
+                                              fill="transparent"
+                                              stroke-dasharray="188.5"
+                                              [style.--dashoffset]="getDashOffset(skill.proficiency)"
+                                            />
+                                          </svg>
+                                          <div class="absolute flex items-center justify-center text-accent">
+                                            @if (skill.icon.startsWith('devicon-')) {
+                                              <i [class]="skill.icon" class="text-3xl"></i>
+                                            } @else {
+                                              <span class="material-symbols-outlined !text-3xl" aria-hidden="true">{{ skill.icon }}</span>
+                                            }
+                                          </div>
+                                        </div>
+                                        <span class="font-roboto-mono text-xs font-bold tracking-tight text-text leading-tight">{{ skill.name }}</span>
+                                        <span class="font-roboto-mono text-xs text-text-muted">{{ levelLabel(skill.proficiency) }}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                    </li>
+                  }
+                </ul>
+              } @else {
+                <ul class="flex flex-wrap gap-3 list-none p-0 m-0">
+                  @for (skill of group.skills; track skill.name) {
+                    <li class="flex items-center gap-3 rounded-full border border-border/40 bg-surface/70 dark:bg-white/5 px-4 py-2">
+                      @if (skill.icon.startsWith('devicon-')) {
+                        <i [class]="skill.icon" class="text-xl" aria-hidden="true"></i>
+                      } @else {
+                        <span class="material-symbols-outlined text-xl text-accent" aria-hidden="true">{{ skill.icon }}</span>
+                      }
+                      <span class="font-roboto-mono text-xs font-bold text-text">{{ skill.name }}</span>
+                      <span class="font-roboto-mono text-xs text-text-muted">{{ levelLabel(skill.proficiency) }}</span>
+                    </li>
+                  }
+                </ul>
+              }
             </div>
           }
         </div>
@@ -103,29 +120,20 @@ type TabId = 'back-front' | 'db-cloud' | 'design-ai' | 'methodologies';
   `,
 })
 export class SkillsComponent {
-  readonly activeTab = signal<TabId>('back-front');
-
-  readonly tabs = [
-    { id: 'back-front' as TabId, label: 'Development' },
-    { id: 'db-cloud' as TabId, label: 'Database & Cloud' },
-    { id: 'design-ai' as TabId, label: 'Design & AI' },
-    { id: 'methodologies' as TabId, label: 'Methodologies' }
-  ];
-
   readonly categories: SkillCategory[] = [
     {
       id: 'backend',
       title: 'Backend Development',
       icon: 'code',
       skills: [
-        { name: 'C# & .NET Core', icon: 'devicon-csharp-plain text-[#512bd4]', proficiency: 90 },
-        { name: 'ASP.NET', icon: 'devicon-dotnetcore-plain text-[#512bd4]', proficiency: 85 },
-        { name: 'Entity Framework', icon: 'devicon-dot-net-plain text-[#512bd4]', proficiency: 88 },
-        { name: 'REST API', icon: 'code', proficiency: 92 },
-        { name: 'Java', icon: 'devicon-java-plain text-[#e76f00]', proficiency: 78 },
-        { name: 'Visual Basic', icon: 'devicon-visualstudio-plain text-[#5c2d91]', proficiency: 75 },
-        { name: 'Python', icon: 'devicon-python-plain text-[#3776ab]', proficiency: 80 },
-        { name: 'C++', icon: 'devicon-cplusplus-plain text-[#00599c]', proficiency: 76 }
+        { name: 'C# & .NET Core', icon: 'devicon-csharp-plain text-[#512bd4]', proficiency: 100 },
+        { name: 'ASP.NET', icon: 'devicon-dotnetcore-plain text-[#512bd4]', proficiency: 80 },
+        { name: 'Entity Framework', icon: 'devicon-dot-net-plain text-[#512bd4]', proficiency: 80 },
+        { name: 'REST API', icon: 'code', proficiency: 100 },
+        { name: 'Java', icon: 'devicon-java-plain text-[#e76f00]', proficiency: 60 },
+        { name: 'Visual Basic', icon: 'devicon-visualstudio-plain text-[#5c2d91]', proficiency: 60 },
+        { name: 'Python', icon: 'devicon-python-plain text-[#3776ab]', proficiency: 40 },
+        { name: 'C++', icon: 'devicon-cplusplus-plain text-[#00599c]', proficiency: 40 }
       ]
     },
     {
@@ -133,12 +141,13 @@ export class SkillsComponent {
       title: 'Frontend Engineering',
       icon: 'code',
       skills: [
-        { name: 'Angular (JS & v14+)', icon: 'devicon-angularjs-plain text-[#dd0031]', proficiency: 92 },
-        { name: 'JavaScript & Bootstrap', icon: 'devicon-javascript-plain text-[#f7df1e]', proficiency: 90 },
-        { name: 'HTML5 & CSS / Sass', icon: 'devicon-html5-plain text-[#e34f26]', proficiency: 95 },
-        { name: 'TypeScript', icon: 'devicon-typescript-plain text-[#3178c6]', proficiency: 90 },
-        { name: 'Tailwind CSS', icon: 'devicon-tailwindcss-plain text-[#06b6d4]', proficiency: 88 },
-        { name: 'Ionic Framework', icon: 'devicon-angularjs-plain text-[#3880ff]', proficiency: 82 },
+        { name: 'Angular (JS & v14+)', icon: 'devicon-angularjs-plain text-[#dd0031]', proficiency: 80 },
+        { name: 'React JS', icon: 'devicon-react-original text-[#61dafb]', proficiency: 80 },
+        { name: 'JavaScript & Bootstrap', icon: 'devicon-javascript-plain text-[#f7df1e]', proficiency: 60 },
+        { name: 'HTML5 & CSS / Sass', icon: 'devicon-html5-plain text-[#e34f26]', proficiency: 80 },
+        { name: 'TypeScript', icon: 'devicon-typescript-plain text-[#3178c6]', proficiency: 80 },
+        { name: 'Tailwind CSS', icon: 'devicon-tailwindcss-plain text-[#06b6d4]', proficiency: 80 },
+        { name: 'Ionic Framework', icon: 'devicon-angularjs-plain text-[#3880ff]', proficiency: 80 },
       ]
     },
     {
@@ -146,9 +155,9 @@ export class SkillsComponent {
       title: 'Database',
       icon: 'database',
       skills: [
-        { name: 'Relational Database', icon: 'database', proficiency: 88 },
-        { name: 'MSSQL', icon: 'devicon-microsoftsqlserver-plain text-[#cc292b]', proficiency: 86 },
-        { name: 'MySQL', icon: 'devicon-mysql-plain text-[#00758f]', proficiency: 84 }
+        { name: 'Relational Database', icon: 'database', proficiency: 100 },
+        { name: 'MSSQL', icon: 'devicon-microsoftsqlserver-plain text-[#cc292b]', proficiency: 80 },
+        { name: 'MySQL', icon: 'devicon-mysql-plain text-[#00758f]', proficiency: 80 }
       ]
     },
     {
@@ -157,7 +166,7 @@ export class SkillsComponent {
       icon: 'cloud',
       skills: [
         { name: 'AWS', icon: 'devicon-amazonwebservices-plain-wordmark text-[#ff9900]', proficiency: 80 },
-        { name: 'Microsoft Azure', icon: 'devicon-azure-plain text-[#0089d6]', proficiency: 78 }
+        { name: 'Microsoft Azure', icon: 'devicon-azure-plain text-[#0089d6]', proficiency: 80 }
       ]
     },
     {
@@ -165,10 +174,10 @@ export class SkillsComponent {
       title: 'UI/UX Design',
       icon: 'palette',
       skills: [
-        { name: 'Figma', icon: 'devicon-figma-plain text-[#f24e1e]', proficiency: 85 },
-        { name: 'UI/UX Design', icon: 'palette', proficiency: 82 },
-        { name: 'Mobile Development', icon: 'phone_iphone', proficiency: 84 },
-        { name: 'Web Design & Layouts', icon: 'web', proficiency: 88 },
+        { name: 'Figma', icon: 'devicon-figma-plain text-[#f24e1e]', proficiency: 80 },
+        { name: 'UI/UX Design', icon: 'palette', proficiency: 60 },
+        { name: 'Mobile Development', icon: 'phone_iphone', proficiency: 80 },
+        { name: 'Web Design & Layouts', icon: 'web', proficiency: 80 },
         { name: 'Wireframing & Flows', icon: 'schema', proficiency: 80 }
       ]
     },
@@ -177,11 +186,12 @@ export class SkillsComponent {
       title: 'AI Tools',
       icon: 'auto_awesome',
       skills: [
-        { name: 'Prompt Engineering', icon: 'psychology_alt', proficiency: 88 },
-        { name: 'AI-Assisted Dev', icon: 'smart_toy', proficiency: 92 },
-        { name: 'Antigravity', icon: 'rocket_launch', proficiency: 95 },
-        { name: 'Gemini', icon: 'auto_awesome', proficiency: 90 },
-        { name: 'ChatGPT', icon: 'forum', proficiency: 90 }
+        { name: 'Prompt Engineering', icon: 'psychology_alt', proficiency: 80 },
+        { name: 'AI-Assisted Dev', icon: 'smart_toy', proficiency: 80 },
+        { name: 'Antigravity', icon: 'rocket_launch', proficiency: 100 },
+        { name: 'Gemini', icon: 'auto_awesome', proficiency: 100 },
+        { name: 'ChatGPT', icon: 'forum', proficiency: 60 },
+        { name: 'Claude', icon: 'hub', proficiency: 100 }
       ]
     },
     {
@@ -189,41 +199,43 @@ export class SkillsComponent {
       title: 'Methodologies',
       icon: 'psychology',
       skills: [
-        { name: 'Software Testing (QA)', icon: 'fact_check', proficiency: 85 },
-        { name: 'Agile & Scrum', icon: 'sync', proficiency: 88 },
-        { name: 'Git & Azure DevOps', icon: 'devicon-git-plain text-[#f05032]', proficiency: 90 },
-        { name: 'Version Control', icon: 'account_tree', proficiency: 92 },
-        { name: 'Web Design & Layouts', icon: 'web', proficiency: 88 }
+        { name: 'Software Testing (QA)', icon: 'fact_check', proficiency: 80 },
+        { name: 'Playwright', icon: 'science', proficiency: 60 },
+        { name: 'Agile & Scrum', icon: 'sync', proficiency: 100 },
+        { name: 'Git & Azure DevOps', icon: 'devicon-git-plain text-[#f05032]', proficiency: 100 },
+        { name: 'Version Control', icon: 'account_tree', proficiency: 100 },
+        { name: 'Web Design & Layouts', icon: 'web', proficiency: 100 }
       ]
     }
   ];
 
-  readonly filteredSkills = computed(() => {
-    const tab = this.activeTab();
-    let targetCatIds: string[] = [];
-
-    if (tab === 'back-front') {
-      targetCatIds = ['backend', 'frontend'];
-    } else if (tab === 'db-cloud') {
-      targetCatIds = ['database', 'cloud'];
-    } else if (tab === 'design-ai') {
-      targetCatIds = ['design', 'ai-tools'];
-    } else if (tab === 'methodologies') {
-      targetCatIds = ['methodologies'];
-    }
-
-    const list: SkillItem[] = [];
-    for (const catId of targetCatIds) {
-      const category = this.categories.find(c => c.id === catId);
-      if (category) {
-        list.push(...category.skills);
+  /** Each skill once (highest level wins), grouped by depth, ordered by level then name. */
+  readonly groups = computed<SkillGroup[]>(() => {
+    const best = new Map<string, SkillItem>();
+    for (const category of this.categories) {
+      for (const skill of category.skills) {
+        const seen = best.get(skill.name);
+        if (!seen || skill.proficiency > seen.proficiency) {
+          best.set(skill.name, skill);
+        }
       }
     }
-    return list;
+    const sorted = [...best.values()].sort(
+      (x, y) => y.proficiency - x.proficiency || x.name.localeCompare(y.name)
+    );
+    return [
+      { id: 'primary', title: 'Primary', note: 'Expert and Advanced: what I build with every day.', skills: sorted.filter(k => k.proficiency >= 80) },
+      { id: 'working', title: 'Working', note: 'Proficient: solid working knowledge.', skills: sorted.filter(k => k.proficiency >= 60 && k.proficiency < 80) },
+      { id: 'familiar', title: 'Familiar', note: 'Developing and Familiar: practical basics.', skills: sorted.filter(k => k.proficiency < 60) }
+    ].filter(group => group.skills.length > 0);
   });
 
-  setActiveTab(tabId: TabId) {
-    this.activeTab.set(tabId);
+  levelLabel(proficiency: number): string {
+    if (proficiency >= 100) return 'Expert';
+    if (proficiency >= 80) return 'Advanced';
+    if (proficiency >= 60) return 'Proficient';
+    if (proficiency >= 40) return 'Developing';
+    return 'Familiar';
   }
 
   getDashOffset(proficiency: number): string {

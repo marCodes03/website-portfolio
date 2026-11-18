@@ -52,3 +52,26 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## Decision Logging
+
+- Any non-trivial decision made during a session (choosing a library/service over another, rewriting copy/tone, approving a deletion, picking an execution order, resolving an ambiguity the user was asked about) MUST be recorded in `docs/decisions.md`, newest entry first, with enough context for a future session to understand *why*.
+
+## Content Source of Truth
+
+- `docs/portfolio-content.md` is the single source of truth for all portfolio content (experience, background, projects, skills, workflow, journey, off-screen activities, certificates and trainings).
+- Any content change MUST be made in `docs/portfolio-content.md` FIRST, then mirrored into the Angular components in `src/app/components/`. If the file and a component disagree, the file wins; fix the component.
+- The chatbot reads this file via `scripts/generate-chat-context.mjs` (`npm run generate:chat-context`, run automatically on `prestart`/`prebuild`) into `api/_lib/portfolio-content.generated.ts`. Never edit the generated file by hand.
+- Record content decisions in `docs/decisions.md`.
+
+## Specs
+
+- Behaviour specs live in `docs/specs/` (see `docs/specs/README.md` for layout, status values and the index).
+- Every NEW feature or requirement MUST get its own spec file in `docs/specs/changes/` (`NNNN-short-slug.md`, next free number, copied from `docs/specs/_template.md`) BEFORE any code is written. Write numbered, testable requirements and acceptance criteria, and set `status: draft`.
+- Do not implement until the user has approved the spec. When it ships, set `status: implemented`, fill in **Files**, and add a one-line pointer in the **Change log** of every baseline spec it `amends`.
+- Keep the specs index in `docs/specs/README.md` current, and link the spec ID from the matching `docs/decisions.md` entry.
+- Do not copy page content into specs; link to `docs/portfolio-content.md`.
+
+## Setup: Required AI Skills
+
+This repo expects design/review skills that are gitignored (`.claude/`). After cloning, **tell the user to install them** following [docs/required-skills.md](docs/required-skills.md) (source GitHub links and install steps) before doing UI design, audit or review work. If a skill listed there is missing from `.claude/skills/`, say so and point to that file.

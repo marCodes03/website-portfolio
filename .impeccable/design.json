@@ -1,0 +1,397 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-18T18:19:51.752Z",
+  "title": "Design System: Marco O. Amira Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "frosted-teal": {
+        "role": "primary",
+        "displayName": "Frosted Teal",
+        "canonical": "#1b6375",
+        "tonalRamp": [
+          "#0a2a33",
+          "#0f3c49",
+          "#1b6375",
+          "#3a8196",
+          "#5f9fb2",
+          "#8abdcc",
+          "#b1e5f2",
+          "#dff3f8"
+        ]
+      },
+      "frosted-blue": {
+        "role": "primary",
+        "displayName": "Frosted Blue",
+        "canonical": "#b1e5f2",
+        "tonalRamp": [
+          "#0f3c49",
+          "#1b6375",
+          "#3a8196",
+          "#5f9fb2",
+          "#8abdcc",
+          "#b1e5f2",
+          "#d2eff7",
+          "#eef9fc"
+        ]
+      },
+      "canvas-light": {
+        "role": "neutral",
+        "displayName": "Paper Blush",
+        "canonical": "#fcf8fa",
+        "tonalRamp": [
+          "#272635",
+          "#575665",
+          "#8b8a96",
+          "#cecece",
+          "#e8e9f3",
+          "#f3eff2",
+          "#fcf8fa",
+          "#ffffff"
+        ]
+      },
+      "canvas-dark": {
+        "role": "neutral",
+        "displayName": "Indigo Night",
+        "canonical": "#1C1A27",
+        "tonalRamp": [
+          "#121220",
+          "#1C1A27",
+          "#2A1B3D",
+          "#42414D",
+          "#5D5C61",
+          "#8b8a96",
+          "#cecece",
+          "#fcf8fa"
+        ]
+      },
+      "surface-light": {
+        "role": "neutral",
+        "displayName": "Lavender Mist",
+        "canonical": "#e8e9f3",
+        "tonalRamp": [
+          "#575665",
+          "#8b8a96",
+          "#b7b8c6",
+          "#cecece",
+          "#dcdde9",
+          "#e8e9f3",
+          "#f3f4f9",
+          "#fcf8fa"
+        ]
+      },
+      "surface-dark": {
+        "role": "neutral",
+        "displayName": "Plum Shadow",
+        "canonical": "#2A1B3D",
+        "tonalRamp": [
+          "#121220",
+          "#1C1A27",
+          "#2A1B3D",
+          "#3b2a52",
+          "#4d3b66",
+          "#5d5c61",
+          "#8b8a96",
+          "#cecece"
+        ]
+      },
+      "deep-ink": {
+        "role": "neutral",
+        "displayName": "Deep Ink",
+        "canonical": "#121220",
+        "tonalRamp": [
+          "#0a0a14",
+          "#121220",
+          "#1C1A27",
+          "#1F2A40",
+          "#2A3550",
+          "#42414D",
+          "#5D5C61",
+          "#8b8a96"
+        ]
+      },
+      "midnight-navy": {
+        "role": "neutral",
+        "displayName": "Midnight Navy",
+        "canonical": "#1F2A40",
+        "tonalRamp": [
+          "#121220",
+          "#18203a",
+          "#1F2A40",
+          "#2c3a58",
+          "#3d4d6e",
+          "#5b6c8c",
+          "#8b97b0",
+          "#cecece"
+        ]
+      },
+      "track-org-light": {
+        "role": "tertiary",
+        "displayName": "Track Orange (light)",
+        "canonical": "#c2410c",
+        "tonalRamp": [
+          "#431407",
+          "#7c2d12",
+          "#9a3412",
+          "#c2410c",
+          "#ea580c",
+          "#f97316",
+          "#fdba74",
+          "#ffedd5"
+        ]
+      },
+      "track-award-light": {
+        "role": "tertiary",
+        "displayName": "Track Amber (light)",
+        "canonical": "#a16207",
+        "tonalRamp": [
+          "#422006",
+          "#713f12",
+          "#854d0e",
+          "#a16207",
+          "#ca8a04",
+          "#eab308",
+          "#fde047",
+          "#fef9c3"
+        ]
+      },
+      "track-org-dark": {
+        "role": "tertiary",
+        "displayName": "Track Orange (dark)",
+        "canonical": "#f24e1e",
+        "tonalRamp": [
+          "#431407",
+          "#7c2d12",
+          "#c2410c",
+          "#f24e1e",
+          "#f97316",
+          "#fb923c",
+          "#fdba74",
+          "#ffedd5"
+        ]
+      },
+      "track-award-dark": {
+        "role": "tertiary",
+        "displayName": "Track Amber (dark)",
+        "canonical": "#eab308",
+        "tonalRamp": [
+          "#422006",
+          "#713f12",
+          "#a16207",
+          "#ca8a04",
+          "#eab308",
+          "#facc15",
+          "#fde047",
+          "#fef9c3"
+        ]
+      },
+      "ink-on-accent": {
+        "role": "neutral",
+        "displayName": "Ink on Accent",
+        "canonical": "#272635",
+        "tonalRamp": [
+          "#121220",
+          "#1c1a27",
+          "#272635",
+          "#3b3a4a",
+          "#575665",
+          "#8b8a96",
+          "#cecece",
+          "#e8e9f3"
+        ]
+      },
+      "error-dark": {
+        "role": "semantic",
+        "displayName": "Error (dark)",
+        "canonical": "#ffb4ab",
+        "tonalRamp": [
+          "#93000a",
+          "#ba1a1a",
+          "#de3730",
+          "#ff5449",
+          "#ff897d",
+          "#ffb4ab",
+          "#ffdad6",
+          "#fff8f7"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name only (JetBrains Mono)."
+      },
+      "headline-lg": {
+        "displayName": "Headline Large",
+        "purpose": "Section titles."
+      },
+      "headline-md": {
+        "displayName": "Headline Medium",
+        "purpose": "Card and subsection titles."
+      },
+      "body-md": {
+        "displayName": "Body",
+        "purpose": "Running text."
+      },
+      "label-caps": {
+        "displayName": "Label",
+        "purpose": "Buttons, tags and eyebrows."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Compact card titles such as Journey milestones."
+      }
+    },
+    "shadows": [
+      {
+        "name": "box-glow",
+        "value": "0 0 12px rgba(177,229,242,0.6), 0 0 24px rgba(177,229,242,0.3)",
+        "purpose": "Dark-mode primary buttons."
+      },
+      {
+        "name": "box-glow-border",
+        "value": "0 0 10px rgba(177,229,242,0.3), inset 0 0 4px rgba(177,229,242,0.1)",
+        "purpose": "Dark-mode outline buttons and active cards."
+      },
+      {
+        "name": "active-glow",
+        "value": "0 0 15px rgba(177,229,242,0.5)",
+        "purpose": "Selected state in dark mode."
+      },
+      {
+        "name": "card-lift",
+        "value": "0 10px 20px rgba(0,0,0,0.12)",
+        "purpose": "Neutral offset shadow on card hover only; never at rest."
+      },
+      {
+        "name": "card-lift",
+        "value": "0 10px 20px rgba(0,0,0,0.12)",
+        "purpose": "Neutral hover lift on cards; never at rest."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.25, 1, 0.5, 1)",
+        "purpose": "Button press and skill-card flip; replaces the old bounce curve."
+      },
+      {
+        "name": "state-transition",
+        "value": "300ms",
+        "purpose": "Hover colour/background swaps."
+      },
+      {
+        "name": "accordion-open",
+        "value": "max-height 1s ease-in-out",
+        "purpose": "Accordion expand."
+      },
+      {
+        "name": "marquee",
+        "value": "linear infinite translateX(-50%)",
+        "purpose": "Certificate rows; stops under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main call to action, such as Download CV. Shared .btn-primary class, 48px tall.",
+      "html": "<button class=\"ds-btn-primary\">DOWNLOAD CV</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 32px;background:#272635;color:#ffffff;border:1px solid transparent;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;line-height:1;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background-color .3s,color .3s,transform .3s cubic-bezier(.25,1,.5,1)}.ds-btn-primary:hover{background:#121220}.ds-btn-primary:active{transform:scale(.97)}.ds-btn-primary:focus-visible{outline:2px solid #1b6375;outline-offset:2px}"
+    },
+    {
+      "name": "Primary Button (dark theme)",
+      "kind": "button",
+      "refersTo": "button-primary-dark",
+      "description": "Primary action in dark mode: Frosted Blue fill with a box glow.",
+      "html": "<button class=\"ds-btn-primary-dark\">DOWNLOAD CV</button>",
+      "css": ".ds-btn-primary-dark{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 32px;background:#b1e5f2;color:#272635;border:1px solid transparent;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;line-height:1;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 0 12px rgba(177,229,242,.6),0 0 24px rgba(177,229,242,.3);cursor:pointer;transition:background-color .3s,transform .3s cubic-bezier(.25,1,.5,1)}.ds-btn-primary-dark:hover{background:#ffffff}.ds-btn-primary-dark:active{transform:scale(.97)}.ds-btn-primary-dark:focus-visible{outline:2px solid #b1e5f2;outline-offset:2px}"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action, such as Ask my AI. Shared .btn-secondary class, 48px tall.",
+      "html": "<button class=\"ds-btn-outline\">ASK MY AI</button>",
+      "css": ".ds-btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 32px;background:transparent;color:#272635;border:1px solid #272635;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;line-height:1;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background-color .3s,color .3s,transform .3s cubic-bezier(.25,1,.5,1)}.ds-btn-outline:hover{background:#272635;color:#ffffff}.ds-btn-outline:active{transform:scale(.97)}.ds-btn-outline:focus-visible{outline:2px solid #1b6375;outline-offset:2px}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "description": "Container on a tonal surface with a hairline border.",
+      "html": "<div class=\"ds-card\"><h3>Capataz</h3><p>Workforce management for 10,000+ employees.</p></div>",
+      "css": ".ds-card{background:#e8e9f3;border:1px solid #cecece;border-radius:12px;padding:24px;font-family:'JetBrains Mono',monospace;color:#272635;transition:box-shadow .3s,border-color .3s}.ds-card:hover{box-shadow:0 10px 20px rgba(0,0,0,.12);border-color:#1b6375}.ds-card h3{font-size:24px;font-weight:600;line-height:1.4;margin:0 0 8px}.ds-card p{font-size:16px;line-height:1.6;margin:0;color:#575665}"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "description": "Contact form field.",
+      "html": "<input class=\"ds-input\" placeholder=\"Your name\">",
+      "css": ".ds-input{background:#fcf8fa;color:#272635;border:1px solid #cecece;border-radius:8px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:16px}.ds-input:focus-visible{outline:2px solid #1b6375;outline-offset:2px}"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "description": "Skill or category label.",
+      "html": "<span class=\"ds-tag\">ANGULAR</span>",
+      "css": ".ds-tag{display:inline-block;background:#e8e9f3;color:#1b6375;border:1px solid #cecece;border-radius:12px;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.1em}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Terminal Atelier",
+    "overview": "An engineer's monospace discipline in a studio's soft, gradient-washed room. Headings, labels and buttons are set in JetBrains Mono, which keeps the page technical and honest, while body text is IBM Plex Sans for comfortable reading; pastel gradients, translucent glass and rounded corners keep it approachable rather than austere. The chronological Journey timeline borrows the language of a git commit log, so the page reads as a record of work.\n\nThe system is calm and spacious: wide section padding, a single 1200px column, one accent hue. Light mode is a clean off-white canvas; dark mode is deep indigo and plum with a glowing frosted-blue accent. Both themes are first-class and the user can switch.",
+    "keyCharacteristics": [
+      "Two families: JetBrains Mono for headings, labels and tags; IBM Plex Sans for running text.",
+      "One accent hue, frosted blue, shifted per theme for contrast.",
+      "Tonal gradient backdrops that change from section to section.",
+      "Soft, rounded, glassy components; glow only in dark mode.",
+      "Git-flavored timeline motifs in Journey."
+    ],
+    "rules": [
+      {
+        "name": "The One Accent Rule",
+        "body": "The frosted blue is the only chromatic accent. The one exception is the Journey timeline, whose org (orange) and award (amber) tracks are data categories, each also coded by line style; light-mode values are darkened to clear 3:1. Do not add any other hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark Band Rule",
+        "body": "On the always-dark section (.accent-on-dark), use the light accent #b1e5f2 in every theme; the light-theme accent is only about 2:1 against it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Caps Label Rule",
+        "body": "Uppercase tracked text is reserved for the 12px label style (buttons, tags); never for body or headlines.",
+        "section": "typography"
+      },
+      {
+        "name": "The Dark-Only Glow Rule",
+        "body": "Glow appears only in dark mode; light mode stays flat.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use the type tokens rather than raw sizes or font names.",
+      "Do use one accent hue per theme (#1b6375 light, #b1e5f2 dark).",
+      "Do keep every tap target at least 44px (.tap-44).",
+      "Do respect prefers-reduced-motion; all transitions collapse.",
+      "Do keep light mode flat and reserve glow for dark mode."
+    ],
+    "donts": [
+      "Don't add a second accent colour outside the Journey track hues.",
+      "Don't use accent #1b6375 on the always-dark section; use #b1e5f2.",
+      "Don't put shadows on resting elements.",
+      "Don't hide content by default behind scroll reveals; content must be visible without JavaScript or reduced-motion preference."
+    ]
+  }
+}

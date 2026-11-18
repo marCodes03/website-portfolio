@@ -1,27 +1,28 @@
-import { Component, signal, computed, afterNextRender, OnDestroy } from '@angular/core';
+import { Component, signal, computed, afterNextRender, inject, OnDestroy } from '@angular/core';
+import { ChatBotService } from '../chat-bot/chat-bot.service';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-hero',
   imports: [NgOptimizedImage],
   template: `
-    <section class="relative overflow-hidden min-h-[85vh] flex justify-center pt-12 md:pt-16 pb-0 px-gutter section-frosted" id="home">
-      <div class="max-w-[1200px] mx-auto w-full grid grid-cols-1 md:grid-cols-12 items-center gap-12">
-        <div class="md:col-span-7 space-y-8 text-center md:text-left pb-8 md:pb-12">
+    <section class="relative overflow-hidden min-h-[calc(100svh-var(--header-h,73px))] flex justify-center pt-8 md:pt-16 pb-0 px-gutter section-frosted" id="home">
+      <div class="max-w-[1200px] mx-auto w-full h-[calc(100svh-var(--header-h,73px)-2rem)] md:h-auto grid grid-cols-1 grid-rows-[auto_minmax(0,1fr)] md:grid-rows-none md:grid-cols-12 items-center gap-4 md:gap-12">
+        <div class="md:col-span-7 space-y-6 md:space-y-8 text-center md:text-left pb-2 md:pb-12">
           <div class="space-y-4">
             <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-text italic">
-              Hello, I'm <span class="text-primary not-italic">Marco</span>
+              Hello, I'm <span class="text-primary not-italic">Marco</span>.
             </h1>
             
-            <div class="flex flex-col sm:flex-row items-center sm:items-center gap-4 justify-center md:justify-start font-headline-md text-headline-md text-text my-2">
+            <div class="flex flex-row items-center gap-3 sm:gap-4 justify-center md:justify-start font-headline-md text-headline-md text-text my-2">
               <span class="font-semibold">I am a</span>
-              <div class="relative inline-block h-12 w-64 md:w-72 select-none" style="perspective: 1000px;">
+              <div class="relative inline-block h-12 w-56 sm:w-64 md:w-72 select-none" style="perspective: 1000px;">
                 <div class="relative w-full h-full transition-transform duration-700 ease-out"
                      style="transform-style: preserve-3d;"
                      [style.transform]="cubeTransform()">
                   @for (word of words; track word; let idx = $index) {
                     <div class="absolute inset-0 flex items-center justify-center bg-accent text-white dark:bg-accent/15 dark:text-accent dark:border dark:border-accent/30 dark:box-glow-border font-bold text-center text-sm md:text-md uppercase tracking-wider px-2"
-                         [style.transform]="getFaceTransform(idx)"
+                         [style.transform]="faceTransforms[idx]"
                          style="backface-visibility: hidden;">
                       {{ word }}
                     </div>
@@ -30,29 +31,29 @@ import { NgOptimizedImage } from '@angular/common';
               </div>
             </div>
 
-            <p class="font-body-lg text-body-lg text-text-muted max-w-xl mx-auto md:mx-0">
-              Eager to solve challenges and create high-impact systems.
+            <p class="font-body-md md:font-body-lg text-body-md md:text-body-lg text-text-muted max-w-xl mx-auto md:mx-0">
+              Full-stack software engineer, 9+ years coding, Taguig City, PH. Building production .NET backends and Angular frontends, from IoT platforms to enterprise workforce systems.
             </p>
           </div>
           <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-            <a href="/assets/files/marco-o-amira-cv-reference.pdf" target="_blank" download="Marco-O-Amira-CV.pdf" class="bg-text text-white dark:bg-accent dark:text-[#272635] dark:box-glow hover:bg-primary-container dark:hover:bg-white transition-all duration-300 px-8 py-4 rounded-lg font-label-caps text-label-caps flex items-center gap-2 group no-underline active:scale-95">
+            <a href="/assets/files/marco-o-amira-cv-reference.pdf" target="_blank" download="Marco-O-Amira-CV.pdf" class="btn-primary group no-underline">
               Download CV
-              <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform">download</span>
+              <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform" aria-hidden="true">download</span>
             </a>
-            <a href="#skills" class="border border-text text-text dark:border-accent dark:text-accent dark:box-glow-border hover:bg-text hover:text-white dark:hover:bg-accent dark:hover:text-[#272635] transition-all duration-300 px-8 py-4 rounded-lg font-label-caps text-label-caps flex items-center gap-2 group active:scale-95 no-underline">
-              View Tech Stack
-              <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform">layers</span>
-            </a>
+            <button type="button" (click)="openChat($event)" aria-haspopup="dialog" class="btn-secondary group">
+              Ask my AI about my work
+              <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" aria-hidden="true">smart_toy</span>
+            </button>
           </div>
         </div>
-        <div class="md:col-span-5 flex relative items-end justify-center md:justify-end self-end">
-          <div class="relative z-10 w-full flex justify-center md:justify-end">
+        <div class="md:col-span-5 flex relative items-end justify-center md:justify-end self-end min-h-0 h-full md:h-auto overflow-hidden md:overflow-visible">
+          <div class="relative z-10 w-full h-full md:h-auto flex justify-center md:justify-end">
             <img [ngSrc]="profileImageUrl"
-                 width="4000"
-                 height="6000"
+                 width="615"
+                 height="885"
                  priority
-                 alt="Amira Marco Osmeña - Full-Stack Developer"
-                 class="w-auto max-w-full object-contain rounded-t-[1rem]"
+                 alt="Marco O. Amira - Full-Stack Developer"
+                 class="h-full md:h-auto w-auto max-w-full object-cover object-top md:object-contain rounded-t-[1rem]"
                  style="max-height: 78vh;">
           </div>
         </div>
@@ -61,6 +62,8 @@ import { NgOptimizedImage } from '@angular/common';
   `
 })
 export class HeroComponent implements OnDestroy {
+  private readonly chat = inject(ChatBotService);
+
   readonly profileImageUrl = 'assets/image/marco-amira-hero-w-bg.png';
 
   readonly words = [
@@ -71,7 +74,7 @@ export class HeroComponent implements OnDestroy {
   ];
 
   readonly currentStep = signal(0);
-  private intervalId: any = null;
+  private intervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
     afterNextRender(() => {
@@ -86,9 +89,13 @@ export class HeroComponent implements OnDestroy {
     return `rotateX(${angle}deg)`;
   });
 
-  getFaceTransform(idx: number): string {
+  readonly faceTransforms = this.words.map((_, idx) => {
     const angle = idx * 90;
     return `rotateX(${angle}deg) translateZ(24px)`;
+  });
+
+  openChat(event: Event) {
+    this.chat.open(event.currentTarget as HTMLElement);
   }
 
   ngOnDestroy() {
