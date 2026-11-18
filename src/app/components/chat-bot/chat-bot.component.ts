@@ -1,59 +1,125 @@
-import { Component, ElementRef, ViewChild, inject, signal, effect, afterNextRender } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, afterRenderEffect, effect, inject, signal, viewChild, ElementRef } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ChatBotService } from './chat-bot.service';
 
 interface Message {
+  id: number;
   sender: 'user' | 'bot';
   text: string;
   timestamp: Date;
 }
 
+const MAX_MESSAGE_LENGTH = 500;
+
+const FALLBACK_REPLY =
+  'I apologize, but I am experiencing temporary difficulties connecting to my brain. Please try again in a moment!';
+
+const QUESTION_POOL = [
+  'Who is Marco?',
+  'What is his tech stack?',
+  'Show certificates',
+  'How to contact him?',
+  'Where did he study?',
+  'Tell me about Eyeko',
+  'Tell me about VestiCare',
+  'What is Smart Farming?',
+  'Where does he teach?',
+  'Did he win any awards?',
+  'What is his work process?',
+  'Tell me about outside work',
+  'What did he build for his internship?',
+  'What subjects does he teach at AMA?',
+  'Which student groups did he lead?',
+  'Tell me about his valedictory address',
+  'What was his role in the USSC?',
+  'Tell me about the Gerry Roxas Award',
+  'Tell me about Dr. Danilo V. Ayap Academic Excellence',
+  'What are his personal details?',
+  'What is VestiCare app about?',
+  'What was his role at ETI?',
+  'What research paper did he present?',
+  'Tell me about Technolympics 2019'
+];
+
+/** Unbiased Fisher-Yates shuffle returning a new array. */
+function shuffle<T>(items: readonly T[]): T[] {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
 @Component({
   selector: 'app-chat-bot',
-  imports: [CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, DatePipe],
+  host: {
+    '(document:keydown.escape)': 'onEscape()'
+  },
   template: `
-    <!-- Floating Toggle Button (Like Theme Toggle, positioned above it) -->
-    <button (click)="toggleChat()"
-            class="fixed bottom-24 right-6 z-50 w-14 h-14 rounded-full bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-text dark:text-white flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+    <!-- Floating Toggle Button (positioned above the theme toggle) -->
+    <button #toggleButton
+            type="button"
+            (click)="toggleChat()"
+            class="fixed bottom-24 right-6 z-50 w-14 h-14 rounded-full bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-text dark:text-white flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-transform duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             [class.bg-accent]="chatService.isOpen()"
             [class.text-primary]="chatService.isOpen()"
-            [class.dark:text-[#272635]]="chatService.isOpen()"
-            aria-label="Toggle Chat Bot">
+            [class.dark:text-on-accent]="chatService.isOpen()"
+            [attr.aria-label]="chatService.isOpen() ? 'Close chat assistant' : 'Open chat assistant'"
+            aria-controls="chat-panel"
+            [attr.aria-expanded]="chatService.isOpen()">
       <span class="material-symbols-outlined transition-transform duration-500"
+            aria-hidden="true"
             [class.rotate-[360deg]]="chatService.isOpen()">
         {{ chatService.isOpen() ? 'close' : 'smart_toy' }}
       </span>
     </button>
 
-    <!-- Slide-out Drawer Panel -->
-    <div [class.translate-x-0]="chatService.isOpen()"
+    <!-- Slide-out Drawer Panel. Hidden + inert while closed so it leaves the tab order and a11y tree. -->
+    <div #chatPanel
+         id="chat-panel"
+         role="dialog"
+         aria-modal="false"
+         aria-label="Chat assistant"
+         [attr.inert]="chatService.isOpen() ? null : ''"
+         [class.translate-x-0]="chatService.isOpen()"
          [class.translate-x-full]="!chatService.isOpen()"
-         class="fixed top-0 right-0 h-full w-full sm:w-[400px] z-[100] bg-surface/90 dark:bg-surface/95 backdrop-blur-lg border-l border-border/50 dark:border-accent/30 dark:box-glow-border shadow-2xl transition-transform duration-300 ease-in-out flex flex-col font-roboto-mono text-text">
-      
+         [class.invisible]="!chatService.isOpen()"
+         class="fixed top-0 right-0 h-full w-full sm:w-[400px] z-[100] bg-surface/90 dark:bg-surface/95 backdrop-blur-lg border-l border-border/50 dark:border-accent/30 dark:box-glow-border shadow-2xl transition-[transform,visibility] duration-300 ease-in-out flex flex-col font-roboto-mono text-text">
+
       <!-- Panel Header -->
       <div class="p-4 border-b border-border/50 dark:border-white/10 flex items-center justify-between bg-primary/5 dark:bg-white/5">
         <div class="flex items-center gap-3">
           <div class="relative flex items-center justify-center w-10 h-10 rounded-full bg-accent/20 text-accent">
-            <span class="material-symbols-outlined">smart_toy</span>
-            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-surface rounded-full"></span>
+            <span class="material-symbols-outlined" aria-hidden="true">smart_toy</span>
+            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-surface rounded-full" aria-hidden="true"></span>
           </div>
           <div>
-            <h3 class="font-bold text-sm leading-tight text-text">marCodes Bot</h3>
-            <span class="text-[10px] text-text-muted">Online • AI Assistant</span>
+            <h2 class="font-bold text-sm leading-tight text-text">marCodes Bot</h2>
+            <span class="text-xs text-text-muted">Online • AI Assistant</span>
           </div>
         </div>
-        <button (click)="closeChat()" class="p-1 rounded-full hover:bg-primary/10 dark:hover:bg-white/10 text-text transition-colors cursor-pointer">
-          <span class="material-symbols-outlined">close</span>
+        <button type="button"
+                (click)="closeChat()"
+                aria-label="Close chat assistant"
+                class="p-1 rounded-full hover:bg-primary/10 dark:hover:bg-white/10 text-text transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
         </button>
       </div>
 
-      <!-- Messages Area -->
-      <div #scrollContainer class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar">
-        @for (msg of messages(); track msg.timestamp) {
+      <!-- Messages Area: log role announces new replies politely -->
+      <div #scrollContainer
+           role="log"
+           aria-live="polite"
+           aria-label="Conversation"
+           tabindex="0"
+           class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
+        @for (msg of messages(); track msg.id) {
           <div class="flex" [class.justify-end]="msg.sender === 'user'" [class.justify-start]="msg.sender === 'bot'">
-            <div class="max-w-[80%] rounded-2xl px-4 py-2.5 text-xs shadow-sm"
+            <div class="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm shadow-sm"
                  [class.bg-text]="msg.sender === 'user'"
                  [class.text-white]="msg.sender === 'user'"
                  [class.bg-surface]="msg.sender === 'bot'"
@@ -62,13 +128,17 @@ interface Message {
                  [class.dark:bg-white/5]="msg.sender === 'bot'"
                  [class.dark:border-white/10]="msg.sender === 'bot'"
                  [class.dark:bg-accent]="msg.sender === 'user'"
-                 [class.dark:text-[#272635]]="msg.sender === 'user'"
+                 [class.dark:text-on-accent]="msg.sender === 'user'"
                  [class.dark:box-glow]="msg.sender === 'user'">
-              <p class="leading-relaxed whitespace-pre-line">{{ msg.text }}</p>
-              <span class="block text-[8px] mt-1 text-right"
-                    [class.text-white/60]="msg.sender === 'user'"
+              <p class="leading-relaxed whitespace-pre-line">
+                @if (msg.sender === 'user') {
+                  <span class="sr-only">You: </span>
+                }{{ msg.text }}
+              </p>
+              <span class="block text-xs mt-1 text-right"
+                    [class.text-white/80]="msg.sender === 'user'"
                     [class.text-text-muted]="msg.sender === 'bot'"
-                    [class.dark:text-[#272635]/60]="msg.sender === 'user'">
+                    [class.dark:text-on-accent/80]="msg.sender === 'user'">
                 {{ msg.timestamp | date:'shortTime' }}
               </span>
             </div>
@@ -78,22 +148,25 @@ interface Message {
         <!-- Typing Indicator -->
         @if (isTyping()) {
           <div class="flex justify-start">
-            <div class="bg-surface border border-border/30 dark:bg-white/5 dark:border-white/10 rounded-2xl px-4 py-3 shadow-sm flex gap-1 items-center">
-              <span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style="animation-delay: 0ms"></span>
-              <span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style="animation-delay: 150ms"></span>
-              <span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style="animation-delay: 300ms"></span>
+            <div class="bg-surface border border-border/30 dark:bg-white/5 dark:border-white/10 rounded-2xl px-4 py-3 shadow-sm flex gap-1 items-center" aria-hidden="true">
+              <span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-pulse motion-reduce:animate-none" [style.animation-delay.ms]="0"></span>
+              <span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-pulse motion-reduce:animate-none" [style.animation-delay.ms]="150"></span>
+              <span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-pulse motion-reduce:animate-none" [style.animation-delay.ms]="300"></span>
             </div>
           </div>
         }
       </div>
 
+      <!-- Typing status lives outside the message log so it is announced once, on its own. -->
+      <div class="sr-only" role="status" aria-live="polite">{{ isTyping() ? 'marCodes Bot is typing' : '' }}</div>
+
       <!-- Quick Suggestion Chips Header & Rotate Button -->
       <div class="px-4 pt-3 pb-1 flex justify-between items-center bg-primary/[0.02] dark:bg-white/[0.02] border-t border-border/20 dark:border-white/5">
-        <span class="text-[9px] font-bold text-text-muted uppercase tracking-wider">Suggested Topics</span>
+        <span class="text-xs font-bold text-text-muted uppercase tracking-wider">Suggested Topics</span>
         <button type="button"
                 (click)="rotateChips()"
-                class="flex items-center gap-1 text-[9px] font-bold text-accent hover:text-accent/80 transition-colors cursor-pointer focus:outline-none">
-          <span class="material-symbols-outlined text-[12px] leading-none">sync</span>
+                class="flex items-center gap-1 text-xs font-bold text-accent hover:text-accent/80 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
+          <span class="material-symbols-outlined text-[14px] leading-none" aria-hidden="true">sync</span>
           Rotate
         </button>
       </div>
@@ -101,23 +174,29 @@ interface Message {
       <!-- Quick Suggestion Chips -->
       <div class="px-4 pb-3 pt-1 flex flex-wrap gap-2 bg-primary/[0.02] dark:bg-white/[0.02]">
         @for (chip of visibleChips(); track chip) {
-          <button (click)="sendPresetMessage(chip)"
-                  class="text-[10px] px-3 py-1.5 rounded-full border border-border/40 hover:border-accent hover:text-accent transition-all duration-300 bg-surface/60 dark:bg-white/5 dark:border-white/10 dark:hover:border-accent cursor-pointer active:scale-95">
+          <button type="button"
+                  (click)="send(chip)"
+                  class="text-xs px-3 py-1.5 rounded-full border border-border/40 hover:border-accent hover:text-accent transition-[border-color,color,transform] duration-300 bg-surface/60 dark:bg-white/5 dark:border-white/10 dark:hover:border-accent cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             {{ chip }}
           </button>
         }
       </div>
 
       <!-- Input Bar -->
-      <form (submit)="sendMessage($event)" class="p-4 border-t border-border/50 dark:border-white/10 flex gap-2 items-center bg-primary/5 dark:bg-white/5">
-        <input [(ngModel)]="userInput"
-               name="userInput"
+      <form (submit)="onSubmit($event)" class="p-4 border-t border-border/50 dark:border-white/10 flex gap-2 items-center bg-primary/5 dark:bg-white/5">
+        <label for="chat-input" class="sr-only">Message to marCodes Bot</label>
+        <input #chatInput
+               id="chat-input"
+               [formControl]="input"
                type="text"
-               placeholder="Ask about Marco..."
-               class="flex-1 bg-surface border border-border/50 dark:border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-accent font-roboto-mono" />
+               autocomplete="off"
+               [attr.maxlength]="maxLength"
+               placeholder="Ask about Marco…"
+               class="flex-1 bg-surface border border-border/50 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent font-roboto-mono" />
         <button type="submit"
-                class="w-9 h-9 rounded-xl bg-text text-white dark:bg-accent dark:text-[#272635] flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer dark:box-glow">
-          <span class="material-symbols-outlined text-sm">send</span>
+                aria-label="Send message"
+                class="w-9 h-9 rounded-xl bg-text text-white dark:bg-accent dark:text-on-accent flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer dark:box-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+          <span class="material-symbols-outlined text-sm" aria-hidden="true">send</span>
         </button>
       </form>
 
@@ -127,60 +206,62 @@ interface Message {
 export class ChatBotComponent {
   readonly chatService = inject(ChatBotService);
   private readonly http = inject(HttpClient);
-  
-  userInput = '';
-  readonly messages = signal<Message[]>([]);
+
+  readonly maxLength = MAX_MESSAGE_LENGTH;
+  readonly input = new FormControl('', { nonNullable: true });
+  readonly messages = signal<Message[]>([
+    {
+      id: 0,
+      sender: 'bot',
+      text: "Hi! I am marCodes Bot, Marco's AI assistant. 🤖\n\nAsk me anything about Marco's software engineering experience, background, stack, or certifications!",
+      timestamp: new Date()
+    }
+  ]);
   readonly isTyping = signal(false);
+  readonly visibleChips = signal<string[]>(shuffle(QUESTION_POOL).slice(0, 3));
 
-  readonly questionPool = [
-    'Who is Marco?',
-    'What is his tech stack?',
-    'Show certificates',
-    'How to contact him?',
-    'Where did he study?',
-    'Tell me about Eyeko',
-    'Tell me about VestiCare',
-    'What is Smart Farming?',
-    'Where does he teach?',
-    'Did he win any awards?',
-    'What is his work process?',
-    'Tell me about outside work',
-    'What did he build for his internship?',
-    'What subjects does he teach at AMA?',
-    'Which student groups did he lead?',
-    'Tell me about his valedictory address',
-    'What was his role in the USSC?',
-    'Tell me about the Gerry Roxas Award',
-    'Tell me about Dr. Danilo V. Ayap Academic Excellence',
-    'What are his personal details?',
-    'What is VestiCare app about?',
-    'What was his role at ETI?',
-    'What research paper did he present?',
-    'Tell me about Technolympics 2019'
-  ];
+  private readonly scrollContainer = viewChild<ElementRef<HTMLElement>>('scrollContainer');
+  private readonly chatInput = viewChild<ElementRef<HTMLInputElement>>('chatInput');
+  private readonly toggleButton = viewChild<ElementRef<HTMLButtonElement>>('toggleButton');
+  private readonly chatPanel = viewChild<ElementRef<HTMLElement>>('chatPanel');
 
-  readonly visibleChips = signal<string[]>([]);
-
-  @ViewChild('scrollContainer') private scrollContainer?: ElementRef;
+  private nextId = 1;
+  private wasOpen = false;
 
   constructor() {
-    // Add default welcome message
-    this.messages.set([
-      {
-        sender: 'bot',
-        text: "Hi! I am marCodes Bot, Marco's AI assistant. 🤖\n\nAsk me anything about Marco's software engineering experience, background, stack, or certifications!",
-        timestamp: new Date()
+    // Keep the newest message in view.
+    afterRenderEffect(() => {
+      this.messages();
+      this.isTyping();
+      const el = this.scrollContainer()?.nativeElement;
+      if (el) {
+        el.scrollTop = el.scrollHeight;
       }
-    ]);
+    });
 
-    // Initialize with 3 random suggestions
-    this.rotateChips();
-
-    // Keep scroll position updated when messages change
+    // Move focus into the dialog on open, and back to the toggle on close.
     effect(() => {
-      if (this.messages().length > 0) {
-        setTimeout(() => this.scrollToBottom(), 50);
+      const open = this.chatService.isOpen();
+      if (open === this.wasOpen) {
+        return;
       }
+      this.wasOpen = open;
+      // When closing, only pull focus back to the toggle if it was inside the panel (or nowhere);
+      // closing with Escape while the visitor is elsewhere must not steal their focus.
+      const active = document.activeElement;
+      const returnFocus =
+        !open && (!active || active === document.body || !!this.chatPanel()?.nativeElement.contains(active));
+      // Delay past the first frame: the panel is `visibility: hidden` until its transition starts.
+      setTimeout(() => {
+        if (open) {
+          this.chatInput()?.nativeElement.focus();
+        } else if (returnFocus) {
+          const opener = this.chatService.opener();
+          const target = opener && opener.isConnected ? opener : this.toggleButton()?.nativeElement;
+          target?.focus();
+          this.chatService.opener.set(null);
+        }
+      }, 100);
     });
   }
 
@@ -192,70 +273,50 @@ export class ChatBotComponent {
     this.chatService.close();
   }
 
-  sendPresetMessage(text: string) {
-    this.userInput = text;
-    this.sendMessage();
+  onEscape() {
+    if (!this.chatService.isOpen()) {
+      return;
+    }
+    // A modal dialog handles its own Escape; do not also close the chat behind it.
+    if (document.querySelector('app-project-modal [role=dialog], app-certificate-modal [role=dialog]')) {
+      return;
+    }
+    this.chatService.close();
   }
 
   rotateChips() {
-    // Shuffle pool and select first 3 items
-    const shuffled = [...this.questionPool].sort(() => 0.5 - Math.random());
-    this.visibleChips.set(shuffled.slice(0, 3));
+    this.visibleChips.set(shuffle(QUESTION_POOL).slice(0, 3));
   }
 
-  sendMessage(event?: Event) {
-    if (event) {
-      event.preventDefault();
-    }
+  onSubmit(event: Event) {
+    event.preventDefault();
+    this.send(this.input.value);
+  }
 
-    const trimmedInput = this.userInput.trim();
-    if (!trimmedInput || this.isTyping()) return;
+  send(text: string) {
+    const trimmed = text.trim().slice(0, MAX_MESSAGE_LENGTH);
+    if (!trimmed || this.isTyping()) return;
 
-    // Rotate suggestions for the next turn
     this.rotateChips();
-
-    // Add user message
-    this.messages.update(msgs => [
-      ...msgs,
-      { sender: 'user', text: trimmedInput, timestamp: new Date() }
-    ]);
-    this.userInput = '';
-
-    // Show bot typing
+    this.addMessage('user', trimmed);
+    this.input.reset();
     this.isTyping.set(true);
 
-    // Call Vercel Edge Function via HttpClient
-    this.http.post<{ reply: string }>('/api/chat', { message: trimmedInput }).subscribe({
+    this.http.post<{ reply?: string }>('/api/chat', { message: trimmed }).subscribe({
       next: (response) => {
         this.isTyping.set(false);
-        this.messages.update(msgs => [
-          ...msgs,
-          { sender: 'bot', text: response.reply, timestamp: new Date() }
-        ]);
+        this.addMessage('bot', response.reply || FALLBACK_REPLY);
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error('Chat Bot API Error:', err);
         this.isTyping.set(false);
-        this.messages.update(msgs => [
-          ...msgs,
-          {
-            sender: 'bot',
-            text: "I apologize, but I am experiencing temporary difficulties connecting to my brain. Please try again in a moment!",
-            timestamp: new Date()
-          }
-        ]);
+        this.addMessage('bot', FALLBACK_REPLY);
       }
     });
   }
 
-  private scrollToBottom() {
-    if (this.scrollContainer) {
-      try {
-        const el = this.scrollContainer.nativeElement;
-        el.scrollTop = el.scrollHeight;
-      } catch (err) {
-        console.error('Scroll error:', err);
-      }
-    }
+  private addMessage(sender: Message['sender'], text: string) {
+    const message: Message = { id: this.nextId++, sender, text, timestamp: new Date() };
+    this.messages.update(msgs => [...msgs, message]);
   }
 }

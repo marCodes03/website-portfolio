@@ -664,3 +664,96 @@ html.kbd,
 html.kbd .scroll-smooth {
   scroll-behavior: auto;
 }
+
+/* Button system (CHG-0017): one primary and one secondary style, one height.
+   `.btn-on-dark` adapts the secondary style for sections with a dark ground in every theme. */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  font-family: "Roboto Mono", monospace;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.btn-primary:active,
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--color-text);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--color-primary-container, var(--color-text));
+}
+.dark .btn-primary {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+.dark .btn-primary:hover {
+  background: #ffffff;
+}
+.btn-secondary {
+  border-color: var(--color-text);
+  color: var(--color-text);
+  background: transparent;
+}
+.btn-secondary:hover {
+  background: var(--color-text);
+  color: #ffffff;
+}
+.dark .btn-secondary {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.dark .btn-secondary:hover {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+.btn-secondary.btn-on-dark,
+.dark .btn-secondary.btn-on-dark {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+.btn-secondary.btn-on-dark:hover,
+.dark .btn-secondary.btn-on-dark:hover {
+  background: #ffffff;
+  color: #272635;
+}
+
+/* Buttons on the always-dark call-to-action band keep the light accent in every theme. */
+.accent-on-dark .btn-primary,
+.dark .accent-on-dark .btn-primary {
+  background: var(--color-accent);
+  color: #272635;
+}
+.accent-on-dark .btn-primary:hover,
+.dark .accent-on-dark .btn-primary:hover {
+  background: #ffffff;
+}
+.accent-on-dark .btn-secondary,
+.dark .accent-on-dark .btn-secondary {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.accent-on-dark .btn-secondary:hover,
+.dark .accent-on-dark .btn-secondary:hover {
+  background: var(--color-accent);
+  color: #272635;
+}

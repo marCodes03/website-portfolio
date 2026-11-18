@@ -39,3 +39,4 @@ Some utilities use literal hex values (for example `dark:text-[#272635]`), which
 
 ## Change log
 - 2026-11-18: baseline written from code.
+- 2026-11-19: amended by [CHG-0017](../changes/0017-button-system-and-motion.md) (shared button classes, no bounce easing).

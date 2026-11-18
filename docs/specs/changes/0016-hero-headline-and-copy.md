@@ -1,7 +1,7 @@
 ---
 id: CHG-0016
 title: Hero headline names the role and one hard fact; consistent main action
-status: draft
+status: implemented
 created: 2026-11-19
 amends: [pages/hero, pages/certificates]
 superseded_by:
@@ -41,10 +41,13 @@ Long h1 at 320 px; dark theme; the cube's current word is not part of the h1 tex
 Rewriting other sections, chatbot tone, any fact not in the content file.
 
 ## Files
-Filled in when implemented.
+`src/app/components/hero/hero.component.ts` (h1 full stop, fact line), `src/app/components/header/header.component.ts` ("Contact me"), `src/app/components/certificates/certificates.component.ts` (closing "Contact me" button), `src/app/components/cta-band/cta-band.component.ts` ("Contact me").
 
 ## Related
 [pages/hero](../pages/hero.md), [0013](0013-layout-rhythm.md). Content: `docs/portfolio-content.md` (About, Quick facts).
 
 ## Change log
 - 2026-11-19: created.
+- 2026-11-19: approved by the user.
+- 2026-11-19: user chose wording option C (keep "Hello, I'm Marco." with the fact line) and the label "Contact me".
+- 2026-11-19: implemented option C and the label "Contact me" (nav, certificates close, cta band). `copy-fact` now passes. **Not met:** R1 and R3 by the checker: with option C the h1 stays "Hello, I'm Marco." so `copy-headline` and `run-on` still FAIL (the coloured name reads as a second part). Option A or B would pass. The hero paragraph was replaced by the fact line plus a shortened description; the fact line adds "9+ years coding, Taguig City, PH" from the content file.

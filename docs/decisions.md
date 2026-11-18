@@ -2,6 +2,12 @@
 
 This file records non-trivial decisions made while working on this project with Claude, so future sessions (human or AI) know *why* something was built a certain way, not just *what* was built. Newest entries at the top.
 
+## 2026-11-19 - CHG-0015, CHG-0016, CHG-0017 approved and implemented
+
+**What:** User approved all three, chose hero wording C (keep "Hello, I'm Marco.") and the label "Contact me". CHG-0015: Workflow panels in two columns from 1280px (2471 px to 1386 px at 1440; chosen over tabs because it keeps every stage visible and needs no new state). CHG-0016: h1 full stop, fact line "Full-stack software engineer, 9+ years coding, Taguig City, PH." (from the content file) plus a shortened description, "Contact me" in the nav, the Certificates close and the CTA band (another session's `cta-band`, whose "Email me" became "Contact me"). CHG-0017: shared `.btn-primary`, `.btn-secondary`, `.btn-on-dark` (48px, one label size) in `styles.css`, applied to hero, experience, journey, contact and the CTA band, with light-accent overrides inside `.accent-on-dark`; bounce easing replaced (ease-out-quart; `animate-pulse` for chat dots). `ng build` passes.
+
+**Choices and gaps:** Option C keeps a greeting h1, so `copy-headline` and `run-on` still FAIL (A or B would pass; the user chose C). The checker still FAILs `button-styles` (it treats fill vs outline, the floating theme button and the Workflow stage tabs as separate styles); the stage tabs and round icon controls were intentionally left. I did not add a "Contact me" to the hero, because the hero already has two actions and the checker accepts nav or hero. The AXE check (CHG-0012) was not rerun after these changes; run it before merging. Edited a file from another session (`cta-band.component.ts`, untracked) for the button classes and label.
+
 ## 2026-11-19 - Three follow-up specs drafted: CHG-0015, CHG-0016, CHG-0017
 
 **What:** The user answered "option 1 - 3" to the next-spec question; read as all three of career-path length, copy and headline, and visual polish. Drafted [CHG-0015](specs/changes/0015-career-path-length.md) (Workflow section within two screens), [CHG-0016](specs/changes/0016-hero-headline-and-copy.md) (hero headline, one hard fact, one main-action wording; three wording options for the user to pick) and [CHG-0017](specs/changes/0017-button-system-and-motion.md) (one primary and one secondary button, no bounce easing). All `draft`; no code written.
@@ -37,6 +43,14 @@ This file records non-trivial decisions made while working on this project with 
 **What:** Root cause of the "focus lands on something you cannot see" failures: `scroll-smooth` meant a tabbed-to control was still off-screen when checked, and the scroll-reveal observer re-hid a section while focus was inside it. Fixes: `app.ts` adds `html.kbd` on Tab (removed on pointerdown) and `styles.css` sets `scroll-behavior: auto` for `html.kbd` and `.scroll-smooth` descendants; the observer no longer hides a section containing `document.activeElement`; the project carousel arrows get `focus-visible:opacity-100 focus-visible:duration-0`. Result: all `focus-visible` and `tap-size` failures pass; `ng build` passes.
 
 **Open:** certificate marquee contrast (pill text/bullet reads 1.0:1 at one tenth, probably over a neighbouring translucent pill), one marquee hidden-content item, and 2 `focus-ring` flags on generated Tailwind utilities. Not waived: marquee findings change per run, so a per-finding waiver would be fragile. CHG-0008 stays `approved`.
+
+## 2026-11-19 - Project strip removed, metrics folded into Experience (CHG-0014 C3)
+
+**What:** The user found the "Built and running" strip redundant with the Projects carousel. Offered three options (metrics on project cards, remove entirely, fold into Experience); the user chose Experience. The strip, its component and its content section are gone; the numbers already in the Eclectus role bullets (10,000+, 100+, 50%, 80%) are now bold in the accent colour. The 40% photo-data figure stays only in the Capataz Mobile project text, since it is not a role bullet. Spec C3/AC5 and the page order were updated.
+
+## 2026-11-19 - Critique round 1 shipped (CHG-0014)
+
+**User picks:** one spec for the whole round; the hero chat button replaces "View Tech Stack"; Contact moves to the end AND a closing CTA band is added; awards consolidated to one place (Certificates); skills grouped by depth; all five critique issues in scope. **Judgement calls:** the chat already had suggestion chips, so A3/A4 were dropped instead of duplicating them; "Other" shrank to four by deleting the dead "Achievements" link and dropping "Outside Work" from the nav (the section is still on the page); Working and Familiar skills render as compact chips so the section got denser, not longer; the "IT Olympics placeholder" was a real photo dimmed under a label, so the dimming and label were removed. **Found:** the Off-Screen images that looked blank are lazy-loaded and load when scrolled into view (not broken). **Not met, not caused here:** CHG-0013 R1 at 390x844 (hero 1173px tall, 1099px without the new button). Content changed in `docs/portfolio-content.md` first and the chat context regenerated. `npm run test:a11y`: 0 violations.
 
 ## 2026-11-19 - Repeatable AXE check (CHG-0012)
 

@@ -45,3 +45,4 @@ Chat history is in memory only and is lost on reload. Rate limit: 10 requests pe
 - 2026-11-18: baseline written from code.
 - 2026-11-18: amended by [CHG-0005](../changes/0005-chat-failure-status.md) (Chat API returns an error status on model failure). Any "known gap" above that this resolves is now closed.
 - 2026-11-18: amended by [CHG-0010](../changes/0010-chat-announcements-and-escape.md) (cleaner announcements; Escape from anywhere; focus only returned when it was inside the panel).
+- 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): The chat can be opened from the hero, workflow and closing band; focus returns to the opener on close.

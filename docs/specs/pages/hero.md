@@ -41,3 +41,5 @@ Hidden cube faces use `backface-visibility: hidden`. If the image fails to load 
 ## Change log
 - 2026-11-18: baseline written from code.
 - 2026-11-19: amended by [CHG-0013](../changes/0013-layout-rhythm.md) (hero fills first screen; Journey shows newest 7 milestones, older behind a toggle).
+- 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): Hero actions are now "Download CV" and "Ask my AI about my work" (opens the chat); "View Tech Stack" removed.
+- 2026-11-19: amended by [CHG-0016](../changes/0016-hero-headline-and-copy.md) (h1 full stop, fact line, "Contact me").

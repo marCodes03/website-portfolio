@@ -11,15 +11,13 @@ const MAIN_NAV: readonly NavItem[] = [
   { id: 'about', label: 'About', mobileLabel: 'About' },
   { id: 'experience', label: 'Experience', mobileLabel: 'Experience' },
   { id: 'projects', label: 'Projects', mobileLabel: 'Projects' },
-  { id: 'contact', label: 'Contact', mobileLabel: 'Contact' }
+  { id: 'contact', label: 'Contact me', mobileLabel: 'Contact me' }
 ];
 
 const OTHER_NAV: readonly NavItem[] = [
-  { id: 'skills', label: 'Tech Stack', mobileLabel: 'Skills & Tools' },
-  { id: 'career-path', label: 'Work Flow Process', mobileLabel: 'Career Path' },
+  { id: 'skills', label: 'Tech Stack', mobileLabel: 'Tech Stack' },
+  { id: 'career-path', label: 'Workflow Process', mobileLabel: 'Workflow Process' },
   { id: 'journey', label: 'Programming Journey', mobileLabel: 'Journey' },
-  { id: 'achievements', label: 'Achievements', mobileLabel: 'Achievements' },
-  { id: 'off-screen-activities', label: 'Outside Work', mobileLabel: 'Off-Screen' },
   { id: 'certificates', label: 'Certificates', mobileLabel: 'Certificates' }
 ];
 

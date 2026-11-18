@@ -39,3 +39,4 @@ If the devicon CDN is blocked, devicon icons disappear but names and rings remai
 ## Change log
 - 2026-11-18: baseline written from code.
 - 2026-11-18: amended by [CHG-0007](../changes/0007-tabs-and-step-semantics.md) (Tab and current-step semantics for Skills and Workflow). Any "known gap" above that this resolves is now closed.
+- 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): Tabs replaced by three depth groups (Primary, Working, Familiar); Primary keeps flip cards, the others are compact chips with a level label.

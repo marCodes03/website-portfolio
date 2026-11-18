@@ -1,5 +1,17 @@
 import { Component, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
+import { ToastService } from '../toast/toast.service';
+
+type FieldName = 'name' | 'email' | 'subject' | 'message';
+
+const ERROR_MESSAGES: Record<FieldName, { required: string; minlength?: string; email?: string }> = {
+  name: { required: 'Please enter your name.', minlength: 'Your name must be at least 2 characters.' },
+  email: { required: 'Please enter your email address.', email: 'Enter a valid email address, like john@example.com.' },
+  subject: { required: 'Please enter a subject.' },
+  message: { required: 'Please enter a message.', minlength: 'Your message must be at least 10 characters.' }
+};
 
 @Component({
   selector: 'app-contact',
@@ -17,16 +29,16 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
           <div class="space-y-6 pt-8">
             <div class="flex items-center gap-6">
               <div class="w-12 h-12 bg-surface rounded-xl flex items-center justify-center text-text border border-border">
-                <span class="material-symbols-outlined">mail</span>
+                <span class="material-symbols-outlined" aria-hidden="true">mail</span>
               </div>
-              <div>
+              <div class="min-w-0">
                 <p class="font-label-caps text-label-caps text-text-muted">EMAIL ME</p>
-                <p class="font-headline-md text-headline-md">amira.coder03@@gmail.com</p>
+                <p class="font-headline-md text-headline-md [overflow-wrap:anywhere]">amira.coder03@gmail.com</p>
               </div>
             </div>
             <div class="flex items-center gap-6">
               <div class="w-12 h-12 bg-surface rounded-xl flex items-center justify-center text-text border border-border">
-                <span class="material-symbols-outlined">location_on</span>
+                <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
               </div>
               <div>
                 <p class="font-label-caps text-label-caps text-text-muted">LOCATION</p>
@@ -35,52 +47,66 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
             </div>
           </div>
         </div>
-        
-        <div class="bg-surface p-8 md:p-12 rounded-2xl shadow-lg">
-          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+        <div class="bg-surface p-8 md:p-12 rounded-3xl shadow-lg">
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6" novalidate>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2 text-left">
-                <label class="font-label-caps text-label-caps text-text block">YOUR NAME</label>
-                <input formControlName="name"
-                       class="w-full bg-white border-border focus:border-text focus:ring-0 rounded-lg p-3 outline-none"
-                       [class.border-error]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched"
+                <label for="contact-name" class="font-label-caps text-label-caps text-text block">YOUR NAME</label>
+                <input id="contact-name" formControlName="name" autocomplete="name" maxlength="100"
+                       class="w-full bg-white border-border focus:border-text focus:outline-none focus:ring-2 focus:ring-primary rounded-lg p-3"
+                       [class.border-error]="errorFor('name')"
+                       [attr.aria-invalid]="errorFor('name') ? 'true' : null"
+                       [attr.aria-describedby]="errorFor('name') ? 'contact-name-error' : null"
                        placeholder="John Doe" type="text">
+                @if (errorFor('name'); as error) {
+                  <p id="contact-name-error" class="text-error text-sm">{{ error }}</p>
+                }
               </div>
               <div class="space-y-2 text-left">
-                <label class="font-label-caps text-label-caps text-text block">EMAIL ADDRESS</label>
-                <input formControlName="email"
-                       class="w-full bg-white border-border focus:border-text focus:ring-0 rounded-lg p-3 outline-none"
-                       [class.border-error]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
-                       placeholder="john@@example.com" type="email">
+                <label for="contact-email" class="font-label-caps text-label-caps text-text block">EMAIL ADDRESS</label>
+                <input id="contact-email" formControlName="email" autocomplete="email" spellcheck="false" maxlength="254"
+                       class="w-full bg-white border-border focus:border-text focus:outline-none focus:ring-2 focus:ring-primary rounded-lg p-3"
+                       [class.border-error]="errorFor('email')"
+                       [attr.aria-invalid]="errorFor('email') ? 'true' : null"
+                       [attr.aria-describedby]="errorFor('email') ? 'contact-email-error' : null"
+                       placeholder="john@example.com" type="email">
+                @if (errorFor('email'); as error) {
+                  <p id="contact-email-error" class="text-error text-sm">{{ error }}</p>
+                }
               </div>
             </div>
             <div class="space-y-2 text-left">
-              <label class="font-label-caps text-label-caps text-text block">SUBJECT</label>
-              <input formControlName="subject"
-                     class="w-full bg-white border-border focus:border-text focus:ring-0 rounded-lg p-3 outline-none"
-                     [class.border-error]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched"
+              <label for="contact-subject" class="font-label-caps text-label-caps text-text block">SUBJECT</label>
+              <input id="contact-subject" formControlName="subject" autocomplete="off" maxlength="150"
+                     class="w-full bg-white border-border focus:border-text focus:outline-none focus:ring-2 focus:ring-primary rounded-lg p-3"
+                     [class.border-error]="errorFor('subject')"
+                     [attr.aria-invalid]="errorFor('subject') ? 'true' : null"
+                     [attr.aria-describedby]="errorFor('subject') ? 'contact-subject-error' : null"
                      placeholder="New Project Inquiry" type="text">
+              @if (errorFor('subject'); as error) {
+                <p id="contact-subject-error" class="text-error text-sm">{{ error }}</p>
+              }
             </div>
             <div class="space-y-2 text-left">
-              <label class="font-label-caps text-label-caps text-text block">MESSAGE</label>
-              <textarea formControlName="message"
-                        class="w-full bg-white border-border focus:border-text focus:ring-0 rounded-lg p-3 outline-none"
-                        [class.border-error]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
+              <label for="contact-message" class="font-label-caps text-label-caps text-text block">MESSAGE</label>
+              <textarea id="contact-message" formControlName="message" autocomplete="off" maxlength="5000"
+                        class="w-full bg-white border-border focus:border-text focus:outline-none focus:ring-2 focus:ring-primary rounded-lg p-3"
+                        [class.border-error]="errorFor('message')"
+                        [attr.aria-invalid]="errorFor('message') ? 'true' : null"
+                        [attr.aria-describedby]="errorFor('message') ? 'contact-message-error' : null"
                         placeholder="How can I help you?" rows="4"></textarea>
+              @if (errorFor('message'); as error) {
+                <p id="contact-message-error" class="text-error text-sm">{{ error }}</p>
+              }
             </div>
-            
-            <button type="submit"
-                    [disabled]="contactForm.invalid"
-                    class="w-full bg-text text-white py-4 rounded-lg font-label-caps text-label-caps dark:text-black hover:bg-primary transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-              Send Message
-              <span class="material-symbols-outlined">send</span>
-            </button>
 
-            @if (showSuccess()) {
-              <div class="text-green-600 font-bold text-center mt-4">
-                Thank you! Your message has been sent successfully.
-              </div>
-            }
+            <button type="submit"
+                    [disabled]="isSubmitting()"
+                    class="btn-primary w-full">
+              {{ isSubmitting() ? 'Sending…' : 'Send Message' }}
+              <span class="material-symbols-outlined" aria-hidden="true">send</span>
+            </button>
           </form>
         </div>
       </div>
@@ -89,7 +115,9 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 })
 export class ContactComponent {
   private readonly fb = inject(FormBuilder);
-  readonly showSuccess = signal(false);
+  private readonly http = inject(HttpClient);
+  private readonly toast = inject(ToastService);
+  readonly isSubmitting = signal(false);
 
   readonly contactForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -98,20 +126,42 @@ export class ContactComponent {
     message: ['', [Validators.required, Validators.minLength(10)]]
   });
 
-  onSubmit() {
-    if (this.contactForm.valid) {
-      const { name, email, subject, message } = this.contactForm.value;
-      const mailtoUrl = `mailto:amira.coder03@gmail.com?subject=${encodeURIComponent(subject || '')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+  /** Returns the visible error text for a field once it has been touched, else null. */
+  errorFor(field: FieldName): string | null {
+    const control = this.contactForm.controls[field];
+    if (!control.invalid || !control.touched) {
+      return null;
+    }
+    const messages = ERROR_MESSAGES[field];
+    const errors = control.errors ?? {};
+    if (errors['required']) return messages.required;
+    if (errors['minlength'] && messages.minlength) return messages.minlength;
+    if (errors['email'] && messages.email) return messages.email;
+    return messages.required;
+  }
 
-      window.location.href = mailtoUrl;
+  async onSubmit() {
+    if (this.isSubmitting()) {
+      return;
+    }
 
-      this.showSuccess.set(true);
+    // Surface every error at once instead of silently disabling the button.
+    if (this.contactForm.invalid) {
+      this.contactForm.markAllAsTouched();
+      return;
+    }
+
+    this.isSubmitting.set(true);
+
+    try {
+      await firstValueFrom(this.http.post('/api/contact', this.contactForm.getRawValue()));
+
+      this.toast.success('Thank you! Your message has been sent successfully.');
       this.contactForm.reset();
-
-      // Clear success message after 5 seconds
-      setTimeout(() => {
-        this.showSuccess.set(false);
-      }, 5000);
+    } catch {
+      this.toast.error('Something went wrong sending your message. Please try again, or email me directly.');
+    } finally {
+      this.isSubmitting.set(false);
     }
   }
 }

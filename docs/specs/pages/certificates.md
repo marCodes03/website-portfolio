@@ -37,3 +37,4 @@ Narrow screens: pills stay on one line and are clipped by the strip. Certificate
 
 ## Change log
 - 2026-11-18: baseline written from code.
+- 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): Certificates is now the only place with full award cards; IT Olympics card shows its photo without the overlay label.

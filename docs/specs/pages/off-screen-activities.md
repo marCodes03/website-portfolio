@@ -38,3 +38,4 @@ Mobile has no arrow buttons; swipe and dots are the controls. Missing image: not
 
 ## Change log
 - 2026-11-18: baseline written from code.
+- 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): "Academic Awards" activity removed (six activities); awards live in Certificates.

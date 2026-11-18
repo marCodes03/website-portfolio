@@ -71,10 +71,10 @@ Behavioural specifications for the portfolio site. A spec says **what the site m
 | [0012](changes/0012-automated-axe-check.md) | Repeatable AXE check across themes, widths and interactive states | implemented |
 | [0013](changes/0013-layout-rhythm.md) | Layout rhythm: hero fit, section length, overlaps and fixed buttons | implemented |
 
-| [0014](changes/0014-critique-round-chat-entry-and-page-flow.md) | Critique round 1: chat entry, AI workflow, page ending, awards, skills by depth, polish | approved |
+| [0014](changes/0014-critique-round-chat-entry-and-page-flow.md) | Critique round 1: chat entry, AI workflow, page ending, awards, skills by depth, polish | implemented |
 
-| [0015](changes/0015-career-path-length.md) | Workflow Process section fits two screens | draft |
-| [0016](changes/0016-hero-headline-and-copy.md) | Hero headline names the role and one hard fact; consistent main action | draft |
-| [0017](changes/0017-button-system-and-motion.md) | One primary and one secondary button style; no bounce easing | draft |
+| [0015](changes/0015-career-path-length.md) | Workflow Process section fits two screens | implemented |
+| [0016](changes/0016-hero-headline-and-copy.md) | Hero headline names the role and one hard fact; consistent main action | implemented |
+| [0017](changes/0017-button-system-and-motion.md) | One primary and one secondary button style; no bounce easing | implemented |
 
 The next number is **0018**. New drafts need your approval before any code is written.

@@ -17,7 +17,7 @@ interface Milestone {
           <h2 class="font-headline-lg text-headline-lg text-text font-bold">Programming Journey</h2>
           <button type="button" (click)="toggleEarlier()"
                   [attr.aria-expanded]="showEarlier()" aria-controls="journey-timeline"
-                  class="tap-44 border border-border text-text hover:border-accent hover:text-accent px-5 py-2 rounded-lg font-label-caps text-label-caps transition-colors cursor-pointer">
+                  class="btn-secondary">
             {{ showEarlier() ? 'Hide earlier milestones' : 'Show earlier milestones (' + hiddenCount + ')' }}
           </button>
         </div>
@@ -92,11 +92,15 @@ interface Milestone {
                           <h3 class="font-roboto-mono text-xs font-bold text-text/80 leading-none">{{ milestone.year }}</h3>
                         </div>
                         <h4 class="font-bold text-accent text-body-sm mb-2 leading-snug">{{ milestone.title }}</h4>
-                        <ul class="space-y-1.5 text-text-muted text-xs list-disc pl-4 leading-normal">
-                          @for (bullet of milestone.bullets; track bullet) {
-                            <li>{{ bullet }}</li>
-                          }
-                        </ul>
+                        @if (milestone.branch === 'achievements') {
+                          <a href="#certificates" class="tap-44 inline-block text-accent underline underline-offset-4 text-sm font-bold">See the certificate<span class="sr-only">: {{ milestone.title }}</span></a>
+                        } @else {
+                          <ul class="space-y-1.5 text-text-muted text-sm list-disc pl-4 leading-normal">
+                            @for (bullet of milestone.bullets; track bullet) {
+                              <li>{{ bullet }}</li>
+                            }
+                          </ul>
+                        }
                       </div>
                     }
                   </div>
@@ -116,11 +120,15 @@ interface Milestone {
                           <h3 class="font-roboto-mono text-xs font-bold text-text/80 leading-none">{{ milestone.year }}</h3>
                         </div>
                         <h4 class="font-bold text-accent text-body-sm mb-2 leading-snug">{{ milestone.title }}</h4>
-                        <ul class="space-y-1.5 text-text-muted text-xs list-disc pl-4 leading-normal">
-                          @for (bullet of milestone.bullets; track bullet) {
-                            <li>{{ bullet }}</li>
-                          }
-                        </ul>
+                        @if (milestone.branch === 'achievements') {
+                          <a href="#certificates" class="tap-44 inline-block text-accent underline underline-offset-4 text-sm font-bold">See the certificate<span class="sr-only">: {{ milestone.title }}</span></a>
+                        } @else {
+                          <ul class="space-y-1.5 text-text-muted text-sm list-disc pl-4 leading-normal">
+                            @for (bullet of milestone.bullets; track bullet) {
+                              <li>{{ bullet }}</li>
+                            }
+                          </ul>
+                        }
                       </div>
                     </div>
                   </div>

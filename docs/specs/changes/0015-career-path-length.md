@@ -1,7 +1,7 @@
 ---
 id: CHG-0015
 title: Workflow Process section fits two screens
-status: draft
+status: implemented
 created: 2026-11-19
 amends: [pages/career-path]
 superseded_by:
@@ -34,10 +34,12 @@ Long stage descriptions at 320 px; the tallest stage at narrow widths; dark them
 Card visuals (`card-visual` finding), copy changes, redesign of the stage layout.
 
 ## Files
-Filled in when implemented.
+`src/app/components/career-path/career-path.component.ts` (stage panels in two columns from 1280px).
 
 ## Related
 [pages/career-path](../pages/career-path.md), [0007](0007-tabs-and-step-semantics.md), [0013](0013-layout-rhythm.md). Content: `docs/portfolio-content.md` section 5.
 
 ## Change log
 - 2026-11-19: created.
+- 2026-11-19: approved by the user.
+- 2026-11-19: implemented with a two-column panel grid at xl instead of tabs (R3 first option was spacing; a grid cut the section from 2471 px to 1386 px at 1440). All six stages unchanged; AXE not rerun.

@@ -42,3 +42,4 @@ Known inconsistency: the form requires Subject, but the server treats it as opti
 ## Change log
 - 2026-11-18: baseline written from code.
 - 2026-11-18: amended by [CHG-0001](../changes/0001-contact-subject-consistency.md) (Contact subject validated the same in form and API). Any "known gap" above that this resolves is now closed.
+- 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): Contact moved to the end of the page, followed by the closing "Get in touch" band.

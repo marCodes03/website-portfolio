@@ -1,4 +1,5 @@
-import { Component, signal, computed, afterNextRender, OnDestroy } from '@angular/core';
+import { Component, signal, computed, afterNextRender, inject, OnDestroy } from '@angular/core';
+import { ChatBotService } from '../chat-bot/chat-bot.service';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
@@ -10,7 +11,7 @@ import { NgOptimizedImage } from '@angular/common';
         <div class="md:col-span-7 space-y-8 text-center md:text-left pb-8 md:pb-12">
           <div class="space-y-4">
             <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-text italic">
-              Hello, I'm <span class="text-primary not-italic">Marco</span>
+              Hello, I'm <span class="text-primary not-italic">Marco</span>.
             </h1>
             
             <div class="flex flex-col sm:flex-row items-center sm:items-center gap-4 justify-center md:justify-start font-headline-md text-headline-md text-text my-2">
@@ -31,18 +32,18 @@ import { NgOptimizedImage } from '@angular/common';
             </div>
 
             <p class="font-body-lg text-body-lg text-text-muted max-w-xl mx-auto md:mx-0">
-              Full-stack software engineer building production .NET backend architectures and Angular frontends, from IoT platforms to enterprise workforce-management systems.
+              Full-stack software engineer, 9+ years coding, Taguig City, PH. Building production .NET backends and Angular frontends, from IoT platforms to enterprise workforce systems.
             </p>
           </div>
           <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-            <a href="/assets/files/marco-o-amira-cv-reference.pdf" target="_blank" download="Marco-O-Amira-CV.pdf" class="bg-text text-white dark:bg-accent dark:text-on-accent dark:box-glow hover:bg-primary-container dark:hover:bg-white transition-[background-color,transform] duration-300 px-8 py-4 rounded-lg font-label-caps text-label-caps flex items-center gap-2 group no-underline active:scale-95">
+            <a href="/assets/files/marco-o-amira-cv-reference.pdf" target="_blank" download="Marco-O-Amira-CV.pdf" class="btn-primary group no-underline">
               Download CV
               <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform" aria-hidden="true">download</span>
             </a>
-            <a href="#skills" class="border border-text text-text dark:border-accent dark:text-accent dark:box-glow-border hover:bg-text hover:text-white dark:hover:bg-accent dark:hover:text-on-accent transition-[background-color,color,transform] duration-300 px-8 py-4 rounded-lg font-label-caps text-label-caps flex items-center gap-2 group active:scale-95 no-underline">
-              View Tech Stack
-              <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform" aria-hidden="true">layers</span>
-            </a>
+            <button type="button" (click)="openChat($event)" aria-haspopup="dialog" class="btn-secondary group">
+              Ask my AI about my work
+              <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" aria-hidden="true">smart_toy</span>
+            </button>
           </div>
         </div>
         <div class="md:col-span-5 flex relative items-end justify-center md:justify-end self-end">
@@ -61,6 +62,8 @@ import { NgOptimizedImage } from '@angular/common';
   `
 })
 export class HeroComponent implements OnDestroy {
+  private readonly chat = inject(ChatBotService);
+
   readonly profileImageUrl = 'assets/image/marco-amira-hero-w-bg.png';
 
   readonly words = [
@@ -90,6 +93,10 @@ export class HeroComponent implements OnDestroy {
     const angle = idx * 90;
     return `rotateX(${angle}deg) translateZ(24px)`;
   });
+
+  openChat(event: Event) {
+    this.chat.open(event.currentTarget as HTMLElement);
+  }
 
   ngOnDestroy() {
     if (this.intervalId) {

@@ -178,10 +178,7 @@ export interface Certificate {
               <img [ngSrc]="certificates[5].imageUrl"
                    fill
                    alt="IT Olympics"
-                   class="object-cover w-full h-full opacity-60 group-hover:scale-110 transition-transform duration-700">
-              <div class="absolute inset-0 flex items-center justify-center">
-                <span class="bg-text text-background font-label-caps text-label-caps px-4 py-2">IT OLYMPICS</span>
-              </div>
+                   class="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700">
             </div>
             <div class="flex-1 p-8 md:p-12 bg-surface">
               <h3 class="font-headline-lg text-headline-lg text-text mb-4">{{ certificates[5].title }}</h3>
@@ -223,6 +220,10 @@ export interface Certificate {
             </div>
           }
         </div>
+      </div>
+
+      <div class="mt-12 flex justify-center">
+        <a href="#contact" class="btn-secondary no-underline">Contact me</a>
       </div>
     </div>
   </section>

@@ -42,3 +42,4 @@ If the IntersectionObserver never fires (for example a tall card taller than the
 - 2026-11-18: baseline written from code.
 - 2026-11-18: amended by [CHG-0011](../changes/0011-safe-scroll-reveal.md) (Journey cards are hidden only when scripts are enabled and motion is allowed).
 - 2026-11-19: amended by [CHG-0013](../changes/0013-layout-rhythm.md) (hero fills first screen; Journey shows newest 7 milestones, older behind a toggle).
+- 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): Award-track cards show title and a "See the certificate" link instead of bullets; other bullets are 14px.
