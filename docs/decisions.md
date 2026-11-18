@@ -2,6 +2,12 @@
 
 This file records non-trivial decisions made while working on this project with Claude, so future sessions (human or AI) know *why* something was built a certain way, not just *what* was built. Newest entries at the top.
 
+## 2026-11-19 - Missing-image finding was a false positive; `--header-h` added; branch left local
+
+**What:** User chose (a) a spec for the missing image, (b) leave branch `chg-0008-a11y-taste-skill` local, (c) a real `--header-h`. Investigation for (a): `project-eyeko-app.jpg` exists in `public/assets/image/` (38 KB, valid 1020x2046 JPEG) and is referenced correctly. The checker's `empty-visual` hits are every image in carousel slides 4+ (7 of them, both carousels): `NgOptimizedImage` lazy-loads them, so they have not loaded when the checker looks. No spec drafted; no broken image exists. I earlier called it a missing image; that was wrong. (c): `header.component.ts` now sets `--header-h` from a `ResizeObserver` (not while the mobile menu is open); the hero uses it, with 73px only as a pre-JS fallback. Committed separately. The branch has 3 commits, unpushed.
+
+**Choices:** No spec for a non-bug. Leaving the lazy-loading as is (it is correct and good for performance); the checker's false positive is not waived because the waiver cap (5) has only 1 slot left.
+
 ## 2026-11-19 - CHG-0013 implemented (hero fit and Journey length); R3, R4, R6 left as accepted deviations
 
 **What:** Hero `min-height` is now `calc(100svh - var(--header-h, 73px))`, so it ends at the fold at 1440 and 390 (hero-screen passes). Journey shows the newest 7 of 13 milestones; the older 6 sit behind a "Show earlier milestones (6)" toggle (`aria-expanded`, `aria-controls`). The toggle hides rows with `display: none`, not by removing them, so the existing scroll-reveal observer still reveals them when shown.
