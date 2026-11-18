@@ -6,10 +6,10 @@ import { ExperienceComponent } from './components/experience/experience.componen
 import { SkillsComponent } from './components/skills/skills.component';
 import { CareerPathComponent } from './components/career-path/career-path.component';
 import { PortfolioComponent } from './components/portfolio/portfolio.component';
-import { ContactComponent } from './components/contact/contact.component';
 import { JourneyComponent } from './components/journey/journey.component';
 import { OffScreenActivitiesComponent } from './components/off-screen-activities/off-screen-activities.component';
 import { CertificatesComponent } from './components/certificates/certificates.component';
+import { CtaBandComponent } from './components/cta-band/cta-band.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 import { ChatBotComponent } from './components/chat-bot/chat-bot.component';
@@ -25,10 +25,10 @@ import { ToastComponent } from './components/toast/toast.component';
     SkillsComponent,
     CareerPathComponent,
     PortfolioComponent,
-    ContactComponent,
     JourneyComponent,
     OffScreenActivitiesComponent,
     CertificatesComponent,
+    CtaBandComponent,
     FooterComponent,
     ThemeToggleComponent,
     ChatBotComponent,

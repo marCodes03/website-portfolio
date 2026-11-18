@@ -221,10 +221,6 @@ export interface Certificate {
           }
         </div>
       </div>
-
-      <div class="mt-12 flex justify-center">
-        <a href="#contact" class="btn-secondary no-underline">Contact me</a>
-      </div>
     </div>
   </section>
 

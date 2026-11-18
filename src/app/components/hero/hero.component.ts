@@ -6,17 +6,17 @@ import { NgOptimizedImage } from '@angular/common';
   selector: 'app-hero',
   imports: [NgOptimizedImage],
   template: `
-    <section class="relative overflow-hidden min-h-[calc(100svh-var(--header-h,73px))] flex justify-center pt-12 md:pt-16 pb-0 px-gutter section-frosted" id="home">
-      <div class="max-w-[1200px] mx-auto w-full grid grid-cols-1 md:grid-cols-12 items-center gap-12">
-        <div class="md:col-span-7 space-y-8 text-center md:text-left pb-8 md:pb-12">
+    <section class="relative overflow-hidden min-h-[calc(100svh-var(--header-h,73px))] flex justify-center pt-8 md:pt-16 pb-0 px-gutter section-frosted" id="home">
+      <div class="max-w-[1200px] mx-auto w-full h-[calc(100svh-var(--header-h,73px)-2rem)] md:h-auto grid grid-cols-1 grid-rows-[auto_minmax(0,1fr)] md:grid-rows-none md:grid-cols-12 items-center gap-4 md:gap-12">
+        <div class="md:col-span-7 space-y-6 md:space-y-8 text-center md:text-left pb-2 md:pb-12">
           <div class="space-y-4">
             <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-text italic">
               Hello, I'm <span class="text-primary not-italic">Marco</span>.
             </h1>
             
-            <div class="flex flex-col sm:flex-row items-center sm:items-center gap-4 justify-center md:justify-start font-headline-md text-headline-md text-text my-2">
+            <div class="flex flex-row items-center gap-3 sm:gap-4 justify-center md:justify-start font-headline-md text-headline-md text-text my-2">
               <span class="font-semibold">I am a</span>
-              <div class="relative inline-block h-12 w-64 md:w-72 select-none" style="perspective: 1000px;">
+              <div class="relative inline-block h-12 w-56 sm:w-64 md:w-72 select-none" style="perspective: 1000px;">
                 <div class="relative w-full h-full transition-transform duration-700 ease-out"
                      style="transform-style: preserve-3d;"
                      [style.transform]="cubeTransform()">
@@ -31,7 +31,7 @@ import { NgOptimizedImage } from '@angular/common';
               </div>
             </div>
 
-            <p class="font-body-lg text-body-lg text-text-muted max-w-xl mx-auto md:mx-0">
+            <p class="font-body-md md:font-body-lg text-body-md md:text-body-lg text-text-muted max-w-xl mx-auto md:mx-0">
               Full-stack software engineer, 9+ years coding, Taguig City, PH. Building production .NET backends and Angular frontends, from IoT platforms to enterprise workforce systems.
             </p>
           </div>
@@ -46,14 +46,14 @@ import { NgOptimizedImage } from '@angular/common';
             </button>
           </div>
         </div>
-        <div class="md:col-span-5 flex relative items-end justify-center md:justify-end self-end">
-          <div class="relative z-10 w-full flex justify-center md:justify-end">
+        <div class="md:col-span-5 flex relative items-end justify-center md:justify-end self-end min-h-0 h-full md:h-auto overflow-hidden md:overflow-visible">
+          <div class="relative z-10 w-full h-full md:h-auto flex justify-center md:justify-end">
             <img [ngSrc]="profileImageUrl"
                  width="615"
                  height="885"
                  priority
                  alt="Marco O. Amira - Full-Stack Developer"
-                 class="w-auto max-w-full object-contain rounded-t-[1rem]"
+                 class="h-full md:h-auto w-auto max-w-full object-cover object-top md:object-contain rounded-t-[1rem]"
                  style="max-height: 78vh;">
           </div>
         </div>

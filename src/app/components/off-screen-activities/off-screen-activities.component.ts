@@ -69,7 +69,7 @@ interface Activity {
                       <h3 class="font-headline-md text-headline-md text-text leading-tight">{{ activity.title }}</h3>
                       <span class="font-label-caps text-label-caps text-text-muted whitespace-nowrap mt-1">{{ activity.period }}</span>
                     </div>
-                    <p class="text-text-muted text-body-md leading-relaxed">{{ activity.description }}</p>
+                    <p class="text-text-muted text-body-md leading-relaxed max-w-[70ch]">{{ activity.description }}</p>
                   </div>
                   <div class="mt-8 pt-6 border-t border-border/30">
                     <p class="italic text-accent font-body-md">"{{ activity.quote }}"</p>
@@ -136,13 +136,6 @@ export class OffScreenActivitiesComponent {
       description: 'Earned the Computer System Servicing National Certificate II (CSS NC II). Developed competencies in PC assembly, network configuration, server setup, and hardware diagnostics.',
       quote: 'Understanding software starts with mastering the physical machine',
       imageUrl: 'assets/image/hardware_servicing.png'
-    },
-    {
-      title: 'Academic Awards',
-      period: '2023 - 2024',
-      description: 'Honored with academic achievements including graduating BS Computer Science Cum Laude, delivering the batch valedictory address, and winning systems design fairs and programming hackathons.',
-      quote: 'Recognition feels best when it reflects the work behind it',
-      imageUrl: 'assets/image/activities/activities-awards-cumlaude.jpg'
     },
     {
       title: 'Arts & Commission Work',

@@ -11,7 +11,7 @@ const MAIN_NAV: readonly NavItem[] = [
   { id: 'about', label: 'About', mobileLabel: 'About' },
   { id: 'experience', label: 'Experience', mobileLabel: 'Experience' },
   { id: 'projects', label: 'Projects', mobileLabel: 'Projects' },
-  { id: 'contact', label: 'Contact me', mobileLabel: 'Contact me' }
+  { id: 'get-in-touch', label: 'Contact me', mobileLabel: 'Contact me' }
 ];
 
 const OTHER_NAV: readonly NavItem[] = [

@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, computed } from '@angular/core';
 
 interface SkillItem {
   name: string;
@@ -13,7 +13,12 @@ interface SkillCategory {
   skills: SkillItem[];
 }
 
-type TabId = 'back-front' | 'db-cloud' | 'design-ai' | 'methodologies';
+interface SkillGroup {
+  id: string;
+  title: string;
+  note: string;
+  skills: SkillItem[];
+}
 
 @Component({
   selector: 'app-skills',
@@ -26,80 +31,87 @@ type TabId = 'back-front' | 'db-cloud' | 'design-ai' | 'methodologies';
           <h2 class="font-headline-lg text-headline-lg text-text font-bold">Tech Stack</h2>
         </div>
 
-        <!-- Pill-shaped Tab Navigation -->
-        <div class="flex flex-wrap justify-center gap-3 mb-12" role="tablist" aria-label="Tech stack categories" (keydown)="onTabKeydown($event)">
-          @for (tab of tabs; track tab.id) {
-            <button type="button"
-              role="tab"
-              [id]="'skills-tab-' + tab.id"
-              [attr.aria-selected]="activeTab() === tab.id"
-              aria-controls="skills-panel"
-              [attr.tabindex]="activeTab() === tab.id ? 0 : -1"
-              (click)="setActiveTab(tab.id)"
-              [class.bg-accent]="activeTab() === tab.id"
-              [class.text-white]="activeTab() === tab.id"
-              [class.dark:text-on-accent]="activeTab() === tab.id"
-              [class.bg-surface]="activeTab() !== tab.id"
-              [class.text-text-muted]="activeTab() !== tab.id"
-              class="px-6 py-3 min-h-11 rounded-full font-label-caps text-label-caps transition-[border-color,transform] duration-300 border border-border/30 hover:border-accent cursor-pointer active:scale-95 shadow-md">
-              {{ tab.label }}
-            </button>
-          }
-        </div>
-
-        <!-- 3D Skill Cards Grid -->
-        <div id="skills-panel" role="tabpanel" tabindex="0" [attr.aria-labelledby]="'skills-tab-' + activeTab()" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center">
-          @for (skill of filteredSkills(); track skill.name) {
-            <div class="skill-card-container aspect-square w-full">
-              <div class="skill-card-inner">
-                <!-- Front Face -->
-                <div class="skill-card-front p-4 flex flex-col items-center justify-center gap-3 text-center select-none shadow-md">
-                  <div class="w-12 h-12 rounded-xl flex items-center justify-center text-text transition-transform duration-300">
-                    @if (skill.icon.startsWith('devicon-')) {
-                      <i [class]="skill.icon" class="text-4xl"></i>
-                    } @else {
-                      <span class="material-symbols-outlined !text-4xl" aria-hidden="true">{{ skill.icon }}</span>
-                    }
-                  </div>
-                  <span class="font-roboto-mono text-xs font-bold tracking-tight text-text leading-tight">{{ skill.name }}</span>
-                </div>
-
-                <!-- Back Face (Proficiency SVG Donut with Centered Icon) -->
-                <div class="skill-card-back p-4 flex flex-col items-center justify-center gap-2 text-center select-none shadow-lg">
-                  <div class="relative w-20 h-20 flex items-center justify-center">
-                    <svg class="w-full h-full" viewBox="0 0 80 80">
-                      <!-- Background Ring -->
-                      <circle
-                        cx="40"
-                        cy="40"
-                        r="30"
-                        class="donut-circle-bg"
-                        stroke-width="5"
-                        fill="transparent"
-                      />
-                      <!-- Animated Foreground Ring -->
-                      <circle
-                        cx="40"
-                        cy="40"
-                        r="30"
-                        class="donut-circle-val"
-                        stroke-width="5"
-                        fill="transparent"
-                        stroke-dasharray="188.5"
-                        [style.--dashoffset]="getDashOffset(skill.proficiency)"
-                      />
-                    </svg>
-                    <div class="absolute flex items-center justify-center text-accent">
-                      @if (skill.icon.startsWith('devicon-')) {
-                        <i [class]="skill.icon" class="text-3xl"></i>
-                      } @else {
-                        <span class="material-symbols-outlined !text-3xl" aria-hidden="true">{{ skill.icon }}</span>
-                      }
-                    </div>
-                  </div>
-                  <span class="font-roboto-mono text-xs font-bold tracking-tight text-text leading-tight">{{ skill.name }}</span>
-                </div>
+        <div class="space-y-12">
+          @for (group of groups(); track group.id) {
+            <div [attr.aria-labelledby]="'skills-group-' + group.id" role="group">
+              <div class="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h3 [id]="'skills-group-' + group.id" class="font-headline-md text-headline-md text-text font-bold">{{ group.title }}</h3>
+                <p class="font-body-md text-body-md text-text-muted">{{ group.note }}</p>
               </div>
+              @if (group.id === 'primary') {
+              <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center list-none p-0 m-0">
+                  @for (skill of group.skills; track skill.name) {
+                    <li>
+                      <div class="skill-card-container aspect-square w-full">
+                                    <div class="skill-card-inner">
+                                      <!-- Front Face -->
+                                      <div class="skill-card-front p-4 flex flex-col items-center justify-center gap-3 text-center select-none shadow-md">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-text transition-transform duration-300">
+                                          @if (skill.icon.startsWith('devicon-')) {
+                                            <i [class]="skill.icon" class="text-4xl"></i>
+                                          } @else {
+                                            <span class="material-symbols-outlined !text-4xl" aria-hidden="true">{{ skill.icon }}</span>
+                                          }
+                                        </div>
+                                        <span class="font-roboto-mono text-xs font-bold tracking-tight text-text leading-tight">{{ skill.name }}</span>
+                                      </div>
+                      
+                                      <!-- Back Face (Proficiency SVG Donut with Centered Icon) -->
+                                      <div class="skill-card-back p-4 flex flex-col items-center justify-center gap-2 text-center select-none shadow-lg">
+                                        <div class="relative w-20 h-20 flex items-center justify-center">
+                                          <svg class="w-full h-full" viewBox="0 0 80 80">
+                                            <!-- Background Ring -->
+                                            <circle
+                                              cx="40"
+                                              cy="40"
+                                              r="30"
+                                              class="donut-circle-bg"
+                                              stroke-width="5"
+                                              fill="transparent"
+                                            />
+                                            <!-- Animated Foreground Ring -->
+                                            <circle
+                                              cx="40"
+                                              cy="40"
+                                              r="30"
+                                              class="donut-circle-val"
+                                              stroke-width="5"
+                                              fill="transparent"
+                                              stroke-dasharray="188.5"
+                                              [style.--dashoffset]="getDashOffset(skill.proficiency)"
+                                            />
+                                          </svg>
+                                          <div class="absolute flex items-center justify-center text-accent">
+                                            @if (skill.icon.startsWith('devicon-')) {
+                                              <i [class]="skill.icon" class="text-3xl"></i>
+                                            } @else {
+                                              <span class="material-symbols-outlined !text-3xl" aria-hidden="true">{{ skill.icon }}</span>
+                                            }
+                                          </div>
+                                        </div>
+                                        <span class="font-roboto-mono text-xs font-bold tracking-tight text-text leading-tight">{{ skill.name }}</span>
+                                        <span class="font-roboto-mono text-xs text-text-muted">{{ levelLabel(skill.proficiency) }}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                    </li>
+                  }
+                </ul>
+              } @else {
+                <ul class="flex flex-wrap gap-3 list-none p-0 m-0">
+                  @for (skill of group.skills; track skill.name) {
+                    <li class="flex items-center gap-3 rounded-full border border-border/40 bg-surface/70 dark:bg-white/5 px-4 py-2">
+                      @if (skill.icon.startsWith('devicon-')) {
+                        <i [class]="skill.icon" class="text-xl" aria-hidden="true"></i>
+                      } @else {
+                        <span class="material-symbols-outlined text-xl text-accent" aria-hidden="true">{{ skill.icon }}</span>
+                      }
+                      <span class="font-roboto-mono text-xs font-bold text-text">{{ skill.name }}</span>
+                      <span class="font-roboto-mono text-xs text-text-muted">{{ levelLabel(skill.proficiency) }}</span>
+                    </li>
+                  }
+                </ul>
+              }
             </div>
           }
         </div>
@@ -108,15 +120,6 @@ type TabId = 'back-front' | 'db-cloud' | 'design-ai' | 'methodologies';
   `,
 })
 export class SkillsComponent {
-  readonly activeTab = signal<TabId>('back-front');
-
-  readonly tabs = [
-    { id: 'back-front' as TabId, label: 'Development' },
-    { id: 'db-cloud' as TabId, label: 'Database & Cloud' },
-    { id: 'design-ai' as TabId, label: 'Design & AI' },
-    { id: 'methodologies' as TabId, label: 'Methodologies' }
-  ];
-
   readonly categories: SkillCategory[] = [
     {
       id: 'backend',
@@ -206,51 +209,33 @@ export class SkillsComponent {
     }
   ];
 
-  readonly filteredSkills = computed(() => {
-    const tab = this.activeTab();
-    let targetCatIds: string[] = [];
-
-    if (tab === 'back-front') {
-      targetCatIds = ['backend', 'frontend'];
-    } else if (tab === 'db-cloud') {
-      targetCatIds = ['database', 'cloud'];
-    } else if (tab === 'design-ai') {
-      targetCatIds = ['design', 'ai-tools'];
-    } else if (tab === 'methodologies') {
-      targetCatIds = ['methodologies'];
-    }
-
-    const list: SkillItem[] = [];
-    for (const catId of targetCatIds) {
-      const category = this.categories.find(c => c.id === catId);
-      if (category) {
-        list.push(...category.skills);
+  /** Each skill once (highest level wins), grouped by depth, ordered by level then name. */
+  readonly groups = computed<SkillGroup[]>(() => {
+    const best = new Map<string, SkillItem>();
+    for (const category of this.categories) {
+      for (const skill of category.skills) {
+        const seen = best.get(skill.name);
+        if (!seen || skill.proficiency > seen.proficiency) {
+          best.set(skill.name, skill);
+        }
       }
     }
-    return list;
+    const sorted = [...best.values()].sort(
+      (x, y) => y.proficiency - x.proficiency || x.name.localeCompare(y.name)
+    );
+    return [
+      { id: 'primary', title: 'Primary', note: 'Expert and Advanced: what I build with every day.', skills: sorted.filter(k => k.proficiency >= 80) },
+      { id: 'working', title: 'Working', note: 'Proficient: solid working knowledge.', skills: sorted.filter(k => k.proficiency >= 60 && k.proficiency < 80) },
+      { id: 'familiar', title: 'Familiar', note: 'Developing and Familiar: practical basics.', skills: sorted.filter(k => k.proficiency < 60) }
+    ].filter(group => group.skills.length > 0);
   });
 
-  setActiveTab(tabId: TabId) {
-    this.activeTab.set(tabId);
-  }
-
-  /** Arrow keys, Home and End move between tabs and activate them (WAI-ARIA tabs pattern). */
-  onTabKeydown(event: KeyboardEvent) {
-    const last = this.tabs.length - 1;
-    const current = this.tabs.findIndex(tab => tab.id === this.activeTab());
-    let next = -1;
-    if (event.key === 'ArrowRight') next = current === last ? 0 : current + 1;
-    else if (event.key === 'ArrowLeft') next = current === 0 ? last : current - 1;
-    else if (event.key === 'Home') next = 0;
-    else if (event.key === 'End') next = last;
-    if (next < 0) {
-      return;
-    }
-
-    event.preventDefault();
-    const tabId = this.tabs[next].id;
-    this.setActiveTab(tabId);
-    (event.currentTarget as HTMLElement).querySelector<HTMLElement>('#skills-tab-' + tabId)?.focus();
+  levelLabel(proficiency: number): string {
+    if (proficiency >= 100) return 'Expert';
+    if (proficiency >= 80) return 'Advanced';
+    if (proficiency >= 60) return 'Proficient';
+    if (proficiency >= 40) return 'Developing';
+    return 'Familiar';
   }
 
   getDashOffset(proficiency: number): string {

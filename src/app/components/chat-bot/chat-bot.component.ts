@@ -1,4 +1,4 @@
-import { Component, afterRenderEffect, effect, inject, signal, viewChild, ElementRef } from '@angular/core';
+import { Component, DestroyRef, afterRenderEffect, effect, inject, signal, viewChild, ElementRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -12,6 +12,11 @@ interface Message {
 }
 
 const MAX_MESSAGE_LENGTH = 500;
+
+/** Reply typing speed (CHG-0022): characters per second, time-based. */
+const TYPING_CHARS_PER_SECOND = 80;
+/** After this long without a reply the thinking bubble says it is still working. */
+const SLOW_REPLY_MS = 8000;
 
 const FALLBACK_REPLY =
   'I apologize, but I am experiencing temporary difficulties connecting to my brain. Please try again in a moment!';
@@ -130,35 +135,52 @@ function shuffle<T>(items: readonly T[]): T[] {
                  [class.dark:bg-accent]="msg.sender === 'user'"
                  [class.dark:text-on-accent]="msg.sender === 'user'"
                  [class.dark:box-glow]="msg.sender === 'user'">
-              <p class="leading-relaxed whitespace-pre-line">
-                @if (msg.sender === 'user') {
-                  <span class="sr-only">You: </span>
-                }{{ msg.text }}
-              </p>
+              @if (typingMessageId() === msg.id) {
+                <!-- Full text once for screen readers; the animated copy is hidden from them (CHG-0022 R13). -->
+                <p class="sr-only">{{ msg.text }}</p>
+                <p class="leading-relaxed whitespace-pre-line" aria-hidden="true">{{ msg.text.slice(0, typedLength()) }}<span class="typing-caret"></span></p>
+              } @else {
+                <p class="leading-relaxed whitespace-pre-line">
+                  @if (msg.sender === 'user') {
+                    <span class="sr-only">You: </span>
+                  }{{ msg.text }}
+                </p>
+              }
               <span class="block text-xs mt-1 text-right"
                     [class.text-white/80]="msg.sender === 'user'"
                     [class.text-text-muted]="msg.sender === 'bot'"
                     [class.dark:text-on-accent/80]="msg.sender === 'user'">
                 {{ msg.timestamp | date:'shortTime' }}
               </span>
+              @if (typingMessageId() === msg.id) {
+                <button type="button" (click)="finishTyping()"
+                        class="tap-44 mt-1 text-xs font-bold text-accent underline underline-offset-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">
+                  Skip typing
+                </button>
+              }
             </div>
           </div>
         }
 
-        <!-- Typing Indicator -->
+        <!-- Thinking indicator: dots in a bot bubble (CHG-0022) -->
         @if (isTyping()) {
           <div class="flex justify-start">
-            <div class="bg-surface border border-border/30 dark:bg-white/5 dark:border-white/10 rounded-2xl px-4 py-3 shadow-sm flex gap-1 items-center" aria-hidden="true">
-              <span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-pulse motion-reduce:animate-none" [style.animation-delay.ms]="0"></span>
-              <span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-pulse motion-reduce:animate-none" [style.animation-delay.ms]="150"></span>
-              <span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-pulse motion-reduce:animate-none" [style.animation-delay.ms]="300"></span>
+            <div class="bg-surface border border-border/30 dark:bg-white/5 dark:border-white/10 rounded-2xl px-4 py-3 shadow-sm">
+              <div class="flex gap-1.5 items-center" aria-hidden="true">
+                <span class="thinking-dot" style="animation-delay: 0ms"></span>
+                <span class="thinking-dot" style="animation-delay: 150ms"></span>
+                <span class="thinking-dot" style="animation-delay: 300ms"></span>
+              </div>
+              @if (slowReply()) {
+                <p class="mt-2 text-xs text-text-muted" aria-hidden="true">Still working on it…</p>
+              }
             </div>
           </div>
         }
       </div>
 
       <!-- Typing status lives outside the message log so it is announced once, on its own. -->
-      <div class="sr-only" role="status" aria-live="polite">{{ isTyping() ? 'marCodes Bot is typing' : '' }}</div>
+      <div class="sr-only" role="status" aria-live="polite">{{ isTyping() ? (slowReply() ? 'Still working on it' : 'marCodes Bot is typing') : '' }}</div>
 
       <!-- Quick Suggestion Chips Header & Rotate Button -->
       <div class="px-4 pt-3 pb-1 flex justify-between items-center bg-primary/[0.02] dark:bg-white/[0.02] border-t border-border/20 dark:border-white/5">
@@ -218,6 +240,9 @@ export class ChatBotComponent {
     }
   ]);
   readonly isTyping = signal(false);
+  readonly slowReply = signal(false);
+  readonly typingMessageId = signal<number | null>(null);
+  readonly typedLength = signal(0);
   readonly visibleChips = signal<string[]>(shuffle(QUESTION_POOL).slice(0, 3));
 
   private readonly scrollContainer = viewChild<ElementRef<HTMLElement>>('scrollContainer');
@@ -225,14 +250,24 @@ export class ChatBotComponent {
   private readonly toggleButton = viewChild<ElementRef<HTMLButtonElement>>('toggleButton');
   private readonly chatPanel = viewChild<ElementRef<HTMLElement>>('chatPanel');
 
+  private readonly destroyRef = inject(DestroyRef);
   private nextId = 1;
+  private slowTimer: ReturnType<typeof setTimeout> | null = null;
+  private typingFrame: number | null = null;
   private wasOpen = false;
 
   constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.clearSlowTimer();
+      if (this.typingFrame !== null) cancelAnimationFrame(this.typingFrame);
+    });
+
     // Keep the newest message in view.
     afterRenderEffect(() => {
       this.messages();
       this.isTyping();
+      this.typedLength();
+      this.slowReply();
       const el = this.scrollContainer()?.nativeElement;
       if (el) {
         el.scrollTop = el.scrollHeight;
@@ -298,25 +333,78 @@ export class ChatBotComponent {
     if (!trimmed || this.isTyping()) return;
 
     this.rotateChips();
+    this.finishTyping();
     this.addMessage('user', trimmed);
     this.input.reset();
     this.isTyping.set(true);
+    this.slowReply.set(false);
+    this.clearSlowTimer();
+    this.slowTimer = setTimeout(() => this.slowReply.set(true), SLOW_REPLY_MS);
 
     this.http.post<{ reply?: string }>('/api/chat', { message: trimmed }).subscribe({
       next: (response) => {
-        this.isTyping.set(false);
-        this.addMessage('bot', response.reply || FALLBACK_REPLY);
+        this.stopWaiting();
+        if (response.reply) {
+          this.addTypedReply(response.reply);
+        } else {
+          this.addMessage('bot', FALLBACK_REPLY);
+        }
       },
       error: (err: unknown) => {
         console.error('Chat Bot API Error:', err);
-        this.isTyping.set(false);
+        this.stopWaiting();
         this.addMessage('bot', FALLBACK_REPLY);
       }
     });
   }
 
-  private addMessage(sender: Message['sender'], text: string) {
+  private addMessage(sender: Message['sender'], text: string): Message {
     const message: Message = { id: this.nextId++, sender, text, timestamp: new Date() };
     this.messages.update(msgs => [...msgs, message]);
+    return message;
+  }
+
+  private stopWaiting() {
+    this.isTyping.set(false);
+    this.slowReply.set(false);
+    this.clearSlowTimer();
+  }
+
+  private clearSlowTimer() {
+    if (this.slowTimer !== null) {
+      clearTimeout(this.slowTimer);
+      this.slowTimer = null;
+    }
+  }
+
+  /** Adds a bot reply and types it out (80 chars/s); instant when reduced motion is requested. */
+  private addTypedReply(text: string) {
+    const message = this.addMessage('bot', text);
+    const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      return;
+    }
+    this.typedLength.set(0);
+    this.typingMessageId.set(message.id);
+    const start = performance.now();
+    const step = (now: number) => {
+      const length = Math.floor(((now - start) / 1000) * TYPING_CHARS_PER_SECOND);
+      if (length >= text.length) {
+        this.finishTyping();
+        return;
+      }
+      this.typedLength.set(length);
+      this.typingFrame = requestAnimationFrame(step);
+    };
+    this.typingFrame = requestAnimationFrame(step);
+  }
+
+  /** Shows the whole reply at once and stops the animation (Skip button, or a new message). */
+  finishTyping() {
+    if (this.typingFrame !== null) {
+      cancelAnimationFrame(this.typingFrame);
+      this.typingFrame = null;
+    }
+    this.typingMessageId.set(null);
   }
 }

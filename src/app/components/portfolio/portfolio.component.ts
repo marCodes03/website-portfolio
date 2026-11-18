@@ -25,19 +25,19 @@ export interface Project {
             <span class="font-label-caps text-label-caps text-accent tracking-widest">SELECTED WORKS</span>
             <h2 class="font-headline-lg text-headline-lg text-white font-bold">Featured Projects</h2>
           </div>
+          <div class="hidden md:flex gap-4">
+            <button type="button" (click)="scrollCarousel('left')" aria-label="Previous projects"
+                    class="w-12 h-12 rounded-full border border-border flex items-center justify-center hover:bg-surface transition-colors cursor-pointer">
+              <span class="material-symbols-outlined text-white hover:text-black dark:hover:text-white" aria-hidden="true">chevron_left</span>
+            </button>
+            <button type="button" (click)="scrollCarousel('right')" aria-label="Next projects"
+                    class="w-12 h-12 rounded-full border border-border flex items-center justify-center hover:bg-surface transition-colors cursor-pointer">
+              <span class="material-symbols-outlined text-white hover:text-black dark:hover:text-white" aria-hidden="true">chevron_right</span>
+            </button>
+          </div>
         </div>
 
         <div class="relative group/carousel">
-          <!-- Navigation Arrows -->
-          <button type="button" (click)="scrollCarousel('left')" aria-label="Previous projects"
-                  class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 md:-ml-6 z-20 w-12 h-12 rounded-full bg-surface text-text border border-border flex items-center justify-center shadow-lg opacity-0 group-hover/carousel:opacity-100 group-focus-within/carousel:opacity-100 [@media(hover:none)]:opacity-100 focus-visible:opacity-100 focus-visible:duration-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-opacity hover:bg-accent dark:hover:box-glow cursor-pointer">
-            <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
-          </button>
-          <button type="button" (click)="scrollCarousel('right')" aria-label="Next projects"
-                  class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 md:-mr-6 z-20 w-12 h-12 rounded-full bg-surface text-text border border-border flex items-center justify-center shadow-lg opacity-0 group-hover/carousel:opacity-100 group-focus-within/carousel:opacity-100 [@media(hover:none)]:opacity-100 focus-visible:opacity-100 focus-visible:duration-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-opacity hover:bg-accent dark:hover:box-glow cursor-pointer">
-            <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
-          </button>
-
           <!-- Carousel Container -->
           <div #carouselContainer
                role="region"

@@ -36,14 +36,14 @@
   --color-track-award: #a16207;
 
   /* Fonts */
-  --font-headline-lg: "Roboto Mono", monospace;
-  --font-display-lg: "Roboto Mono", monospace;
-  --font-headline-md: "Roboto Mono", monospace;
-  --font-display-lg-mobile: "Roboto Mono", monospace;
-  --font-label-caps: "Roboto Mono", monospace;
-  --font-body-md: "Roboto Mono", monospace;
-  --font-body-lg: "Roboto Mono", monospace;
-  --font-roboto-mono: "Roboto Mono", monospace;
+  --font-headline-lg: "JetBrains Mono", monospace;
+  --font-display-lg: "JetBrains Mono", monospace;
+  --font-headline-md: "JetBrains Mono", monospace;
+  --font-display-lg-mobile: "JetBrains Mono", monospace;
+  --font-label-caps: "JetBrains Mono", monospace;
+  --font-body-md: "IBM Plex Sans", sans-serif;
+  --font-body-lg: "IBM Plex Sans", sans-serif;
+  --font-roboto-mono: "JetBrains Mono", monospace;
 
   /* FontSize and Typography Settings */
   --text-headline-lg: 32px;
@@ -756,4 +756,34 @@ html.kbd .scroll-smooth {
 .dark .accent-on-dark .btn-secondary:hover {
   background: var(--color-accent);
   color: #272635;
+}
+
+/* Chat thinking dots and typing caret (CHG-0022). Calm wave, no bounce; still under reduced motion. */
+.thinking-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: var(--color-accent);
+  animation: thinkingWave 1.2s ease-in-out infinite;
+}
+@keyframes thinkingWave {
+  0%, 60%, 100% { opacity: 0.75; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+.typing-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background-color: currentColor;
+  animation: caretBlink 1s steps(1) infinite;
+}
+@keyframes caretBlink {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thinking-dot { animation: none !important; opacity: 1; transform: none; }
+  .typing-caret { animation: none !important; }
 }
