@@ -20,6 +20,7 @@ const METRIC = /(10,000\+|100\+|50%|80%)/;
     <section class="py-section-padding-mobile md:py-section-padding-desktop px-gutter border-b border-white/10 section-dark accent-on-dark" id="experience">
       <div class="max-w-[1200px] mx-auto">
         <div class="mb-16 space-y-4 text-left">
+          <span class="font-label-caps text-label-caps text-accent tracking-widest">CAREER</span>
           <h2 class="font-headline-lg text-headline-lg text-white font-bold">Work Experience</h2>
         </div>
         

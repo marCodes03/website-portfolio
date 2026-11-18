@@ -14,6 +14,7 @@ interface Milestone {
       <div class="max-w-[1200px] mx-auto">
         <!-- Section Header -->
         <div class="mb-10 space-y-4 text-left">
+          <span class="font-label-caps text-label-caps text-accent tracking-widest">SINCE 2017</span>
           <h2 class="font-headline-lg text-headline-lg text-text font-bold">Programming Journey</h2>
           <button type="button" (click)="toggleEarlier()"
                   [attr.aria-expanded]="showEarlier()" aria-controls="journey-timeline"

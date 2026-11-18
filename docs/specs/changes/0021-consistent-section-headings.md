@@ -1,7 +1,7 @@
 ---
 id: CHG-0021
 title: Every section heading has the blue eyebrow label and the same weight
-status: draft
+status: implemented
 created: 2026-11-19
 amends: [pages/about, pages/experience, pages/career-path, pages/journey, pages/footer]
 superseded_by:
@@ -42,10 +42,12 @@ The eyebrows are plain text before the heading, so screen readers read the label
 Restyling headings, changing heading copy, the hero heading, and adding new sections.
 
 ## Files
-Filled in when implemented.
+`src/app/components/about/about.component.ts` (bold h2), `experience`, `career-path`, `journey` (eyebrow added), `cta-band` (eyebrow, heading wrapped), all under `src/app/components/`.
 
 ## Related
 `DESIGN.md` (The Dark Band Rule, Caps Label Rule); content: `docs/portfolio-content.md`; [pages/about](../pages/about.md), [pages/experience](../pages/experience.md), [pages/career-path](../pages/career-path.md), [pages/journey](../pages/journey.md), [pages/footer](../pages/footer.md).
 
 ## Change log
 - 2026-11-19: created.
+- 2026-11-19: approved by the user with the proposed wording.
+- 2026-11-19: implemented. DOM check at 1440, light and dark: all nine section headings have an eyebrow and weight 700; `npm run test:a11y` 0 violations (24 checks). Experience and Get in touch rely on the section's existing `accent-on-dark` class, so no extra class was needed. Viewed Journey in a screenshot; the Get in touch band could not be scrolled to the top of the viewport (it is the page end), so its eyebrow was verified in the DOM and by axe, not visually.

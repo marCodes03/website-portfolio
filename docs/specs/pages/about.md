@@ -35,3 +35,4 @@ Facts are hard-coded; they go stale unless edited by hand when jobs, projects or
 
 ## Change log
 - 2026-11-18: baseline written from code.
+- 2026-11-19: amended by [CHG-0021](../changes/0021-consistent-section-headings.md) (section heading eyebrow and weight).

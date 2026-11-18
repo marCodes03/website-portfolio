@@ -13,6 +13,7 @@ import { ChatBotService } from '../chat-bot/chat-bot.service';
             <div class="lg:sticky lg:top-24 h-fit">
               <!-- Sticky Section Header -->
               <div class="mb-8 space-y-3 text-left">
+                <span class="font-label-caps text-label-caps text-accent tracking-widest">HOW I WORK</span>
                 <h2 class="font-headline-lg text-headline-lg text-text font-bold leading-tight">Workflow Process</h2>
                 <button type="button" (click)="openChat($event)" aria-haspopup="dialog" class="tap-44 text-accent underline underline-offset-4 font-label-caps text-label-caps cursor-pointer text-left">Ask the chat about my workflow</button>
               </div>

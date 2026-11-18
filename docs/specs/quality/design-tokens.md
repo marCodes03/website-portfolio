@@ -40,3 +40,4 @@ Some utilities use literal hex values (for example `dark:text-[#272635]`), which
 ## Change log
 - 2026-11-18: baseline written from code.
 - 2026-11-19: amended by [CHG-0017](../changes/0017-button-system-and-motion.md) (shared button classes, no bounce easing).
+- 2026-11-19: amended by [CHG-0020](../changes/0020-typography-jetbrains-mono-plex-sans.md): font tokens now map to JetBrains Mono (headings, labels, tags) and IBM Plex Sans (body); Roboto Mono removed.

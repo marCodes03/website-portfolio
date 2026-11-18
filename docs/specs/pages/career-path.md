@@ -40,3 +40,4 @@ Narrow screens: the navigator is not sticky and the panels stack. `scroll-mt-28`
 - 2026-11-18: amended by [CHG-0007](../changes/0007-tabs-and-step-semantics.md) (Tab and current-step semantics for Skills and Workflow). Any "known gap" above that this resolves is now closed.
 - 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): Stage text shortened to two lines, AI-assisted dev named in stage 4, "Ask the chat about my workflow" link added.
 - 2026-11-19: amended by [CHG-0015](../changes/0015-career-path-length.md) (stage panels in two columns from 1280px).
+- 2026-11-19: amended by [CHG-0021](../changes/0021-consistent-section-headings.md) (section heading eyebrow and weight).

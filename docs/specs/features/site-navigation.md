@@ -42,3 +42,4 @@ All page specs; [accessibility](../quality/accessibility.md)
 - 2026-11-18: baseline written from code.
 - 2026-11-18: amended by [CHG-0009](../changes/0009-remove-dead-feedbacks-nav-link.md) (removed the dead "Feedbacks" link; counts above updated from seven to six).
 - 2026-11-19: amended by [CHG-0014](../changes/0014-critique-round-chat-entry-and-page-flow.md): Section order changed; "Other" now holds four entries (Tech Stack, Workflow Process, Journey, Certificates); dead "Achievements" link removed.
+- 2026-11-19: amended by [CHG-0018](../changes/0018-contact-form-dialog-in-closing-band.md): the "Contact" entry points at `#get-in-touch`; the page ends on the closing band.

@@ -2,6 +2,12 @@
 
 This file records non-trivial decisions made while working on this project with Claude, so future sessions (human or AI) know *why* something was built a certain way, not just *what* was built. Newest entries at the top.
 
+## 2026-11-19 - CHG-0021 approved and implemented (section headings)
+
+**What:** User approved the wording CAREER, HOW I WORK, SINCE 2017, WORK WITH ME. Added to Work Experience, Workflow Process, Programming Journey and the Get in touch band; About `h2` now bold. All nine section headings verified in the DOM (eyebrow present, weight 700), light and dark; axe 0 violations.
+
+**Choices:** The Get in touch heading sat in a flex row with the buttons, so it was wrapped in a `div` with the eyebrow rather than restructuring the row. Experience and the band are already `accent-on-dark`, so the existing class carries the light accent. Not visually checked: the Get in touch band (page end, cannot reach viewport top). Commit includes whole files. Branch still local.
+
 ## 2026-11-19 - Inconsistent section headings: CHG-0021 drafted
 
 **What:** User noticed some section headings have the blue eyebrow label and some do not. Audit: eyebrow present on About, Skills, Featured Projects, Off-Screen Activities, Certificates; missing on Work Experience, Workflow Process, Programming Journey and the Get in touch band (Contact is now a dialog, not a section). About `h2` is also the only one not bold. User chose "add an eyebrow to all", "all bold", and asked me to suggest wording. [CHG-0021](specs/changes/0021-consistent-section-headings.md) is `draft` with proposed labels CAREER, HOW I WORK, SINCE 2017 (the first Journey entry in the content file), WORK WITH ME.
