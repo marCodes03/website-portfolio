@@ -46,3 +46,17 @@ Thumbs.db
 # Environment variables
 .env
 .env.local
+.taste-skill/
+
+# AI tooling (installed skills/agents and local settings)
+/.claude/
+/.agents/
+/.taste-skill/
+
+# Scratch / local experiments
+/scratch/
+
+# Deploy / build caches
+/.angular/
+/.vercel
+*.log

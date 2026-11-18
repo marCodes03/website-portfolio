@@ -27,23 +27,28 @@ type TabId = 'back-front' | 'db-cloud' | 'design-ai' | 'methodologies';
         </div>
 
         <!-- Pill-shaped Tab Navigation -->
-        <div class="flex flex-wrap justify-center gap-3 mb-12">
+        <div class="flex flex-wrap justify-center gap-3 mb-12" role="tablist" aria-label="Tech stack categories" (keydown)="onTabKeydown($event)">
           @for (tab of tabs; track tab.id) {
-            <button
+            <button type="button"
+              role="tab"
+              [id]="'skills-tab-' + tab.id"
+              [attr.aria-selected]="activeTab() === tab.id"
+              aria-controls="skills-panel"
+              [attr.tabindex]="activeTab() === tab.id ? 0 : -1"
               (click)="setActiveTab(tab.id)"
               [class.bg-accent]="activeTab() === tab.id"
               [class.text-white]="activeTab() === tab.id"
-              [class.dark:text-[#272635]]="activeTab() === tab.id"
+              [class.dark:text-on-accent]="activeTab() === tab.id"
               [class.bg-surface]="activeTab() !== tab.id"
               [class.text-text-muted]="activeTab() !== tab.id"
-              class="px-6 py-3 rounded-full font-label-caps text-label-caps transition-all duration-300 border border-border/30 hover:border-accent cursor-pointer active:scale-95 shadow-md">
+              class="px-6 py-3 min-h-11 rounded-full font-label-caps text-label-caps transition-[border-color,transform] duration-300 border border-border/30 hover:border-accent cursor-pointer active:scale-95 shadow-md">
               {{ tab.label }}
             </button>
           }
         </div>
 
         <!-- 3D Skill Cards Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center">
+        <div id="skills-panel" role="tabpanel" tabindex="0" [attr.aria-labelledby]="'skills-tab-' + activeTab()" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center">
           @for (skill of filteredSkills(); track skill.name) {
             <div class="skill-card-container aspect-square w-full">
               <div class="skill-card-inner">
@@ -53,7 +58,7 @@ type TabId = 'back-front' | 'db-cloud' | 'design-ai' | 'methodologies';
                     @if (skill.icon.startsWith('devicon-')) {
                       <i [class]="skill.icon" class="text-4xl"></i>
                     } @else {
-                      <span class="material-symbols-outlined !text-4xl">{{ skill.icon }}</span>
+                      <span class="material-symbols-outlined !text-4xl" aria-hidden="true">{{ skill.icon }}</span>
                     }
                   </div>
                   <span class="font-roboto-mono text-xs font-bold tracking-tight text-text leading-tight">{{ skill.name }}</span>
@@ -88,7 +93,7 @@ type TabId = 'back-front' | 'db-cloud' | 'design-ai' | 'methodologies';
                       @if (skill.icon.startsWith('devicon-')) {
                         <i [class]="skill.icon" class="text-3xl"></i>
                       } @else {
-                        <span class="material-symbols-outlined !text-3xl">{{ skill.icon }}</span>
+                        <span class="material-symbols-outlined !text-3xl" aria-hidden="true">{{ skill.icon }}</span>
                       }
                     </div>
                   </div>
@@ -118,14 +123,14 @@ export class SkillsComponent {
       title: 'Backend Development',
       icon: 'code',
       skills: [
-        { name: 'C# & .NET Core', icon: 'devicon-csharp-plain text-[#512bd4]', proficiency: 90 },
-        { name: 'ASP.NET', icon: 'devicon-dotnetcore-plain text-[#512bd4]', proficiency: 85 },
-        { name: 'Entity Framework', icon: 'devicon-dot-net-plain text-[#512bd4]', proficiency: 88 },
-        { name: 'REST API', icon: 'code', proficiency: 92 },
-        { name: 'Java', icon: 'devicon-java-plain text-[#e76f00]', proficiency: 78 },
-        { name: 'Visual Basic', icon: 'devicon-visualstudio-plain text-[#5c2d91]', proficiency: 75 },
-        { name: 'Python', icon: 'devicon-python-plain text-[#3776ab]', proficiency: 80 },
-        { name: 'C++', icon: 'devicon-cplusplus-plain text-[#00599c]', proficiency: 76 }
+        { name: 'C# & .NET Core', icon: 'devicon-csharp-plain text-[#512bd4]', proficiency: 100 },
+        { name: 'ASP.NET', icon: 'devicon-dotnetcore-plain text-[#512bd4]', proficiency: 80 },
+        { name: 'Entity Framework', icon: 'devicon-dot-net-plain text-[#512bd4]', proficiency: 80 },
+        { name: 'REST API', icon: 'code', proficiency: 100 },
+        { name: 'Java', icon: 'devicon-java-plain text-[#e76f00]', proficiency: 60 },
+        { name: 'Visual Basic', icon: 'devicon-visualstudio-plain text-[#5c2d91]', proficiency: 60 },
+        { name: 'Python', icon: 'devicon-python-plain text-[#3776ab]', proficiency: 40 },
+        { name: 'C++', icon: 'devicon-cplusplus-plain text-[#00599c]', proficiency: 40 }
       ]
     },
     {
@@ -133,12 +138,13 @@ export class SkillsComponent {
       title: 'Frontend Engineering',
       icon: 'code',
       skills: [
-        { name: 'Angular (JS & v14+)', icon: 'devicon-angularjs-plain text-[#dd0031]', proficiency: 92 },
-        { name: 'JavaScript & Bootstrap', icon: 'devicon-javascript-plain text-[#f7df1e]', proficiency: 90 },
-        { name: 'HTML5 & CSS / Sass', icon: 'devicon-html5-plain text-[#e34f26]', proficiency: 95 },
-        { name: 'TypeScript', icon: 'devicon-typescript-plain text-[#3178c6]', proficiency: 90 },
-        { name: 'Tailwind CSS', icon: 'devicon-tailwindcss-plain text-[#06b6d4]', proficiency: 88 },
-        { name: 'Ionic Framework', icon: 'devicon-angularjs-plain text-[#3880ff]', proficiency: 82 },
+        { name: 'Angular (JS & v14+)', icon: 'devicon-angularjs-plain text-[#dd0031]', proficiency: 80 },
+        { name: 'React JS', icon: 'devicon-react-original text-[#61dafb]', proficiency: 80 },
+        { name: 'JavaScript & Bootstrap', icon: 'devicon-javascript-plain text-[#f7df1e]', proficiency: 60 },
+        { name: 'HTML5 & CSS / Sass', icon: 'devicon-html5-plain text-[#e34f26]', proficiency: 80 },
+        { name: 'TypeScript', icon: 'devicon-typescript-plain text-[#3178c6]', proficiency: 80 },
+        { name: 'Tailwind CSS', icon: 'devicon-tailwindcss-plain text-[#06b6d4]', proficiency: 80 },
+        { name: 'Ionic Framework', icon: 'devicon-angularjs-plain text-[#3880ff]', proficiency: 80 },
       ]
     },
     {
@@ -146,9 +152,9 @@ export class SkillsComponent {
       title: 'Database',
       icon: 'database',
       skills: [
-        { name: 'Relational Database', icon: 'database', proficiency: 88 },
-        { name: 'MSSQL', icon: 'devicon-microsoftsqlserver-plain text-[#cc292b]', proficiency: 86 },
-        { name: 'MySQL', icon: 'devicon-mysql-plain text-[#00758f]', proficiency: 84 }
+        { name: 'Relational Database', icon: 'database', proficiency: 100 },
+        { name: 'MSSQL', icon: 'devicon-microsoftsqlserver-plain text-[#cc292b]', proficiency: 80 },
+        { name: 'MySQL', icon: 'devicon-mysql-plain text-[#00758f]', proficiency: 80 }
       ]
     },
     {
@@ -157,7 +163,7 @@ export class SkillsComponent {
       icon: 'cloud',
       skills: [
         { name: 'AWS', icon: 'devicon-amazonwebservices-plain-wordmark text-[#ff9900]', proficiency: 80 },
-        { name: 'Microsoft Azure', icon: 'devicon-azure-plain text-[#0089d6]', proficiency: 78 }
+        { name: 'Microsoft Azure', icon: 'devicon-azure-plain text-[#0089d6]', proficiency: 80 }
       ]
     },
     {
@@ -165,10 +171,10 @@ export class SkillsComponent {
       title: 'UI/UX Design',
       icon: 'palette',
       skills: [
-        { name: 'Figma', icon: 'devicon-figma-plain text-[#f24e1e]', proficiency: 85 },
-        { name: 'UI/UX Design', icon: 'palette', proficiency: 82 },
-        { name: 'Mobile Development', icon: 'phone_iphone', proficiency: 84 },
-        { name: 'Web Design & Layouts', icon: 'web', proficiency: 88 },
+        { name: 'Figma', icon: 'devicon-figma-plain text-[#f24e1e]', proficiency: 80 },
+        { name: 'UI/UX Design', icon: 'palette', proficiency: 60 },
+        { name: 'Mobile Development', icon: 'phone_iphone', proficiency: 80 },
+        { name: 'Web Design & Layouts', icon: 'web', proficiency: 80 },
         { name: 'Wireframing & Flows', icon: 'schema', proficiency: 80 }
       ]
     },
@@ -177,11 +183,12 @@ export class SkillsComponent {
       title: 'AI Tools',
       icon: 'auto_awesome',
       skills: [
-        { name: 'Prompt Engineering', icon: 'psychology_alt', proficiency: 88 },
-        { name: 'AI-Assisted Dev', icon: 'smart_toy', proficiency: 92 },
-        { name: 'Antigravity', icon: 'rocket_launch', proficiency: 95 },
-        { name: 'Gemini', icon: 'auto_awesome', proficiency: 90 },
-        { name: 'ChatGPT', icon: 'forum', proficiency: 90 }
+        { name: 'Prompt Engineering', icon: 'psychology_alt', proficiency: 80 },
+        { name: 'AI-Assisted Dev', icon: 'smart_toy', proficiency: 80 },
+        { name: 'Antigravity', icon: 'rocket_launch', proficiency: 100 },
+        { name: 'Gemini', icon: 'auto_awesome', proficiency: 100 },
+        { name: 'ChatGPT', icon: 'forum', proficiency: 60 },
+        { name: 'Claude', icon: 'hub', proficiency: 100 }
       ]
     },
     {
@@ -189,11 +196,12 @@ export class SkillsComponent {
       title: 'Methodologies',
       icon: 'psychology',
       skills: [
-        { name: 'Software Testing (QA)', icon: 'fact_check', proficiency: 85 },
-        { name: 'Agile & Scrum', icon: 'sync', proficiency: 88 },
-        { name: 'Git & Azure DevOps', icon: 'devicon-git-plain text-[#f05032]', proficiency: 90 },
-        { name: 'Version Control', icon: 'account_tree', proficiency: 92 },
-        { name: 'Web Design & Layouts', icon: 'web', proficiency: 88 }
+        { name: 'Software Testing (QA)', icon: 'fact_check', proficiency: 80 },
+        { name: 'Playwright', icon: 'science', proficiency: 60 },
+        { name: 'Agile & Scrum', icon: 'sync', proficiency: 100 },
+        { name: 'Git & Azure DevOps', icon: 'devicon-git-plain text-[#f05032]', proficiency: 100 },
+        { name: 'Version Control', icon: 'account_tree', proficiency: 100 },
+        { name: 'Web Design & Layouts', icon: 'web', proficiency: 100 }
       ]
     }
   ];
@@ -224,6 +232,25 @@ export class SkillsComponent {
 
   setActiveTab(tabId: TabId) {
     this.activeTab.set(tabId);
+  }
+
+  /** Arrow keys, Home and End move between tabs and activate them (WAI-ARIA tabs pattern). */
+  onTabKeydown(event: KeyboardEvent) {
+    const last = this.tabs.length - 1;
+    const current = this.tabs.findIndex(tab => tab.id === this.activeTab());
+    let next = -1;
+    if (event.key === 'ArrowRight') next = current === last ? 0 : current + 1;
+    else if (event.key === 'ArrowLeft') next = current === 0 ? last : current - 1;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = last;
+    if (next < 0) {
+      return;
+    }
+
+    event.preventDefault();
+    const tabId = this.tabs[next].id;
+    this.setActiveTab(tabId);
+    (event.currentTarget as HTMLElement).querySelector<HTMLElement>('#skills-tab-' + tabId)?.focus();
   }
 
   getDashOffset(proficiency: number): string {
