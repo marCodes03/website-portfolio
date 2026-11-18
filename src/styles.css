@@ -677,7 +677,7 @@ html.kbd .scroll-smooth {
   padding: 0 2rem;
   border-radius: 0.5rem;
   border: 1px solid transparent;
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--font-label-caps);
   font-size: 12px;
   line-height: 1;
   font-weight: 600;
