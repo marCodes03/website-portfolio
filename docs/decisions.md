@@ -2,6 +2,18 @@
 
 This file records non-trivial decisions made while working on this project with Claude, so future sessions (human or AI) know *why* something was built a certain way, not just *what* was built. Newest entries at the top.
 
+## 2026-11-19 - Dialog scan: modals pass, tap targets short; CHG-0019 drafted
+
+**What:** User asked whether the project modal had been scanned (it had not by the taste-skill checker, which only sees the page at rest) and chose "all dialogs" and "fix and commit". Ran `npm run test:a11y` (CHG-0012, covers project modal, certificate modal, chat, contact errors): 20 states, 0 violations. Then a scratch CDP script (not added to the repo) opened the project modal, certificate modal and chat at 1440 and 390, light and dark: focus moves in, Tab stays inside both modals, Escape closes and returns focus, page is scroll-locked. Real finding: controls under 44 px: modal close buttons (40x40) and in the chat the close (32x38), send (36x36), topic chips (30 px), Rotate (24 px). Drafted [CHG-0019](specs/changes/0019-dialog-tap-targets.md) (`draft`).
+
+**Choices:** The option text said "fix under a new spec (draft first)", so no code changed; the fix waits for approval. Corrected my earlier claim: the earlier one-off axe run left modals uncovered, but the repeatable `a11y-check.mjs` already covers them. My scratch script reported "closed: false" for the modals and chat because `[role=dialog]` also matches the always-mounted (inert) chat panel, so that column is a test artifact, not a bug; chat focus return after Escape was therefore not verified and became requirement R4.
+
+## 2026-11-19 - Design sidecar refreshed; button font uses the label token
+
+**What:** The impeccable hook flagged Roboto Mono in the shared button classes; fixed by using `var(--font-label-caps)` (commit `25480e6`) rather than suppressing it. User then asked to refresh the stale sidecar: rewrote `.impeccable/design.json` from the current `DESIGN.md` (new colours, card-lift shadow, ease-out-quart motion, xl breakpoint, the 48px `.btn-*` components plus a dark primary). `DESIGN.md` itself was left untouched (the refresh request was sidecar-only, and it was already current).
+
+**Choices:** No ignore was added for the font; it is the site's existing label font and `PRODUCT.md` says the typeface is not binding, so a future font change stays open. `.impeccable/` and `DESIGN.md` are untracked and not committed.
+
 ## 2026-11-19 - CHG-0015, CHG-0016, CHG-0017 approved and implemented
 
 **What:** User approved all three, chose hero wording C (keep "Hello, I'm Marco.") and the label "Contact me". CHG-0015: Workflow panels in two columns from 1280px (2471 px to 1386 px at 1440; chosen over tabs because it keeps every stage visible and needs no new state). CHG-0016: h1 full stop, fact line "Full-stack software engineer, 9+ years coding, Taguig City, PH." (from the content file) plus a shortened description, "Contact me" in the nav, the Certificates close and the CTA band (another session's `cta-band`, whose "Email me" became "Contact me"). CHG-0017: shared `.btn-primary`, `.btn-secondary`, `.btn-on-dark` (48px, one label size) in `styles.css`, applied to hero, experience, journey, contact and the CTA band, with light-accent overrides inside `.accent-on-dark`; bounce easing replaced (ease-out-quart; `animate-pulse` for chat dots). `ng build` passes.
@@ -43,6 +55,10 @@ This file records non-trivial decisions made while working on this project with 
 **What:** Root cause of the "focus lands on something you cannot see" failures: `scroll-smooth` meant a tabbed-to control was still off-screen when checked, and the scroll-reveal observer re-hid a section while focus was inside it. Fixes: `app.ts` adds `html.kbd` on Tab (removed on pointerdown) and `styles.css` sets `scroll-behavior: auto` for `html.kbd` and `.scroll-smooth` descendants; the observer no longer hides a section containing `document.activeElement`; the project carousel arrows get `focus-visible:opacity-100 focus-visible:duration-0`. Result: all `focus-visible` and `tap-size` failures pass; `ng build` passes.
 
 **Open:** certificate marquee contrast (pill text/bullet reads 1.0:1 at one tenth, probably over a neighbouring translucent pill), one marquee hidden-content item, and 2 `focus-ring` flags on generated Tailwind utilities. Not waived: marquee findings change per run, so a per-finding waiver would be fragile. CHG-0008 stays `approved`.
+
+## 2026-11-19 - Phone hero fits the first screen again (CHG-0013 R1)
+
+**What:** At 390x844 the hero was 1,155px tall (a 492px photo stacked under the text), against a 771px screen, so CHG-0013 R1 was unmet. Per the user's pick ("shrink the photo and spacing on phones"): below 768px the hero grid now has the screen height, the text block takes what it needs and the photo fills the rest, cropped to head and shoulders (`object-cover object-top`); the "I am a" role pill stays on one row, phone body text is 16px, top padding and gaps are smaller. Desktop is unchanged (827px at 1440x900). Measured: the hero ends at the viewport bottom at 390x844, 360x740 and 430x932. Trade-off: on a short phone (360x740) the photo is only about 128px tall. `npm run test:a11y`: 0 violations.
 
 ## 2026-11-19 - Project strip removed, metrics folded into Experience (CHG-0014 C3)
 
