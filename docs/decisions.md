@@ -2,6 +2,12 @@
 
 This file records non-trivial decisions made while working on this project with Claude, so future sessions (human or AI) know *why* something was built a certain way, not just *what* was built. Newest entries at the top.
 
+## 2026-11-19 - Three follow-up specs drafted: CHG-0015, CHG-0016, CHG-0017
+
+**What:** The user answered "option 1 - 3" to the next-spec question; read as all three of career-path length, copy and headline, and visual polish. Drafted [CHG-0015](specs/changes/0015-career-path-length.md) (Workflow section within two screens), [CHG-0016](specs/changes/0016-hero-headline-and-copy.md) (hero headline, one hard fact, one main-action wording; three wording options for the user to pick) and [CHG-0017](specs/changes/0017-button-system-and-motion.md) (one primary and one secondary button, no bounce easing). All `draft`; no code written.
+
+**Choices:** Numbers were renumbered from 0014-0016 to 0015-0017 because another session added `0014-critique-round-chat-entry-and-page-flow` meanwhile (numbers are never reused). CHG-0016's wording must be picked by the user: the copy must come from `docs/portfolio-content.md`, so options only reuse its Quick facts. Correction to the CHG-0013 entry below: Journey has 14 milestones, so 7 are shown and 7 sit behind the toggle (not 7 of 13 and 6).
+
 ## 2026-11-19 - Missing-image finding was a false positive; `--header-h` added; branch left local
 
 **What:** User chose (a) a spec for the missing image, (b) leave branch `chg-0008-a11y-taste-skill` local, (c) a real `--header-h`. Investigation for (a): `project-eyeko-app.jpg` exists in `public/assets/image/` (38 KB, valid 1020x2046 JPEG) and is referenced correctly. The checker's `empty-visual` hits are every image in carousel slides 4+ (7 of them, both carousels): `NgOptimizedImage` lazy-loads them, so they have not loaded when the checker looks. No spec drafted; no broken image exists. I earlier called it a missing image; that was wrong. (c): `header.component.ts` now sets `--header-h` from a `ResizeObserver` (not while the mobile menu is open); the hero uses it, with 73px only as a pre-JS fallback. Committed separately. The branch has 3 commits, unpushed.
