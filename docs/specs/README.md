@@ -77,8 +77,8 @@ Behavioural specifications for the portfolio site. A spec says **what the site m
 | [0016](changes/0016-hero-headline-and-copy.md) | Hero headline names the role and one hard fact; consistent main action | implemented |
 | [0017](changes/0017-button-system-and-motion.md) | One primary and one secondary button style; no bounce easing | implemented |
 
-| [0018](changes/0018-contact-form-dialog-in-closing-band.md) | Contact section replaced by a "Send a message" dialog in the closing band | draft |
+| [0018](changes/0018-contact-form-dialog-in-closing-band.md) | Contact section replaced by a "Send a message" dialog in the closing band | implemented |
 
-| [0019](changes/0019-dialog-tap-targets.md) | Dialog controls meet the 44px target size | draft |
+| [0019](changes/0019-dialog-tap-targets.md) | Dialog controls meet the 44px target size | implemented |
 
 The next number is **0020**. New drafts need your approval before any code is written.

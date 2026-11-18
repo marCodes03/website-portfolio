@@ -33,7 +33,7 @@ import { Project } from './portfolio.component';
               </div>
             }
             <button #closeButton type="button" (click)="onClose()"
-                    class="absolute top-4 right-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent w-10 h-10 dark:text-black rounded-full bg-text/70 hover:bg-accent hover:text-surface text-white flex items-center justify-center transition-colors cursor-pointer border border-border hover:border-accent"
+                    class="absolute top-4 right-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent w-11 h-11 dark:text-black rounded-full bg-text/70 hover:bg-accent hover:text-surface text-white flex items-center justify-center transition-colors cursor-pointer border border-border hover:border-accent"
                     aria-label="Close modal">
               <span class="material-symbols-outlined" aria-hidden="true">close</span>
             </button>

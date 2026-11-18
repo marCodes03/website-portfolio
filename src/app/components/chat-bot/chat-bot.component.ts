@@ -105,7 +105,7 @@ function shuffle<T>(items: readonly T[]): T[] {
         <button type="button"
                 (click)="closeChat()"
                 aria-label="Close chat assistant"
-                class="p-1 rounded-full hover:bg-primary/10 dark:hover:bg-white/10 text-text transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                class="w-11 h-11 flex items-center justify-center rounded-full hover:bg-primary/10 dark:hover:bg-white/10 text-text transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
           <span class="material-symbols-outlined" aria-hidden="true">close</span>
         </button>
       </div>
@@ -116,7 +116,7 @@ function shuffle<T>(items: readonly T[]): T[] {
            aria-live="polite"
            aria-label="Conversation"
            tabindex="0"
-           class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
+           class="flex-1 min-h-0 overflow-y-auto p-4 space-y-4 no-scrollbar focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
         @for (msg of messages(); track msg.id) {
           <div class="flex" [class.justify-end]="msg.sender === 'user'" [class.justify-start]="msg.sender === 'bot'">
             <div class="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm shadow-sm"
@@ -165,7 +165,7 @@ function shuffle<T>(items: readonly T[]): T[] {
         <span class="text-xs font-bold text-text-muted uppercase tracking-wider">Suggested Topics</span>
         <button type="button"
                 (click)="rotateChips()"
-                class="flex items-center gap-1 text-xs font-bold text-accent hover:text-accent/80 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
+                class="flex items-center gap-1 min-h-11 px-2 text-xs font-bold text-accent hover:text-accent/80 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
           <span class="material-symbols-outlined text-[14px] leading-none" aria-hidden="true">sync</span>
           Rotate
         </button>
@@ -176,7 +176,7 @@ function shuffle<T>(items: readonly T[]): T[] {
         @for (chip of visibleChips(); track chip) {
           <button type="button"
                   (click)="send(chip)"
-                  class="text-xs px-3 py-1.5 rounded-full border border-border/40 hover:border-accent hover:text-accent transition-[border-color,color,transform] duration-300 bg-surface/60 dark:bg-white/5 dark:border-white/10 dark:hover:border-accent cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                  class="text-xs px-4 min-h-11 inline-flex items-center rounded-full border border-border/40 hover:border-accent hover:text-accent transition-[border-color,color,transform] duration-300 bg-surface/60 dark:bg-white/5 dark:border-white/10 dark:hover:border-accent cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             {{ chip }}
           </button>
         }
@@ -192,10 +192,10 @@ function shuffle<T>(items: readonly T[]): T[] {
                autocomplete="off"
                [attr.maxlength]="maxLength"
                placeholder="Ask about Marco…"
-               class="flex-1 bg-surface border border-border/50 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent font-roboto-mono" />
+               class="flex-1 bg-surface border border-border/50 dark:border-white/10 rounded-xl px-4 min-h-11 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent font-roboto-mono" />
         <button type="submit"
                 aria-label="Send message"
-                class="w-9 h-9 rounded-xl bg-text text-white dark:bg-accent dark:text-on-accent flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer dark:box-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                class="w-11 h-11 rounded-xl bg-text text-white dark:bg-accent dark:text-on-accent flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer dark:box-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
           <span class="material-symbols-outlined text-sm" aria-hidden="true">send</span>
         </button>
       </form>
@@ -278,7 +278,7 @@ export class ChatBotComponent {
       return;
     }
     // A modal dialog handles its own Escape; do not also close the chat behind it.
-    if (document.querySelector('app-project-modal [role=dialog], app-certificate-modal [role=dialog]')) {
+    if (document.querySelector('app-project-modal [role=dialog], app-certificate-modal [role=dialog], app-contact-dialog [role=dialog]')) {
       return;
     }
     this.chatService.close();

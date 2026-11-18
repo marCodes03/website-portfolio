@@ -2,6 +2,12 @@
 
 This file records non-trivial decisions made while working on this project with Claude, so future sessions (human or AI) know *why* something was built a certain way, not just *what* was built. Newest entries at the top.
 
+## 2026-11-19 - CHG-0019 approved and implemented (dialog tap targets)
+
+**What:** User approved CHG-0019. Modal close buttons `w-10 h-10` to `w-11 h-11`; chat close, send, Rotate, chips and input raised to 44px. Rescan: no control under 44px at 1440 and 390, light and dark; `npm run test:a11y` 0 violations (24 checks); chat focus return verified (Escape and close button return focus to the toggle, Escape from elsewhere leaves focus alone).
+
+**Choices:** Used real size classes (`w-11 h-11`, `min-h-11`) instead of the `.tap-44` pseudo-element on these controls, because `.tap-44` sets `position: relative` and would override the modals' `absolute` close button; the visible modal close button therefore grows from 40 to 44px. Making the chat controls taller pushed the input bar off screen at 390x900 (message list had no `min-h-0`), caught only by looking at the screenshot, and fixed with `min-h-0`. Larger chips now wrap long topics onto two lines at 390. Commit includes whole files, as before.
+
 ## 2026-11-19 - Dialog scan: modals pass, tap targets short; CHG-0019 drafted
 
 **What:** User asked whether the project modal had been scanned (it had not by the taste-skill checker, which only sees the page at rest) and chose "all dialogs" and "fix and commit". Ran `npm run test:a11y` (CHG-0012, covers project modal, certificate modal, chat, contact errors): 20 states, 0 violations. Then a scratch CDP script (not added to the repo) opened the project modal, certificate modal and chat at 1440 and 390, light and dark: focus moves in, Tab stays inside both modals, Escape closes and returns focus, page is scroll-locked. Real finding: controls under 44 px: modal close buttons (40x40) and in the chat the close (32x38), send (36x36), topic chips (30 px), Rotate (24 px). Drafted [CHG-0019](specs/changes/0019-dialog-tap-targets.md) (`draft`).
@@ -55,6 +61,10 @@ This file records non-trivial decisions made while working on this project with 
 **What:** Root cause of the "focus lands on something you cannot see" failures: `scroll-smooth` meant a tabbed-to control was still off-screen when checked, and the scroll-reveal observer re-hid a section while focus was inside it. Fixes: `app.ts` adds `html.kbd` on Tab (removed on pointerdown) and `styles.css` sets `scroll-behavior: auto` for `html.kbd` and `.scroll-smooth` descendants; the observer no longer hides a section containing `document.activeElement`; the project carousel arrows get `focus-visible:opacity-100 focus-visible:duration-0`. Result: all `focus-visible` and `tap-size` failures pass; `ng build` passes.
 
 **Open:** certificate marquee contrast (pill text/bullet reads 1.0:1 at one tenth, probably over a neighbouring translucent pill), one marquee hidden-content item, and 2 `focus-ring` flags on generated Tailwind utilities. Not waived: marquee findings change per run, so a per-finding waiver would be fragile. CHG-0008 stays `approved`.
+
+## 2026-11-19 - Contact section replaced by a dialog in the closing band (CHG-0018)
+
+**What:** The user found "Contact me" redundant with the "Get in touch" band and leaned toward removing Contact because it "has no function". It did have one: the working contact form (real email through `api/contact`), which PRODUCT.md lists as binding. So the user was asked again with options and chose: remove the section, add a "Send a message" button to the band that opens the form in a dialog. Spec CHG-0018 was written and approved before code. The form, validation, toasts and API are unchanged. **Judgement calls:** an inline alert was added on failure because toasts are inert behind a modal; the footer Email link was removed so the address shows once (in the band); the location moved to the footer; the availability line moved into the dialog. Retired nothing from the API.
 
 ## 2026-11-19 - Phone hero fits the first screen again (CHG-0013 R1)
 

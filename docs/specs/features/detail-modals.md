@@ -42,3 +42,5 @@ No images: an icon placeholder replaces the slider. Long text scrolls inside the
 - 2026-11-18: baseline written from code.
 - 2026-11-18: amended by [CHG-0002](../changes/0002-modal-focus-trap.md) (Trap keyboard focus inside open modals). Any "known gap" above that this resolves is now closed.
 - 2026-11-18: refactor, no behaviour change: scroll lock and returning focus to the opener now live in the shared FocusTrapDirective instead of being repeated in both modals and both host components.
+- 2026-11-19: amended by [CHG-0018](../changes/0018-contact-form-dialog-in-closing-band.md): a third dialog, the contact form, uses the same focus trap, scroll lock, Escape and focus return; Escape and outside click are ignored while a send is in flight.
+- 2026-11-19: amended by [CHG-0019](../changes/0019-dialog-tap-targets.md) (modal close buttons at 44px).

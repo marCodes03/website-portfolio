@@ -58,7 +58,7 @@ import { Certificate } from './certificates.component';
             }
             
             <button #closeButton type="button" (click)="onClose()"
-                    class="absolute top-4 right-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent w-10 h-10 rounded-full bg-text/70 hover:bg-accent dark:text-black hover:text-surface text-white flex items-center justify-center transition-[background-color,color,border-color,box-shadow] cursor-pointer border border-border hover:border-accent dark:hover:box-glow z-30"
+                    class="absolute top-4 right-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent w-11 h-11 rounded-full bg-text/70 hover:bg-accent dark:text-black hover:text-surface text-white flex items-center justify-center transition-[background-color,color,border-color,box-shadow] cursor-pointer border border-border hover:border-accent dark:hover:box-glow z-30"
                     aria-label="Close modal">
               <span class="material-symbols-outlined" aria-hidden="true">close</span>
             </button>

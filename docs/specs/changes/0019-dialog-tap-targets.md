@@ -1,7 +1,7 @@
 ---
 id: CHG-0019
 title: Dialog controls meet the 44px target size
-status: draft
+status: implemented
 created: 2026-11-19
 amends: [features/detail-modals, features/chat-bot]
 superseded_by:
@@ -36,10 +36,12 @@ Raises pointer target size; no change to names, roles, or focus order. Contrast 
 Restyling the chat or modals, new modal content, and the floating chat/theme buttons (already 56 px).
 
 ## Files
-Filled in when implemented.
+`src/app/components/portfolio/project-modal.component.ts`, `src/app/components/certificates/certificate-modal.component.ts` (close button 44px), `src/app/components/chat-bot/chat-bot.component.ts` (close, Rotate, chips, input, send at 44px; `min-h-0` on the message list so the input bar stays on screen).
 
 ## Related
 [features/detail-modals](../features/detail-modals.md), [features/chat-bot](../features/chat-bot.md), [0002](0002-modal-focus-trap.md), [0008](0008-taste-skill-accessibility-fixes.md), [0010](0010-chat-announcements-and-escape.md), [0012](0012-automated-axe-check.md).
 
 ## Change log
 - 2026-11-19: created.
+- 2026-11-19: approved by the user.
+- 2026-11-19: implemented. Dialog scan at 1440 and 390, light and dark: no control under 44 px; `npm run test:a11y` 0 violations. R4 (focus returns to the chat toggle) already held and was verified for Escape and the close button; Escape with focus elsewhere does not move focus. Fixing tap size made the chat panel taller, which pushed the input bar off screen at 390 until the message list got `min-h-0`. Modal close buttons are now 44px visibly (40px before), because the shared `.tap-44` class sets `position: relative` and would break their `absolute` placement.
