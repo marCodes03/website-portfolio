@@ -42,3 +42,4 @@ Image missing: the card shows a placeholder icon frame. Very long titles wrap. T
 - 2026-11-18: baseline written from code.
 - 2026-11-18: arrow offset changed from 32px to 24px on `md`+ so the next arrow no longer overflows the page at 820px.
 - 2026-11-18: amended by [CHG-0006](../changes/0006-carousel-arrows-on-focus.md) (Projects carousel arrows visible on keyboard focus). Any "known gap" above that this resolves is now closed.
+- 2026-11-21: amended by [CHG-0026](../changes/0026-fintrack-project-and-source-link.md) (FinTrack project; optional `githubUrl` and a "View Source" button in the project modal).

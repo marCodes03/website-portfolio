@@ -2,6 +2,16 @@
 
 This file records non-trivial decisions made while working on this project with Claude, so future sessions (human or AI) know *why* something was built a certain way, not just *what* was built. Newest entries at the top.
 
+## 2026-11-21 - FinTrack project and "View Source" link: CHG-0026 drafted
+
+**What:** User asked for a new FinTrack project, an optional `githubUrl` on `Project`, and a "View Source" outline button in the project modal. AGENTS.md requires a spec first, so [CHG-0026](specs/changes/0026-fintrack-project-and-source-link.md) is `draft` and no component code is changed yet. The copy was added to `docs/portfolio-content.md` first (source of truth).
+
+**Choices:**
+- Copy taken from the user's brief; the em dash in the auth bullet became a comma (house style).
+- The screenshots are in Downloads as `02-dashboard`, `03-budget-plans`, `01-login`, `04-transactions`; the brief wants `public/assets/image/project-fintrack-*.png`. Copy after approval, mapping by name.
+- Login and transactions screenshots stay unused; a thumbnail strip is only suggested in the spec's Out of scope.
+- Placed 4th in the carousel (user request after the first implementation), in both the component and the content file; R2 and the acceptance criterion amended to match.
+
 ## 2026-11-19 - Pre-push review fixes (CHG-0023 to CHG-0025)
 
 **What:** A /code-review and /security-review pass over `main..HEAD` plus the working tree found no committed secrets (`.env` is gitignored) but several issues. The user chose to fix: the specs README table (blank lines broke it), `.impeccable/` cache and audit output ignored, rate limiter hardening, a Gemini output cap, and the `new Date()` uses. Spec: [CHG-0023](specs/changes/0023-api-hardening-and-clock.md).

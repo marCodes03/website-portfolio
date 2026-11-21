@@ -82,5 +82,6 @@ Behavioural specifications for the portfolio site. A spec says **what the site m
 | [0023](changes/0023-api-hardening-and-clock.md) | Fail-closed rate limiting, chat output cap, injectable clock | implemented |
 | [0024](changes/0024-chat-knowledge-base-pipeline.md) | Chat knowledge base pipeline; generated module untracked (catch-up) | implemented |
 | [0025](changes/0025-public-assets-and-seo-files.md) | Public assets, icons, robots.txt, sitemap.xml, meta tags (catch-up) | implemented |
+| [0026](changes/0026-fintrack-project-and-source-link.md) | FinTrack project and a separate "View Source" link in the project modal | implemented |
 
-The next number is **0026**. New drafts need your approval before any code is written.
+The next number is **0027**. New drafts need your approval before any code is written.

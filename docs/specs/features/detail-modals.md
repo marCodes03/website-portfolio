@@ -44,3 +44,4 @@ No images: an icon placeholder replaces the slider. Long text scrolls inside the
 - 2026-11-18: refactor, no behaviour change: scroll lock and returning focus to the opener now live in the shared FocusTrapDirective instead of being repeated in both modals and both host components.
 - 2026-11-19: amended by [CHG-0018](../changes/0018-contact-form-dialog-in-closing-band.md): a third dialog, the contact form, uses the same focus trap, scroll lock, Escape and focus return; Escape and outside click are ignored while a send is in flight.
 - 2026-11-19: amended by [CHG-0019](../changes/0019-dialog-tap-targets.md) (modal close buttons at 44px).
+- 2026-11-21: amended by [CHG-0026](../changes/0026-fintrack-project-and-source-link.md) (FinTrack project; optional `githubUrl` and a "View Source" button in the project modal).

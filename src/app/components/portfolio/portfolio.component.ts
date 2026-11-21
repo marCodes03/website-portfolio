@@ -10,6 +10,7 @@ export interface Project {
   modalImageUrl?: string;
   icon?: string;
   link?: string;
+  githubUrl?: string;
   skills: string[];
   contributions: string[];
 }
@@ -158,6 +159,23 @@ export class PortfolioComponent {
         'Integrated GPS location checking to validate shift clock-ins directly on-site.',
         'Programmed image compression utilities for photo attachment uploads, reducing client mobile data usage by 40%.',
         'Maintained fluid 60FPS mobile navigation flows utilizing Capacitor and Ionic Framework.'
+      ]
+    },
+    {
+      title: 'FinTrack',
+      category: 'FULL-STACK / FINTECH',
+      description: 'A full-stack budgeting app focused on planning spending ahead rather than just logging it after the fact. Built with Angular 22 (standalone components + Signals) and an Express/Prisma/PostgreSQL API, with JWT-based auth, bcrypt password hashing, rate limiting, and email verification.',
+      link: 'https://fintrack-marcodes.vercel.app/',
+      githubUrl: 'https://github.com/marCodes03/fintrack-web',
+      imageUrl: 'assets/image/project-fintrack-dashboard.png',
+      modalImageUrl: 'assets/image/project-fintrack-budget-plans.png',
+      skills: ['Angular 22', 'Signals', 'Tailwind CSS 4', 'Node.js', 'Express 5', 'Prisma', 'PostgreSQL', 'JWT Auth'],
+      contributions: [
+        'Built a plan-first budgeting app: a unified transaction ledger (income, expenses, transfers, savings) plus budget plans and percentage-based savings goals, summarized on a net-worth and goal-progress dashboard.',
+        'Developed the frontend with Angular 22 standalone components and Signals, and the API with Express 5, Prisma, and PostgreSQL.',
+        'Went back and fixed the auth model after shipping a working version with client-trusted user IDs, and documented the whole decision and hardening history rather than silently patching it.',
+        'Hardened the backend in stages: bcrypt password hashing, JWT sessions in httpOnly cookies, CSRF protection, per-IP rate limiting, an explicit CORS allowlist, and email verification.',
+        'Deployed the stack across Vercel (frontend), Render (API), and Supabase (Postgres).'
       ]
     },
     {

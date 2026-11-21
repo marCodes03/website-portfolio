@@ -73,15 +73,26 @@ import { Project } from './portfolio.component';
               </div>
             </div>
 
-            @if (project()?.link) {
-              <div class="pt-4 flex justify-end">
-                <a [href]="project()?.link"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   class="px-6 py-3 bg-accent text-on-accent dark:box-glow font-semibold rounded-xl hover:bg-white transition-colors inline-flex items-center gap-2 cursor-pointer shadow-md">
-                  <span>Visit Live Project</span>
-                  <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_outward</span>
-                </a>
+            @if (project()?.link || project()?.githubUrl) {
+              <div class="pt-4 flex flex-wrap justify-end gap-3">
+                @if (project()?.githubUrl) {
+                  <a [href]="project()?.githubUrl"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     class="px-6 py-3 min-h-11 border border-accent text-accent font-semibold rounded-xl hover:bg-accent/10 transition-colors inline-flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                    <span>View Source</span>
+                    <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_outward</span>
+                  </a>
+                }
+                @if (project()?.link) {
+                  <a [href]="project()?.link"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     class="px-6 py-3 bg-accent text-on-accent dark:box-glow font-semibold rounded-xl hover:bg-white transition-colors inline-flex items-center gap-2 cursor-pointer shadow-md">
+                    <span>Visit Live Project</span>
+                    <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_outward</span>
+                  </a>
+                }
               </div>
             }
           </div>

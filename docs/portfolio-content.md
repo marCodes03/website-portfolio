@@ -86,6 +86,15 @@ Mobile app for on-site construction workers to report attendance, log project pr
 - Programmed image compression for photo uploads, cutting mobile data usage by 40%.
 - Maintained 60 FPS navigation using Capacitor and Ionic.
 
+### FinTrack — Full-Stack / Fintech
+Full-stack budgeting app focused on planning spending ahead rather than just logging it after the fact. Built with Angular 22 (standalone components and Signals) and an Express/Prisma/PostgreSQL API, with JWT-based auth, bcrypt password hashing, rate limiting, and email verification. Live demo: <https://fintrack-marcodes.vercel.app/> · Source: <https://github.com/marCodes03/fintrack-web>
+- **Skills:** Angular 22, Signals, Tailwind CSS 4, Node.js, Express 5, Prisma, PostgreSQL, JWT Auth
+- Built a plan-first budgeting app: a unified transaction ledger (income, expenses, transfers, savings) plus budget plans and percentage-based savings goals, summarized on a net-worth and goal-progress dashboard.
+- Developed the frontend with Angular 22 standalone components and Signals, and the API with Express 5, Prisma, and PostgreSQL.
+- Went back and fixed the auth model after shipping a working version with client-trusted user IDs, and documented the whole decision and hardening history rather than silently patching it.
+- Hardened the backend in stages: bcrypt password hashing, JWT sessions in httpOnly cookies, CSRF protection, per-IP rate limiting, an explicit CORS allowlist, and email verification.
+- Deployed the stack across Vercel (frontend), Render (API), and Supabase (Postgres).
+
 ### Eyeko App — Mobile / Computer Vision
 Android app in Java using text, object, and currency recognition, integrated with Firebase.
 - **Skills:** Java, Android SDK, Computer Vision, Firebase, ML Kit, TensorFlow Lite
